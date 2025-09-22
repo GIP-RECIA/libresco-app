@@ -62,7 +62,7 @@ class LoadingPageState extends State<LoadingPage> {
               height: 30,
             ),
             Text(
-              "Récupération des données personnelles en cours.\nVeuillez Patienter.",
+              "Récupération des données en cours.\nVeuillez Patienter.",
               textAlign: TextAlign.center,
               style: GoogleFonts.nunito(
                 fontSize: 16,
