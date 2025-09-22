@@ -80,7 +80,7 @@ class UnconnectedHomePageState extends State<UnconnectedHomePage> {
                 child: ElevatedButton(
                     onPressed: () {
                       browser.openUrlRequest(
-                          urlRequest: URLRequest(url: WebUri("https://${BaseUrl().casBaseURL}/cas/login?service=https://${BaseUrl().casBaseURL}/cas")),
+                          urlRequest: URLRequest(url: WebUri("https://${BaseUrl().casBaseURL}/cas/login?service=${BaseUrl().serviceURL}")),
                           settings: settings);
                     },
                     child: const Text("Se connecter")
