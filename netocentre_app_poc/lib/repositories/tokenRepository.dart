@@ -85,30 +85,22 @@ class TokenRepository {
 
   Future<void> deleteAllRows() async {
     final db = await getDB();
-
     await db.execute("DELETE FROM tokens");
   }
 
   Future<void> getLastValidRefreshToken() async{
     final db = await getDB();
-
     int? count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM tokens'));
     if(count! > 0){
-      List<Map<String, Object?>> res = await db.query('tokens', limit: 1, orderBy: 'RefreshTokenExpiresDate');
-      if(res.first.containsKey("RefreshToken") && res.first.containsKey("RefreshTokenExpiresDate")){
-        if(DateTime.fromMillisecondsSinceEpoch(res.first["RefreshTokenExpiresDate"] as int).isAfter(DateTime.now())){
-          TokenManager().setAccessToken(res.first["AccessToken"].toString());
-          TokenManager().setRefreshToken(res.first["RefreshToken"].toString());
-          TokenManager().setTGT(res.first["TGT"].toString());
-          TokenManager().setJSESSIONID(res.first["JSESSIONID"].toString());
-          TokenManager().setIdPortal(res.first["idPortal"].toString());
-          TokenManager().setAccessTokenExpiresDate(DateTime.fromMillisecondsSinceEpoch(res.first["AccessTokenExpiresDate"] as int));
-          TokenManager().setRefreshTokenExpiresDate(DateTime.fromMillisecondsSinceEpoch(res.first["RefreshTokenExpiresDate"] as int));
-
-
-          print("when i got the last valid refresh token from repo :${TokenManager().toString()}");
-        }
-      }
+    List<Map<String, Object?>> res = await db.query('tokens', limit: 1, orderBy: 'RefreshTokenExpiresDate');
+      TokenManager().setAccessToken(res.first["AccessToken"].toString());
+      TokenManager().setRefreshToken(res.first["RefreshToken"].toString());
+      TokenManager().setTGT(res.first["TGT"].toString());
+      TokenManager().setJSESSIONID(res.first["JSESSIONID"].toString());
+      TokenManager().setIdPortal(res.first["idPortal"].toString());
+      TokenManager().setAccessTokenExpiresDate(DateTime.fromMillisecondsSinceEpoch(res.first["AccessTokenExpiresDate"] as int));
+      TokenManager().setRefreshTokenExpiresDate(DateTime.fromMillisecondsSinceEpoch(res.first["RefreshTokenExpiresDate"] as int));
+      print("when i got the last valid refresh token from repo :${TokenManager().toString()}");
     }
     else {
       print("Empty database");
