@@ -6,10 +6,10 @@ import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/singletons/mediacentreFavorites.dart';
 import 'package:netocentre_app_poc/singletons/servicesList.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
+import 'package:netocentre_app_poc/services/loginService.dart';
 
 import '../singletons/baseUrl.dart';
 import '../singletons/tokenManager.dart';
-import 'loginService.dart';
 
 class PortalService{
 
@@ -266,11 +266,16 @@ class PortalService{
   Future<void> loadUserInfo() async {
     final dynamic rawUserInfo = await getUserInfo();
 
+    print("USER INFO");
     print(rawUserInfo);
+    
+    if((rawUserInfo["sub"] as String).contains("guest-")){
+      print("USER GUEST -> JSESSIONID EXPIRED : STARTING NEW LOGIN");
+      await LoginService().unstackedUPortalLogin();
+    }
 
     UserInfo().setFirstname((rawUserInfo["name"] as String).split(" ")[0]);
-    UserInfo().setLastname((rawUserInfo["name"] as String).split(" ")[1]);
-    UserInfo().setPictureURI(rawUserInfo["picture"] as String);
+    //UserInfo().setLastname((rawUserInfo["name"] as String).split(" ")[1]);
   }
 
   // uri parser for services who are based on cas auth
