@@ -264,7 +264,7 @@ class PortalService{
   }
 
   Future<void> loadUserInfo() async {
-    final dynamic rawUserInfo = await getUserInfo();
+    dynamic rawUserInfo = await getUserInfo();
 
     print("USER INFO");
     print(rawUserInfo);
@@ -272,6 +272,7 @@ class PortalService{
     if((rawUserInfo["sub"] as String).contains("guest-")){
       print("USER GUEST -> JSESSIONID EXPIRED : STARTING NEW LOGIN");
       await LoginService().unstackedUPortalLogin();
+      rawUserInfo = await getUserInfo();
     }
 
     UserInfo().setFirstname((rawUserInfo["name"] as String).split(" ")[0]);
