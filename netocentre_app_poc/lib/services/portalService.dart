@@ -13,7 +13,6 @@ import '../singletons/tokenManager.dart';
 
 class PortalService{
 
-
   http.Client ignoreSslClient() {
     var ioClient = HttpClient(context: SecurityContext(withTrustedRoots: false));
     ioClient.badCertificateCallback = ((cert, host, port) => true);
@@ -263,20 +262,18 @@ class PortalService{
     }
   }
 
-  Future<void> loadUserInfo() async {
+  Future<bool> loadUserInfo() async {
     dynamic rawUserInfo = await getUserInfo();
 
-    print("USER INFO");
+    print("REQUIRE USER INFO");
     print(rawUserInfo);
-    
-    if((rawUserInfo["sub"] as String).contains("guest-")){
-      print("USER GUEST -> JSESSIONID EXPIRED : STARTING NEW LOGIN");
-      await LoginService().unstackedUPortalLogin();
-      rawUserInfo = await getUserInfo();
-    }
 
+    // If userinfo is guest, then it means we're not connected to portal
+    if((rawUserInfo["sub"] as String).contains("guest-")){
+      return false;
+    }
     UserInfo().setFirstname((rawUserInfo["name"] as String).split(" ")[0]);
-    //UserInfo().setLastname((rawUserInfo["name"] as String).split(" ")[1]);
+    return true;
   }
 
   // uri parser for services who are based on cas auth

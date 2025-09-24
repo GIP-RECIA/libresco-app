@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
+import '../services/loginService.dart';
 import '../services/portalService.dart';
+import '../singletons/tokenManager.dart';
 
 class LoadingPageUtils {
 
@@ -14,7 +17,28 @@ class LoadingPageUtils {
 
   Future<void> loadDataFromAPI() async {
 
-    await PortalService().loadUserInfo();
+    // Try to login to portal once : if we get a user we're connected
+    if(!await PortalService().loadUserInfo()){
+      // If we get a guest user, try again (if the CAS session is still valid)
+      print("PORTAL SESSION IS INVALID");
+      await LoginService().unstackedUPortalLogin();
+      if(!await PortalService().loadUserInfo()){
+        // If we get a guest user again, that means CAS session is not valid, and we need to redo the login phase
+        print("CAS SESSION IS INVALID");
+        TokenManager().reset(flush: true);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const UnconnectedHomePage()),
+          );
+        });
+        return;
+      } else {
+        print("RESTORED PORTAL SESSION BY CREATING A NEW ONE");
+      }
+    } else {
+      print("PORTAL SESSION IS VALID");
+    }
     await PortalService().getAllPortlets();
     await PortalService().mediacentreFavoritesWorkflow();
 
