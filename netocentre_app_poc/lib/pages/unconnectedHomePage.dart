@@ -43,8 +43,8 @@ class UnconnectedHomePageState extends State<UnconnectedHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldwithIntegratedSearchBar(
-      child: SingleChildScrollView(
+    return Scaffold(
+      body: SingleChildScrollView(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
