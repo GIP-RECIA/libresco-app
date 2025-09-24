@@ -13,13 +13,9 @@ class TokenRepository {
       onCreate: (db, version) {
         return db.execute(
           'CREATE TABLE tokens('
-            'AccessToken VARCHAR(255), '
-            'RefreshToken VARCHAR(255), '
             'TGT VARCHAR(255), '
             'JSESSIONID VARCHAR(255), '
-            'idPortal VARCHAR(255),'
-            'AccessTokenExpiresDate INT, '
-            'RefreshTokenExpiresDate INT'
+            'idPortal VARCHAR(255)'
           ')',
         );
       },
@@ -34,17 +30,14 @@ class TokenRepository {
     await db.insert(
         'tokens',
         {
-          'AccessToken': TokenManager().accessToken,
-          'RefreshToken': TokenManager().refreshToken,
           'TGT': TokenManager().TGT,
           'JSESSIONID': TokenManager().JSESSIONID,
-          'idPortal': TokenManager().idPortal,
-          'AccessTokenExpiresDate': TokenManager().accessTokenExpiresDate.millisecondsSinceEpoch,
-          'RefreshTokenExpiresDate': TokenManager().refreshTokenExpiresDate.millisecondsSinceEpoch
+          'idPortal': TokenManager().idPortal
         },
         conflictAlgorithm: ConflictAlgorithm.replace
     );
-    //print("row added");
+    print("SAVE IN DATABASE");
+    print(TokenManager().TGT);
   }
 
   /// Update DB tokens
@@ -54,24 +47,22 @@ class TokenRepository {
     await db.update(
       'tokens',
       {
-        'AccessToken': TokenManager().accessToken,
-        'RefreshToken': TokenManager().refreshToken,
         'TGT': TokenManager().TGT,
         'JSESSIONID': TokenManager().JSESSIONID,
-        'idPortal': TokenManager().idPortal,
-        'AccessTokenExpiresDate': TokenManager().accessTokenExpiresDate.millisecondsSinceEpoch,
-        'RefreshTokenExpiresDate': TokenManager().refreshTokenExpiresDate.millisecondsSinceEpoch
+        'idPortal': TokenManager().idPortal
       },
       where: 'TGT = ?',
       whereArgs: [TokenManager().TGT],
     );
-    //print("row updated");
+    print("UPDATE IN DATABASE");
+    print("AAAAAAAAAA : "+TokenManager().TGT);
   }
 
   /// Synchronize tokens from TokenManager singleton with tokens who are in the database
   Future<void> flushTokens() async {
     final db = await getDB();
 
+    print("FLUSH IN DATABASE");
     print(TokenManager());
 
     int? count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM tokens'));
@@ -84,23 +75,20 @@ class TokenRepository {
   }
 
   Future<void> deleteAllRows() async {
+    print("DELETE FROM DATABASE");
     final db = await getDB();
     await db.execute("DELETE FROM tokens");
   }
 
   Future<void> getLastValidRefreshToken() async{
     final db = await getDB();
+    print("GET FROM DATABASE");
     int? count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM tokens'));
     if(count! > 0){
     List<Map<String, Object?>> res = await db.query('tokens', limit: 1, orderBy: 'RefreshTokenExpiresDate');
-      TokenManager().setAccessToken(res.first["AccessToken"].toString());
-      TokenManager().setRefreshToken(res.first["RefreshToken"].toString());
       TokenManager().setTGT(res.first["TGT"].toString());
       TokenManager().setJSESSIONID(res.first["JSESSIONID"].toString());
       TokenManager().setIdPortal(res.first["idPortal"].toString());
-      TokenManager().setAccessTokenExpiresDate(DateTime.fromMillisecondsSinceEpoch(res.first["AccessTokenExpiresDate"] as int));
-      TokenManager().setRefreshTokenExpiresDate(DateTime.fromMillisecondsSinceEpoch(res.first["RefreshTokenExpiresDate"] as int));
-      print("when i got the last valid refresh token from repo :${TokenManager().toString()}");
     }
     else {
       print("Empty database");
