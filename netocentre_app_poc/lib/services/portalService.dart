@@ -20,11 +20,18 @@ class PortalService{
     return IOClient(ioClient);
   }
 
-  Future<bool> isAuthorizedByUPortal() async{
+  Future<bool> isAuthorizedByUPortal() async {
     if(TokenManager().JSESSIONID != ""){
+      print("JSESSIONID FOUND - It is still valid ?");
+      dynamic rawUserInfo = await getUserInfo();
+      if((rawUserInfo["sub"] as String).contains("guest-")){
+        print("JSESSIONID is not valid anymore !");
+        return await LoginService().unstackedUPortalLogin();
+      }
+      print("JSESSIONID is valid !");
       return true;
     }
-    else{
+    else {
       print("JSESSIOND NOT FOUND - Request UPortal Login");
       return await LoginService().unstackedUPortalLogin();
     }
@@ -223,55 +230,51 @@ class PortalService{
     print("getting portlet request : $request");
     print("JSESSIONID=${TokenManager().JSESSIONID}");
 
-    if(await isAuthorizedByUPortal()){
-      final http.Response res = await client.get(
-        request,
-        headers: <String, String>{
-          'Cookie': 'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
-          'Host': BaseUrl().uPortalBaseURL
-        },
-      );
+    final http.Response res = await client.get(
+      request,
+      headers: <String, String>{
+        'Cookie': 'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
+        'Host': BaseUrl().uPortalBaseURL
+      },
+    );
 
-      print(res.statusCode);
-      if(res.statusCode == 200) {
+    print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+    print(res.statusCode);
+    if(res.statusCode == 200) {
 
-        /// Decode base64 and parse json
-        print(res.body);
+      /// Decode base64 and parse json
+      print(res.body);
 
-        String base64url = res.body.split('.')[1];
-        base64url = base64url.replaceAll("-", "+").replaceAll("_", "/");
+      String base64url = res.body.split('.')[1];
+      base64url = base64url.replaceAll("-", "+").replaceAll("_", "/");
 
-        if(base64url.length % 4 != 0){
-          base64url = base64url + ("=" * (4-(base64url.length % 4)));
-        }
-
-        print(base64url);
-
-        print(utf8.decode(base64.decode(base64url)));
-
-        return json.decode(utf8.decode(base64.decode(base64url)));
+      if(base64url.length % 4 != 0){
+        base64url = base64url + ("=" * (4-(base64url.length % 4)));
       }
-      else{
-        print("on a un problème là ! :'(");
-        return {};
-      }
+
+      print(base64url);
+
+      print(utf8.decode(base64.decode(base64url)));
+
+      return json.decode(utf8.decode(base64.decode(base64url)));
     }
     else{
-      print("JSESSIONID Empty !");
+      print("on a un problème là ! :'(");
       return {};
     }
   }
 
   Future<bool> loadUserInfo() async {
+    print("GETING USER INFO");
     dynamic rawUserInfo = await getUserInfo();
-
-    print("REQUIRE USER INFO");
     print(rawUserInfo);
 
     // If userinfo is guest, then it means we're not connected to portal
     if((rawUserInfo["sub"] as String).contains("guest-")){
       return false;
     }
+
+    // Else, we're connected and can set the userinfos
     UserInfo().setFirstname((rawUserInfo["name"] as String).split(" ")[0]);
     return true;
   }
