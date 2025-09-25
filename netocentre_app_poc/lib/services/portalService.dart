@@ -21,19 +21,52 @@ class PortalService{
   }
 
   Future<bool> isAuthorizedByUPortal() async {
-    if(TokenManager().JSESSIONID != ""){
-      print("JSESSIONID FOUND - It is still valid ?");
-      dynamic rawUserInfo = await getUserInfo();
-      if((rawUserInfo["sub"] as String).contains("guest-")){
+    if(!await hasPortalSession()){
         print("JSESSIONID is not valid anymore !");
         return await LoginService().unstackedUPortalLogin();
       }
       print("JSESSIONID is valid !");
       return true;
+   }
+
+  Future<bool> hasPortalSession() async{
+    print("Check if user has a valid portal session");
+
+    // If user don't have any JSESSIONID it is not necessary to make a request, we know we don't have a session
+    if(TokenManager().JSESSIONID == ""){
+      print("NO JSESSIONID");
+      return false;
     }
-    else {
-      print("JSESSIOND NOT FOUND - Request UPortal Login");
-      return await LoginService().unstackedUPortalLogin();
+
+    final client = ignoreSslClient();
+    Uri request = Uri.https(BaseUrl().uPortalBaseURL, "/portail/api/session.json");
+
+    print("Making a request to portal : $request");
+    print("JSESSIONID=${TokenManager().JSESSIONID}");
+
+    final http.Response res = await client.get(
+      request,
+      headers: <String, String>{
+        'Cookie': 'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
+        'Host': BaseUrl().uPortalBaseURL
+      },
+    );
+
+    print(res.statusCode);
+    print(res.body);
+    // If we get a 200 we still need to check if the session is not a guest session
+    if(res.statusCode == 200) {
+      if(json.decode(res.body)["person"]["sessionKey"] != null){
+        print("PORTAL SESSION IS VALID");
+        return true;
+      }
+      print("PORTAL SESSION IS GUEST -> INVALID");
+      return false;
+    }
+    // If we have an invalid session this API will return a 404
+    else{
+      print("PORTAL SESSION IS INVALID");
+      return false;
     }
   }
 
@@ -264,19 +297,11 @@ class PortalService{
     }
   }
 
-  Future<bool> loadUserInfo() async {
+  Future<void> loadUserInfo() async {
     print("GETING USER INFO");
     dynamic rawUserInfo = await getUserInfo();
     print(rawUserInfo);
-
-    // If userinfo is guest, then it means we're not connected to portal
-    if((rawUserInfo["sub"] as String).contains("guest-")){
-      return false;
-    }
-
-    // Else, we're connected and can set the userinfos
     UserInfo().setFirstname((rawUserInfo["name"] as String).split(" ")[0]);
-    return true;
   }
 
   // uri parser for services who are based on cas auth

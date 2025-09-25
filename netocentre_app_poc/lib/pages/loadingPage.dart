@@ -18,11 +18,11 @@ class LoadingPageUtils {
   Future<void> loadDataFromAPI() async {
 
     // Try to login to portal once : if we get a user we're connected
-    if(!await PortalService().loadUserInfo()){
+    if(!await PortalService().hasPortalSession()){
       // If we get a guest user, try again (if the CAS session is still valid)
       print("PORTAL SESSION IS INVALID");
       await LoginService().unstackedUPortalLogin();
-      if(!await PortalService().loadUserInfo()){
+      if(!await PortalService().hasPortalSession()){
         // If we get a guest user again, that means CAS session is not valid, and we need to redo the login phase
         print("CAS SESSION IS INVALID");
         TokenManager().reset(flush: true);
@@ -39,6 +39,9 @@ class LoadingPageUtils {
     } else {
       print("PORTAL SESSION IS VALID");
     }
+
+    // Once we are sure to be connected, we can request the infos from the portal APIs
+    await PortalService().loadUserInfo();
     await PortalService().getAllPortlets();
     await PortalService().mediacentreFavoritesWorkflow();
 
