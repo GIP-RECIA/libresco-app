@@ -55,6 +55,33 @@ class LoginService {
    return (jsessionid: jsessionidCookie, idportal: idPortalCookie);
  }
 
+ /// Used to check if the user has a CAS Session
+ Future<bool> hasCASSession() async {
+   final client = HttpClient();
+   var uri = Uri.https(BaseUrl().casBaseURL, "/cas/login",);
+   var request = await client.getUrl(uri);
+   request.followRedirects = false;
+   request.headers.add('Cookie', 'TGC=${TokenManager().TGT}');
+
+   print(request.uri.toString());
+   print("request headers : ${request.headers}");
+
+   var response = await request.close();
+   String body = await response.transform(utf8.decoder).join();
+
+   print("Status code: ${response.statusCode}");
+   print("Response headers: ${response.headers}");
+   print("Body: $body");
+   
+   if(body.contains("view-genericsuccess-security")){
+     print("USER CONNECTED TO CAS");
+     return true;
+   }
+
+   print("USER NOT CONNECTED TO CAS");
+   return false;
+ }
+
  /// Used to earn the JSESSIONID
  Future<bool> unstackedUPortalLogin() async {
 

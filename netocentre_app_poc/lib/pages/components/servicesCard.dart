@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
+import 'package:netocentre_app_poc/services/loginService.dart';
 import 'package:netocentre_app_poc/singletons/baseUrl.dart';
 
 import '../../services/portalService.dart';
@@ -55,7 +56,14 @@ class ServicesCard extends StatelessWidget{
             }
           }
           else {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => CASServiceWebview(text: service.text, uri: service.serviceUri, fname: service.fname!,)));
+            if(await LoginService().hasCASSession()){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CASServiceWebview(text: service.text, uri: service.serviceUri, fname: service.fname!,)));
+            } else {
+              TokenManager().reset(flush: true);
+              if(context.mounted){
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const UnconnectedHomePage()));
+              }
+            }
           }
         },
         child: Center(

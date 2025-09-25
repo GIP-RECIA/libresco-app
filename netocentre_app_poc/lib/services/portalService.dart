@@ -22,9 +22,9 @@ class PortalService{
 
   Future<bool> isAuthorizedByUPortal() async {
     if(!await hasPortalSession()){
-        print("JSESSIONID is not valid anymore !");
-        return await LoginService().unstackedUPortalLogin();
-      }
+      print("JSESSIONID is not valid anymore !");
+      return await LoginService().unstackedUPortalLogin();
+    }
       print("JSESSIONID is valid !");
       return true;
    }
@@ -298,7 +298,7 @@ class PortalService{
   }
 
   Future<void> loadUserInfo() async {
-    print("GETING USER INFO");
+    print("LOADING USER INFO");
     dynamic rawUserInfo = await getUserInfo();
     print(rawUserInfo);
     UserInfo().setFirstname((rawUserInfo["name"] as String).split(" ")[0]);
