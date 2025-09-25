@@ -13,6 +13,7 @@ class TokenRepository {
       onCreate: (db, version) {
         return db.execute(
           'CREATE TABLE tokens('
+            'id INTEGER, '
             'TGT VARCHAR(255), '
             'JSESSIONID VARCHAR(255), '
             'idPortal VARCHAR(255)'
@@ -30,6 +31,7 @@ class TokenRepository {
     await db.insert(
         'tokens',
         {
+          'id': 1,
           'TGT': TokenManager().TGT,
           'JSESSIONID': TokenManager().JSESSIONID,
           'idPortal': TokenManager().idPortal
@@ -37,7 +39,6 @@ class TokenRepository {
         conflictAlgorithm: ConflictAlgorithm.replace
     );
     print("SAVE IN DATABASE");
-    print(TokenManager().TGT);
   }
 
   /// Update DB tokens
@@ -47,15 +48,14 @@ class TokenRepository {
     await db.update(
       'tokens',
       {
+        'id': 1,
         'TGT': TokenManager().TGT,
         'JSESSIONID': TokenManager().JSESSIONID,
         'idPortal': TokenManager().idPortal
       },
-      where: 'TGT = ?',
-      whereArgs: [TokenManager().TGT],
+      where: 'id=1',
     );
     print("UPDATE IN DATABASE");
-    print("AAAAAAAAAA : "+TokenManager().TGT);
   }
 
   /// Synchronize tokens from TokenManager singleton with tokens who are in the database
@@ -85,7 +85,7 @@ class TokenRepository {
     print("GET FROM DATABASE");
     int? count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM tokens'));
     if(count! > 0){
-    List<Map<String, Object?>> res = await db.query('tokens', limit: 1, orderBy: 'RefreshTokenExpiresDate');
+    List<Map<String, Object?>> res = await db.query('tokens', limit: 1);
       TokenManager().setTGT(res.first["TGT"].toString());
       TokenManager().setJSESSIONID(res.first["JSESSIONID"].toString());
       TokenManager().setIdPortal(res.first["idPortal"].toString());
