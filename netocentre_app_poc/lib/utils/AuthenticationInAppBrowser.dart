@@ -24,18 +24,6 @@ class AuthenticationInAppBrowser extends InAppBrowser {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoadingPage(callbackWidget: HomePage())));
   }
 
-  Future<void> getMyCookies() async{
-    List<Cookie> cookies = await cookieManager.getCookies(url: WebUri("https://${BaseUrl().casBaseURL}/cas"));
-    for(var current in cookies) {
-      print("in login webview - from cookie manager : $current");
-      if(current.name == "TGC"){
-        print("=======================================\n=== $current ===\n=======================================\n");
-        TokenManager().setTGT(current.value, flush: true);
-        print("TGT WAS SET");
-      }
-    }
-  }
-
   @override
   Future onBrowserCreated() async {
     print("Browser Created!");
@@ -48,9 +36,17 @@ class AuthenticationInAppBrowser extends InAppBrowser {
     print("Started $url");
     if(url != null){
       if(url.toString().contains(BaseUrl().serviceURL)){
-        await getMyCookies();
+        // Get TGT cookie
+        List<Cookie> cookies = await cookieManager.getCookies(url: WebUri("https://${BaseUrl().casBaseURL}/cas"));
+        for(var current in cookies) {
+          if(current.name == "TGC"){
+            print("TGT Cookie found with value : $current");
+            TokenManager().setTGT(current.value, flush: true);
+          }
+        }
+        // If we have found a TGT, then we can navigate to home page
         if(TokenManager().TGT != ""){
-          print("this request was intercepted $url");
+          print("$url was intercepted to get the TGT. Closing browser...");
           close(); // close the navigator
           navigateToHomePage();
         }
