@@ -33,14 +33,6 @@ class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
   double progress = 0;
   final urlController = TextEditingController();
 
-  Future<void> getMyCookies() async{
-    List<Cookie> cookies = await manager.getCookies(url: WebUri("https://${BaseUrl().uPortalBaseURL}/"));
-    print("cookies in ${widget.uri}");
-    for(var current in cookies) {
-      print(current);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -105,7 +97,6 @@ class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
                       pullToRefreshController: pullToRefreshController,
                       onWebViewCreated: (controller) async {
                         webViewController = controller;
-                        await getMyCookies();
                       },
                       onLoadStart: (controller, url) {
                         setState(() {
@@ -155,7 +146,6 @@ class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
                         pullToRefreshController?.endRefreshing();
                       },
                       onProgressChanged: (controller, progress) async {
-                        await getMyCookies();
                         if (progress == 100) {
                           pullToRefreshController?.endRefreshing();
                         }
@@ -199,8 +189,6 @@ class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
                   ElevatedButton(
                     child: const Icon(Icons.refresh),
                     onPressed: () {
-                      //func get cookie
-                      getMyCookies();
                     },
                   ),
                 ],

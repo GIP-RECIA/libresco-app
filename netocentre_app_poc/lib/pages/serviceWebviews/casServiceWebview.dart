@@ -33,14 +33,6 @@ class CASServiceWebviewState extends State<CASServiceWebview> {
   double progress = 0;
   final urlController = TextEditingController();
 
-
-  Future<void> getMyCookies() async{
-    List<Cookie> cookies = await manager.getCookies(url: WebUri("https://${BaseUrl().casBaseURL}/cas"));
-    for(var current in cookies) {
-      print(current);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -92,7 +84,6 @@ class CASServiceWebviewState extends State<CASServiceWebview> {
                       pullToRefreshController: pullToRefreshController,
                       onWebViewCreated: (controller) async {
                         webViewController = controller;
-                        await getMyCookies();
                       },
                       onLoadStart: (controller, url) {
                         setState(() {
