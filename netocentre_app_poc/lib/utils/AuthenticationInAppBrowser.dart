@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
@@ -42,15 +41,16 @@ class AuthenticationInAppBrowser extends InAppBrowser {
     print("Browser Created!");
   }
 
-
+  // This method is called when the browser loads a new url (~= new request)
   @override
-  Future onLoadStart(url) async { // used to catch CAS "connected page"
-    await getMyCookies();
+  Future onLoadStart(url) async {
+    // For every request we get the cookies and try to detect if there is the TGT
     print("Started $url");
+    await getMyCookies();
     if(url != null){
-      if(url.toString().contains("https://${BaseUrl().casBaseURL}/cas")){
+      if(url.toString().contains("https://${BaseUrl().casBaseURL}/appMobile")){
         if(TokenManager().TGT != ""){
-          cookieManager.removeSessionCookies(); // remove session cookies to avoid lost cookies
+          print("this request was intercepted $url");
           close(); // close the navigator
           navigateToHomePage();
         }
@@ -59,23 +59,15 @@ class AuthenticationInAppBrowser extends InAppBrowser {
   }
 
   @override
-  Future onLoadStop(url) async {
-    print("Stopped $url");
-  }
-
-  @override
   void onReceivedError(WebResourceRequest request, WebResourceError error) {
     print("Can't load ${request.url}.. Error: ${error.description}");
   }
 
   @override
-  void onProgressChanged(progress) {
-    print("Progress: $progress");
-  }
-
-  @override
   void onExit() {
     print("Browser closed!");
+    // remove session cookies to avoid lost cookies
+    cookieManager.removeSessionCookies();
   }
 
   @override
@@ -84,17 +76,4 @@ class AuthenticationInAppBrowser extends InAppBrowser {
     return ServerTrustAuthResponse(action: ServerTrustAuthResponseAction.PROCEED);
   }
 
-  @override
-  Future<WebResourceResponse?>? shouldInterceptRequest(
-      WebResourceRequest request) {
-    print("request intercepted : ${request.url.toString()}");
-    return null;
-  }
-
-  @override
-  void onUpdateVisitedHistory(WebUri? url, bool? isReload) {
-    if(url != null){
-      print("updated history : ${url.toString()}");
-    }
-  }
 }
