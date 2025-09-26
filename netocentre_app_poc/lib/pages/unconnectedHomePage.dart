@@ -5,14 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:netocentre_app_poc/pages/components/myAppBar.dart';
 import 'package:netocentre_app_poc/pages/homePage.dart';
 import 'package:netocentre_app_poc/pages/loadingPage.dart';
 import 'package:netocentre_app_poc/services/loginService.dart';
 import 'package:netocentre_app_poc/singletons/baseUrl.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
-
-import 'components/newsCard.dart';
 
 class UnconnectedHomePage extends StatefulWidget {
   const UnconnectedHomePage({super.key});
@@ -102,9 +99,6 @@ class UnconnectedHomePageState extends State<UnconnectedHomePage> {
                   ),
                 ),
               ),
-              const NewsCard(title, type, desc),
-              const NewsCard(title, type, desc),
-              const NewsCard(title, type, desc),
               const SizedBox(
                 height: 30,
               ),

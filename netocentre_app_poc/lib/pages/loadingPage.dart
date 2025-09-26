@@ -43,7 +43,6 @@ class LoadingPageUtils {
     // Once we are sure to be connected, we can request the infos from the portal APIs
     await PortalService().loadUserInfo();
     await PortalService().getAllPortlets();
-    await PortalService().mediacentreFavoritesWorkflow();
 
     navigatorPush();
   }
