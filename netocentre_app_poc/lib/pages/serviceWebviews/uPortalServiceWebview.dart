@@ -176,7 +176,7 @@ class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
                   ],
                 ),
               ),
-              ButtonBar(
+              OverflowBar(
                 alignment: MainAxisAlignment.center,
                 children: <Widget>[
                   ElevatedButton(
