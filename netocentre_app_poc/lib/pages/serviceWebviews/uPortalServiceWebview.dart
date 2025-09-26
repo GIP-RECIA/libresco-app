@@ -38,6 +38,7 @@ class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
     super.initState();
 
     manager = CookieManager.instance();
+    manager.removeSessionCookies();
 
     manager.setCookie(
     url: WebUri("https://${BaseUrl().uPortalBaseURL}/"),

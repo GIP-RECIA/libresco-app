@@ -38,6 +38,7 @@ class CASServiceWebviewState extends State<CASServiceWebview> {
     super.initState();
 
     manager = CookieManager.instance();
+    manager.removeSessionCookies();
 
     manager.setCookie(
       url: WebUri("https://${BaseUrl().casBaseURL}/cas"),

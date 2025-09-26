@@ -47,6 +47,7 @@ class HomePageState extends State<HomePage>{
     }
 
     CookieManager manager = CookieManager.instance();
+    manager.removeSessionCookies();
 
     manager.setCookie(
       url: WebUri("https://${BaseUrl().uPortalBaseURL}/"),
