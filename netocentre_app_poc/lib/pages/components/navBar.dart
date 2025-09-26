@@ -50,10 +50,30 @@ class NavBarState extends State<NavBar> {
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              Text("Changer d'établissement"),
+              Icon(Icons.swap_horiz_outlined),
+            ],
+          ),
+          onPressed: () => {},
+        ),
+        MenuItemButton(
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text("Mon profil"),
+              Icon(Icons.settings),
+            ],
+          ),
+          onPressed: () => {},
+        ),
+        MenuItemButton(
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
               Text(
-                  "Déconnexion",
+                "Déconnexion",
                 style: TextStyle(
-                  color: Colors.red
+                    color: Colors.red
                 ),
               ),
               Icon(Icons.logout_outlined, color: Colors.red,),
@@ -64,66 +84,6 @@ class NavBarState extends State<NavBar> {
             TokenManager().reset(),
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const UnconnectedHomePage() )),
           },
-        ),
-        MenuItemButton(
-          child: const Row(
-            children: [
-              Text("Lancer le didacticiel"),
-              Icon(Icons.play_arrow_outlined),
-            ],
-          ),
-          onPressed: () => {
-            print("ouaiiiiiiiiii"),
-          },
-        ),
-        MenuItemButton(
-          child: const Row(
-            children: [
-              Text("Changer d'établissemnet"),
-              Icon(Icons.swap_horiz_outlined),
-            ],
-          ),
-          onPressed: () => {},
-        ),
-        MenuItemButton(
-          child: const Row(
-            children: [
-              Text("Infos de l'établissement"),
-              Icon(Icons.info_outline),
-            ],
-          ),
-          onPressed: () => {},
-        ),
-        MenuItemButton(
-          child: const Row(
-            children: [
-              Text("Mon profil"),
-              Icon(Icons.settings),
-            ],
-          ),
-          onPressed: () => {},
-        ),
-        MenuItemButton(
-          child: Row(
-            children: [
-              const Text("Notifications"),
-              Container(
-                width: 38,
-                decoration: const BoxDecoration(
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.all(Radius.circular(12))
-                ),
-                child: const Center(
-                  child: Text("4",
-                    style: TextStyle(
-                        color: Colors.white
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-          onPressed: () => {},
         ),
       ],
       builder:
@@ -156,18 +116,9 @@ class NavBarState extends State<NavBar> {
                 },
               ),
               IconButton(
-                icon: Container(
-                  height: 24,
-                  width: 24,
-                  child: const FittedBox(
-                    fit: BoxFit.cover,
-                    child: ImageIcon(
-                      NetworkImage(
-                        "https://lycees.test.recia.dev/images/avatars/gr/1848eefe/avatar0.jpg?34",
-                        scale: 1
-                      ),
-                    ),
-                  ),
+                icon: const Icon(
+                  Icons.account_box,
+                  color: Colors.white,
                 ),
                 onPressed: () {
                   print("user");
@@ -176,8 +127,7 @@ class NavBarState extends State<NavBar> {
                   } else {
                     controller.open();
                   }
-                },
-                iconSize: 80,
+                }
               ),
             ],
           ),
