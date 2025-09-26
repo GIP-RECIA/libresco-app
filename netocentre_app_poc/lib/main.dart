@@ -13,6 +13,11 @@ Future main() async {
   await TokenRepository().getLastValidRefreshToken();
   print("token manager after loaded : ${TokenManager().toString()}");
   bool connected = await LoginService().hasCASSession();
+  // If we don't have a CAS session we also clear the portal session
+  if(!connected){
+    print("No CAS session at startup, clearing the portal session");
+    TokenManager().reset(flush: true);
+  }
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: connected
