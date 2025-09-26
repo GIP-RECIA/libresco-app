@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
+import 'package:netocentre_app_poc/services/portalService.dart';
 import 'package:netocentre_app_poc/singletons/baseUrl.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 
@@ -178,12 +179,12 @@ class LoginService {
 
    print("=== End of unstacked uPortal login ===");
 
-   if(idPortalCookie != ""){
+   if(idPortalCookie != "" && jsessionidCookie != ""){
      TokenManager().setIdPortal(idPortalCookie, flush: true);
-   }
-   if(jsessionidCookie != ""){
      TokenManager().setJSESSIONID(jsessionidCookie, flush: true);
-     return true;
+     if(await PortalService().hasPortalSession()){
+        return true;
+     }
    }
    return false;
  }
