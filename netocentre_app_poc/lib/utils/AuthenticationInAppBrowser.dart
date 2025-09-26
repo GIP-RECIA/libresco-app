@@ -44,11 +44,11 @@ class AuthenticationInAppBrowser extends InAppBrowser {
   // This method is called when the browser loads a new url (~= new request)
   @override
   Future onLoadStart(url) async {
-    // For every request we get the cookies and try to detect if there is the TGT
+    // We get the cookies and try to detect if there is the TGT when we see the login answer from CAS
     print("Started $url");
-    await getMyCookies();
     if(url != null){
-      if(url.toString().contains("https://${BaseUrl().casBaseURL}/appMobile")){
+      if(url.toString().contains(BaseUrl().serviceURL)){
+        await getMyCookies();
         if(TokenManager().TGT != ""){
           print("this request was intercepted $url");
           close(); // close the navigator
@@ -68,12 +68,6 @@ class AuthenticationInAppBrowser extends InAppBrowser {
     print("Browser closed!");
     // remove session cookies to avoid lost cookies
     cookieManager.removeSessionCookies();
-  }
-
-  @override
-  Future<ServerTrustAuthResponse> onReceivedServerTrustAuthRequest(
-      URLAuthenticationChallenge challenge) async {
-    return ServerTrustAuthResponse(action: ServerTrustAuthResponseAction.PROCEED);
   }
 
 }
