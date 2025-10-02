@@ -44,3 +44,4 @@ app.*.map.json
 
 # Patrol temp files
 integration_test/test_bundle.dart
+android/build/reports/problems/problems-report.html
