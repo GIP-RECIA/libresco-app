@@ -67,6 +67,7 @@ class NavBarState extends State<NavBar> {
           onPressed: () => {},
         ),
         MenuItemButton(
+          key: const Key("logout"),
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -95,6 +96,7 @@ class NavBarState extends State<NavBar> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
+                key: const Key("homeButton"),
                 icon: const Icon(
                   Icons.home_outlined,
                   color: Colors.white,
@@ -105,6 +107,7 @@ class NavBarState extends State<NavBar> {
                 },
               ),
               IconButton(
+                key: const Key("serviceList"),
                 icon: const Icon(
                   Icons.grid_view,
                   color: Colors.white,
@@ -116,6 +119,7 @@ class NavBarState extends State<NavBar> {
                 },
               ),
               IconButton(
+                key: const Key("profileInfo"),
                 icon: const Icon(
                   Icons.account_box,
                   color: Colors.white,

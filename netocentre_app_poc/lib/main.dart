@@ -6,22 +6,24 @@ import 'package:netocentre_app_poc/repositories/tokenRepository.dart';
 import 'package:netocentre_app_poc/services/loginService.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 
-Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+Future<Widget> buildApp() async {
 
-  print("token manager before loaded : ${TokenManager().toString()}");
   await TokenRepository().getLastValidRefreshToken();
-  print("token manager after loaded : ${TokenManager().toString()}");
   bool connected = await LoginService().hasCASSession();
-  // If we don't have a CAS session we also clear the portal session
-  if(!connected){
-    print("No CAS session at startup, clearing the portal session");
+  if (!connected) {
     TokenManager().reset(flush: true);
   }
-  runApp(MaterialApp(
+
+  return MaterialApp(
     debugShowCheckedModeBanner: false,
     home: connected
         ? const LoadingPage(callbackWidget: HomePage())
         : const UnconnectedHomePage(),
-  ));
+  );
+}
+
+Future<void> main({TokenRepository? tokenRepository, TokenManager? tokenManager, LoginService? loginService,}) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final app = await buildApp();
+  runApp(app);
 }

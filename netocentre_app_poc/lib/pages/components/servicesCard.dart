@@ -68,6 +68,7 @@ class ServicesCard extends StatelessWidget{
         },
         child: Center(
           child: Stack(
+            key: Key(service.text),
             children: [
               Column(
                 children: [

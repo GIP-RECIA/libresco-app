@@ -168,6 +168,7 @@ class CASServiceWebviewState extends State<CASServiceWebview> {
                 alignment: MainAxisAlignment.center,
                 children: <Widget>[
                   ElevatedButton(
+                    key: const Key("backFromWebviewButton"),
                     child: Text("Quitter ${widget.text}"),
                     onPressed: () {
                       manager.removeSessionCookies();

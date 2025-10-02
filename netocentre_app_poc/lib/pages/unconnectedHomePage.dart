@@ -68,6 +68,7 @@ class UnconnectedHomePageState extends State<UnconnectedHomePage> {
                 alignment: Alignment.center,
                 height: 150,
                 child: ElevatedButton(
+                    key: const Key("loginButton"),
                     onPressed: () {
                       browser.openUrlRequest(
                           urlRequest: URLRequest(url: WebUri("https://${BaseUrl().casBaseURL}/cas/login?service=${BaseUrl().serviceURL}")),
