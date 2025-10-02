@@ -2,22 +2,23 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
+import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/services/portalService.dart';
 import 'package:netocentre_app_poc/singletons/baseUrl.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 
 class LoginService {
 
+  final log = Logger('LoginService');
+
  // Dev only - allow self-signed ssl certificates
  http.Client ignoreSslClient() {
    var ioClient = HttpClient(context: SecurityContext(withTrustedRoots: false));
    ioClient.badCertificateCallback = ((cert, host, port) => true);
-
    return IOClient(ioClient);
  }
 
  /// Parser - JSESSIONID & idPortal
-
  ({String jsessionid, String idportal}) uPortalLoginParser(HttpClientResponse response){
 
    String jsessionidCookie = "";
@@ -27,29 +28,27 @@ class LoginService {
 
      List<String> rawCookiesList = response.headers["set-cookie"]!;
      List<String> cookiesList = [];
-
      for (var rawCookies in rawCookiesList){
        cookiesList.addAll(rawCookies.split(";"));
      }
 
-     print(cookiesList.length);
-     print(cookiesList.toString());
+     log.finer('List of cookies in portal response ${cookiesList.toString()}');
 
      Iterable<String> jsessionidParser = cookiesList.where((str) => str.contains("JSESSIONID"));
      Iterable<String> idPortalParser = cookiesList.where((str) => str.contains("clusterIDPortail"));
      if(jsessionidParser.isNotEmpty){
        jsessionidCookie = jsessionidParser.first.substring(jsessionidParser.first.indexOf("=")+1);
-       print("JSESSIONID COOKIE : $jsessionidCookie");
+       log.finer("JSESSIONID cookie exists : $jsessionidCookie");
      }
      else{
-       print("jsessionid not found");
+       log.finer("JSESSIONID cookie not found");
      }
      if(idPortalParser.isNotEmpty){
        idPortalCookie = idPortalParser.first.substring(idPortalParser.first.indexOf("=")+1);
-       print("idPortal COOKIE : $idPortalCookie");
+       log.finer("idPortal cookie exists : $idPortalCookie");
      }
      else{
-       print("idPortal not found");
+       log.finer("idPortal cookie not found");
      }
    }
 
@@ -58,28 +57,29 @@ class LoginService {
 
  /// Used to check if the user has a CAS Session
  Future<bool> hasCASSession() async {
+   log.fine("Checking if user is connected to CAS");
    final client = HttpClient();
    var uri = Uri.https(BaseUrl().casBaseURL, "/cas/login",);
    var request = await client.getUrl(uri);
    request.followRedirects = false;
    request.headers.add('Cookie', 'TGC=${TokenManager().TGT}');
 
-   print(request.uri.toString());
-   print("request headers : ${request.headers}");
+   log.finer('Making this request to CAS server : ${request.uri.toString()}');
+   log.finer("Request headers are : ${request.headers}");
 
    var response = await request.close();
    String body = await response.transform(utf8.decoder).join();
 
-   print("Status code: ${response.statusCode}");
-   print("Response headers: ${response.headers}");
-   print("Body: $body");
+   log.finer("Response status code from cas server : ${response.statusCode}");
+   log.finer("Response headers: ${response.headers}");
+   log.finest("Body: $body");
    
    if(body.contains("view-genericsuccess-security")){
-     print("USER CONNECTED TO CAS");
+     log.fine("User is connected to CAS");
      return true;
    }
 
-   print("USER NOT CONNECTED TO CAS");
+   log.fine("User is not connected to CAS");
    return false;
  }
 
@@ -91,7 +91,7 @@ class LoginService {
    String jsessionidCookie = "";
    String idPortalCookie = "";
 
-   print("=== Start of unstacked uPortal login ===");
+   log.fine("=== Start of unstacked uPortal login ===");
 
    /// Request 0 - initial request
    final client = HttpClient();
@@ -106,9 +106,9 @@ class LoginService {
    request.followRedirects = false;
    request.headers.add('Cookie', 'TGC=${TokenManager().TGT}');
 
-   print("\nRequest $requestCounter :");
-   print(request.uri.toString());
-   print("request headers : ${request.headers}");
+   log.finer("\nRequest $requestCounter :");
+   log.finer(request.uri.toString());
+   log.finer("request headers : ${request.headers}");
 
    // Get the first response
    var response = await request.close();
@@ -127,10 +127,10 @@ class LoginService {
 
        /// PARSE JSESSIONID & idPortal
 
-       print("\nResponse $requestCounter :");
-       print(response.statusCode);
-       print("response headers : ${response.headers["set-cookie"]}");
-       print("response location : $location");
+       log.finer("\nResponse $requestCounter :");
+       log.finer(response.statusCode);
+       log.finer("response headers : ${response.headers["set-cookie"]}");
+       log.finer("response location : $location");
 
        ({String jsessionid, String idportal}) parsingResult = uPortalLoginParser(response);
        if(parsingResult.jsessionid != "" ){
@@ -149,10 +149,10 @@ class LoginService {
          request.cookies.add(Cookie("clusterIDPortail", idPortalCookie));
        }
 
-       print("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-       print("\nRequest ${requestCounter + 1} :");
-       print(request.uri.toString());
-       print("request headers : ${request.headers}");
+       log.finer("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+       log.finer("\nRequest ${requestCounter + 1} :");
+       log.finer(request.uri.toString());
+       log.finer("request headers : ${request.headers}");
 
        requestCounter++;
 
@@ -162,9 +162,9 @@ class LoginService {
 
    /// Last response
    /// Parse last JSESSIONID & idPortal
-   print("\nResponse $requestCounter :");
-   print(response.statusCode);
-   print("response headers : ${response.headers["set-cookie"]}");
+   log.finer("\nResponse $requestCounter :");
+   log.finer(response.statusCode);
+   log.finer("response headers : ${response.headers["set-cookie"]}");
 
    ({String jsessionid, String idportal}) parsingResult = uPortalLoginParser(response);
    if(parsingResult.jsessionid != "" ){
@@ -174,10 +174,10 @@ class LoginService {
      idPortalCookie = parsingResult.idportal;
    }
 
-   print("Final JSESSIONID : $jsessionidCookie");
-   print("Final idPortal : $idPortalCookie");
+   log.fine("Final JSESSIONID : $jsessionidCookie");
+   log.fine("Final idPortal : $idPortalCookie");
 
-   print("=== End of unstacked uPortal login ===");
+   log.fine("=== End of unstacked uPortal login ===");
 
    if(idPortalCookie != "" && jsessionidCookie != ""){
      TokenManager().setIdPortal(idPortalCookie, flush: true);

@@ -1,9 +1,9 @@
 class BaseUrl {
   static final BaseUrl _instance = BaseUrl._internal();
 
-  final String _casBaseURL = "auth.test.recia.dev"; // cas external server 2
+  final String _casBaseURL = "auth.test.recia.dev";
   final String _serviceURL = "https://auth.test.recia.dev/appMobile";
-  final String _uPortalBaseURL = "lycees.test.recia.dev"; // uportal external server
+  final String _uPortalBaseURL = "lycees.test.recia.dev";
 
   factory BaseUrl() {
     return _instance;

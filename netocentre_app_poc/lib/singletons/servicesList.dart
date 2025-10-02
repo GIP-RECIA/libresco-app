@@ -16,7 +16,6 @@ class Services {
 
   setServicesList(List<Service> newList){
     List<Service> neewList = _sort(newList);
-    print(neewList.length);
     _list = _sort(neewList);
   }
 

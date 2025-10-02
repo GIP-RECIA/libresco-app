@@ -1,8 +1,6 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
 import '../services/loginService.dart';
 import '../services/portalService.dart';
@@ -10,21 +8,23 @@ import '../singletons/tokenManager.dart';
 
 class LoadingPageUtils {
 
+  final log = Logger('LoadingPageUtils');
+
   BuildContext context;
   Widget callbackWidget;
 
   LoadingPageUtils(this.context, this.callbackWidget);
 
   Future<void> loadDataFromAPI() async {
-
+    log.info("Loading data from portal API...");
     // Try to login to portal once : if we get a user we're connected
     if(!await PortalService().hasPortalSession()){
       // If we get a guest user, try again (if the CAS session is still valid)
-      print("PORTAL SESSION IS INVALID");
+      log.info("Portal session is invalid");
       await LoginService().unstackedUPortalLogin();
       if(!await PortalService().hasPortalSession()){
         // If we get a guest user again, that means CAS session is not valid, and we need to redo the login phase
-        print("CAS SESSION IS INVALID");
+        log.info("CAS session is invalid");
         TokenManager().reset(flush: true);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.pushReplacement(
@@ -34,16 +34,16 @@ class LoadingPageUtils {
         });
         return;
       } else {
-        print("RESTORED PORTAL SESSION BY CREATING A NEW ONE");
+        log.info("Restored portal session by creating a new one");
       }
     } else {
-      print("PORTAL SESSION IS VALID");
+      log.info("Portal session is valid");
     }
 
     // Once we are sure to be connected, we can request the infos from the portal APIs
     await PortalService().loadUserInfo();
     await PortalService().getAllPortlets();
-
+    log.info("Data was loaded successfully, now exiting loading page...");
     navigatorPush();
   }
 

@@ -70,6 +70,7 @@ class _ScaffoldwithIntegratedSearchBarState extends State<ScaffoldwithIntegrated
     );
   }
 
+  // TODO: generate list from search in the same way than normal list
   Widget _buildSearchResultsListView() {
     return ListView.builder(
       itemCount: _filteredItems.length,
@@ -84,7 +85,6 @@ class _ScaffoldwithIntegratedSearchBarState extends State<ScaffoldwithIntegrated
           child: ListTile(
             title: Text(_filteredItems[index].text),
             onTap: () async {
-              print("Item sélectionné: ${_filteredItems[index]}");
               if(service.isAuthByUPortal){
                 if(await PortalService().isAuthorizedByUPortal()){
                   if(context.mounted){

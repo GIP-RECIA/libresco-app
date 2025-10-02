@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:netocentre_app_poc/singletons/servicesList.dart';
 
 class MyExpansionTile extends StatefulWidget {
 
@@ -16,7 +15,7 @@ class MyExpansionTile extends StatefulWidget {
 }
 
 class MyExpansionTileState extends State<MyExpansionTile> {
-  ExpansionTileController controller = ExpansionTileController();
+  ExpansibleController controller = ExpansibleController();
   List<Widget> widgets = [];
 
   @override
@@ -30,17 +29,13 @@ class MyExpansionTileState extends State<MyExpansionTile> {
         alignment: Alignment.centerLeft,
         child: GestureDetector(
           onTapDown: (aaa){
-            print("je tap down là");
           },
           onTapUp: (bbb){
-            print("et là je tap up");
           },
           onTapCancel: (){
-            print("cancel pour voir");
           },
           child: TextButton(
               onPressed: () => {
-                print("Text button pressed !")
               },
               child: Text(data.name)
           ),

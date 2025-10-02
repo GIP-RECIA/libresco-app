@@ -1,6 +1,9 @@
+import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/repositories/tokenRepository.dart';
 
 class TokenManager {
+
+  final log = Logger('TokenManager');
   static final TokenManager _instance = TokenManager._internal();
   String _TGT = "";
   String _JSESSIONID = "";
@@ -44,13 +47,9 @@ class TokenManager {
   }
 
   void reset({bool flush = false}) {
-
-    print("RESET TOKENS");
-
     _TGT = "";
     _JSESSIONID = "";
     _idPortal = "";
-
     if(flush){
       TokenRepository().flushTokens();
     }

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/singletons/baseUrl.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,8 +17,9 @@ class CASServiceWebview extends StatefulWidget {
 }
 
 class CASServiceWebviewState extends State<CASServiceWebview> {
-  final GlobalKey webViewKey = GlobalKey();
 
+  final log = Logger('CASServiceWebviewState');
+  final GlobalKey webViewKey = GlobalKey();
   late CookieManager manager;
 
   InAppWebViewController? webViewController;
@@ -90,7 +92,6 @@ class CASServiceWebviewState extends State<CASServiceWebview> {
                         setState(() {
                           this.url = url.toString();
                           urlController.text = this.url;
-                          print(this.url);
                         });
                       },
                       onPermissionRequest: (controller, request) async {
@@ -150,11 +151,10 @@ class CASServiceWebviewState extends State<CASServiceWebview> {
                       },
                       onConsoleMessage: (controller, consoleMessage) {
                         if (kDebugMode) {
-                          print(consoleMessage);
+                          log.finer('Console message ${consoleMessage.toString()}');
                         }
                       },
                       onReceivedServerTrustAuthRequest: (controller, challenge) async {
-                        print(challenge);
                         return ServerTrustAuthResponse(action: ServerTrustAuthResponseAction.PROCEED);
                       },
                     ),

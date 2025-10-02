@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/pages/components/myAppBar.dart';
 import 'package:netocentre_app_poc/pages/loadingPage.dart';
@@ -23,6 +24,7 @@ class HomePageState extends State<HomePage>{
   static const String title = 'Une actualité concernant des évènements actuels';
   static const String type = 'Établissement';
   static const String desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+  final log = Logger('HomePageState');
 
   List<Service> renderedServices = Services().servicesList;
   List<Service> renderedFavoriteServices = Services().favoritesList;
@@ -123,10 +125,10 @@ class HomePageState extends State<HomePage>{
                   javaScriptEnabled: true, // autoriser le JS
                 ),
                 onWebViewCreated: (controller) {
-                  print("WEBVIEW CREATED");
+                  log.fine("Webview created in homepage");
                 },
                 onLoadStop: (controller, url) async {
-                  print("WEBVIEW LOADING COMPLETED");
+                  log.fine("Webview in homepage finished loading");
                 },
               ),
             ),

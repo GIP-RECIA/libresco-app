@@ -1,9 +1,11 @@
+import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 
 class TokenRepository {
 
+  final log = Logger('TokenRepository');
   TokenRepository();
 
   /// DB connection
@@ -38,7 +40,7 @@ class TokenRepository {
         },
         conflictAlgorithm: ConflictAlgorithm.replace
     );
-    print("SAVE IN DATABASE");
+    log.fine('Save in database for ${TokenManager().toString()}');
   }
 
   /// Update DB tokens
@@ -55,15 +57,14 @@ class TokenRepository {
       },
       where: 'id=1',
     );
-    print("UPDATE IN DATABASE");
+    log.fine('Update in database for ${TokenManager().toString()}');
   }
 
   /// Synchronize tokens from TokenManager singleton with tokens who are in the database
   Future<void> flushTokens() async {
     final db = await getDB();
 
-    print("FLUSH IN DATABASE");
-    print(TokenManager());
+    log.fine('Flush in database for ${TokenManager().toString()}');
 
     int? count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM tokens'));
     if(count! > 0){
@@ -75,23 +76,24 @@ class TokenRepository {
   }
 
   Future<void> deleteAllRows() async {
-    print("DELETE FROM DATABASE");
+    log.fine('Delete in database');
     final db = await getDB();
     await db.execute("DELETE FROM tokens");
   }
 
   Future<void> getLastValidRefreshToken() async{
     final db = await getDB();
-    print("GET FROM DATABASE");
+    log.fine('Get from database');
     int? count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM tokens'));
     if(count! > 0){
     List<Map<String, Object?>> res = await db.query('tokens', limit: 1);
       TokenManager().setTGT(res.first["TGT"].toString());
       TokenManager().setJSESSIONID(res.first["JSESSIONID"].toString());
       TokenManager().setIdPortal(res.first["idPortal"].toString());
+      log.fine('TokenManager after getting values from database : ${TokenManager().toString()}');
     }
     else {
-      print("Empty database");
+      log.fine("Empty database");
     }
   }
 }

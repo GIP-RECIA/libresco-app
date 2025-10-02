@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/pages/homePage.dart';
 import 'package:netocentre_app_poc/pages/servicesPage.dart';
 import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
@@ -20,22 +21,20 @@ class NavBar extends StatefulWidget{
 
 class NavBarState extends State<NavBar> {
 
-
+  final log = Logger('NavBarState');
   final FocusNode _buttonFocusNode = FocusNode(debugLabel: 'Menu Button');
   String pictureUri = "";
-
 
   @override
   void initState() {
     super.initState();
 
     if(UserInfo().firstname == ""){
-      print("USER INFO - On ne devrait jamais être là car normalement déjà chargé");
+      log.warning("User info should be loaded but is not !");
       PortalService().loadUserInfo();
     }
-
+    // TODO : pictureUri
     pictureUri = "https://${BaseUrl().uPortalBaseURL}${UserInfo().pictureURI}";
-    print(pictureUri);
   }
 
   @override
@@ -102,7 +101,6 @@ class NavBarState extends State<NavBar> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  print("home");
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
                 },
               ),
@@ -113,9 +111,7 @@ class NavBarState extends State<NavBar> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  print("Services list");
-                    print("not already on page");
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ServicesPage()));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ServicesPage()));
                 },
               ),
               IconButton(
@@ -125,7 +121,6 @@ class NavBarState extends State<NavBar> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  print("user");
                   if (controller.isOpen) {
                     controller.close();
                   } else {

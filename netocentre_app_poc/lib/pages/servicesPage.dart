@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/pages/components/expansionTile.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/pages/components/myAppBar.dart';
@@ -20,9 +21,9 @@ class ServicesPage extends StatefulWidget{
 
 class ServicesPageState extends State<ServicesPage>{
 
+  final log = Logger('ServicesPageState');
   List<Service> renderedServices = Services().servicesList;
   String dropwdownValue = "";
-
 
   void _sortAlphabetically() {
     setState(() {
@@ -105,7 +106,7 @@ class ServicesPageState extends State<ServicesPage>{
                       color: Colors.black,
                     ),
                     onSelected: (value) {
-                      print(value);
+                      log.info("Selected service $value");
                       if(value != dropwdownValue && value != null){
                         dropwdownValue = value;
                         switch (value) {

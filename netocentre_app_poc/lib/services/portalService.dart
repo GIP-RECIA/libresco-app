@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
+import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/singletons/servicesList.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
@@ -10,7 +11,9 @@ import 'package:netocentre_app_poc/services/loginService.dart';
 import '../singletons/baseUrl.dart';
 import '../singletons/tokenManager.dart';
 
-class PortalService{
+class PortalService {
+
+  final log = Logger('PortalService');
 
   http.Client ignoreSslClient() {
     var ioClient = HttpClient(context: SecurityContext(withTrustedRoots: false));
@@ -20,28 +23,25 @@ class PortalService{
   }
 
   Future<bool> isAuthorizedByUPortal() async {
+    log.fine("Checking JSESSIONID validity...");
     if(!await hasPortalSession()){
-      print("JSESSIONID is not valid anymore !");
       return await LoginService().unstackedUPortalLogin();
     }
-      print("JSESSIONID is valid !");
-      return true;
+    return true;
    }
 
   Future<bool> hasPortalSession() async{
-    print("Check if user has a valid portal session");
-
     // If user don't have any JSESSIONID it is not necessary to make a request, we know we don't have a session
     if(TokenManager().JSESSIONID == ""){
-      print("NO JSESSIONID");
+      log.finer("No JSESSIONID in TokenManager");
       return false;
     }
 
     final client = ignoreSslClient();
     Uri request = Uri.https(BaseUrl().uPortalBaseURL, "/portail/api/session.json");
 
-    print("Making a request to portal : $request");
-    print("JSESSIONID=${TokenManager().JSESSIONID}");
+    log.finer("Making a request to portal : $request");
+    log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
 
     final http.Response res = await client.get(
       request,
@@ -51,26 +51,26 @@ class PortalService{
       },
     );
 
-    print(res.statusCode);
-    print(res.body);
+    log.finest('Status code : ${res.statusCode}');
+    log.finest('Body : ${res.body}');
     // If we get a 200 we still need to check if the session is not a guest session
     if(res.statusCode == 200) {
       if(json.decode(res.body)["person"]["sessionKey"] != null){
-        print("PORTAL SESSION IS VALID");
+        log.fine("Portal session is valid !");
         return true;
       }
-      print("PORTAL SESSION IS GUEST -> INVALID");
+      log.fine("Portal session is guest -> Invalid");
       return false;
     }
     // If we have an invalid session this API will return a 404
     else{
-      print("PORTAL SESSION IS INVALID");
+      log.fine("Portal session is invalid");
       return false;
     }
   }
 
   Future<void> getAllPortlets() async {
-    print("getting portlets");
+    log.fine("Getting portlets...");
 
     final client = ignoreSslClient();
 
@@ -80,8 +80,8 @@ class PortalService{
         {'category': 'All categories'}
     );
 
-    print("getting portlet request : $request");
-    print("JSESSIONID=${TokenManager().JSESSIONID}");
+    log.finer("Getting portlet request : $request");
+    log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
 
     if(await isAuthorizedByUPortal()){
       final http.Response res = await client.get(
@@ -92,15 +92,11 @@ class PortalService{
         },
       );
 
-      print(res.statusCode);
       if(res.statusCode == 200) {
-
         /// Parse json and get portlets fname
-
         final dynamic jsonSubcategories  = json.decode(res.body)["registry"]["categories"][0]["subcategories"];
 
         Set<String> portletsSet = {};
-
         List<Service> servicesList = [];
         List<Service> favoritesList = [];
 
@@ -108,15 +104,14 @@ class PortalService{
           for (var portlet in subcategory["portlets"]){
             if(!portletsSet.contains(portlet["fname"])){
 
-              print("portlet ${portlet["title"]} favorite : ${portlet["favorite"]}");
+              log.finer("portlet ${portlet["title"]} favorite : ${portlet["favorite"]}");
 
               String portletIconUri = "";
 
               // get icon  uri
               if(portlet["parameters"].containsKey("mobileIconUrl")){
                 portletIconUri = portlet["parameters"]["mobileIconUrl"]["value"];
-                print("portlet ${portlet["title"]} icon url : $portletIconUri");
-
+                log.finer("portlet ${portlet["title"]} icon url : $portletIconUri");
               }
 
               // if auth directly on CAS
@@ -131,7 +126,7 @@ class PortalService{
                   }
                 }
                 else {
-                  print("service uri is null !");
+                  log.warning('service uri is null for ${portlet["title"]}');
                 }
               }
               else{
@@ -142,62 +137,48 @@ class PortalService{
                   favoritesList.add(Service.UPortalBased(id: portlet["id"], text: portlet["title"], serviceUri: portlet["fname"], iconUri: portletIconUri, isFavorite: portlet["favorite"]));
                 }
               }
-              print(portlet["fname"]);
               portletsSet = {...portletsSet, portlet["fname"]};
             }
           }
-
         }
-        
 
         Services().setServicesList(servicesList);
         Services().setFavoritesList(favoritesList);
+        log.fine('Final list of services :${Services().servicesList.toString()}');
 
-
-        final List<String> portlets = portletsSet.toList(growable: false);
-
-        print(portlets.toString());
-        print(Services().servicesList.length);
-
-      }
-      else{
-        print("on a un problème là ! :'(");
+      } else {
+        log.warning('Got an abnormal ${res.statusCode} response status code !');
       }
     }
     else{
-      print("JSESSIONID Empty !");
+      log.warning("JSESSIONID Empty !");
     }
   }
 
   Future<bool> switchPortletIsFavoriteState(Service service) async {
-    print("switching portlet is favorite state");
+    log.info('Switching portlet favorite state for ${service.fname}');
 
     // Switch "is favorite" attribute state
     bool ApiResponseResult = await requestSwitchPortletIsFavoriteState(service);
 
     if(ApiResponseResult) {
-
       List<Service> currentServicesList = Services().servicesList;
       List<Service> currentFavoritesList = Services().favoritesList;
-
       currentServicesList.removeWhere((indexedService) => indexedService.id == service.id);
-
       service.isFavorite = !(service.isFavorite);
 
-      /// if it was in favorites list
+      // if it was in favorites list
       if(!(service.isFavorite)){
         // remove from favorites list
         currentFavoritesList.removeWhere((indexedService) => indexedService.id == service.id);
-      }
-      else{
+      } else {
         // add to favorites list
         currentFavoritesList.add(service);
       }
+
       // update the singleton
       Services().setFavoritesList(currentFavoritesList);
-
       currentServicesList.add(service);
-
       Services().setServicesList(currentServicesList);
 
       return true;
@@ -207,7 +188,7 @@ class PortalService{
   }
 
   Future<bool> requestSwitchPortletIsFavoriteState(Service service) async {
-    print("requesting API to switch portlet is favorite state");
+    log.info('Requesting API to switch portlet is favorite state');
 
     final client = ignoreSslClient();
 
@@ -220,8 +201,8 @@ class PortalService{
         }
     );
 
-    print("getting portlet request : $request");
-    print("JSESSIONID=${TokenManager().JSESSIONID}");
+    log.finer("Getting portlet request : $request");
+    log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
 
     if(await isAuthorizedByUPortal()){
       final http.Response res = await client.post(
@@ -232,21 +213,19 @@ class PortalService{
         },
       );
 
-      print(res.statusCode);
       if(res.statusCode == 200) {
         return true;
       }
       else{
-        print("on a un problème là ! :'(");
+        log.warning('Got an abnormal ${res.statusCode} response status code !');
       }
     }
-
 
     return false;
   }
 
   Future<Map<String, dynamic>> getUserInfo() async{
-    print("getting user infos");
+    log.info("Getting user infos");
 
     final client = ignoreSslClient();
 
@@ -259,8 +238,8 @@ class PortalService{
         }
     );
 
-    print("getting portlet request : $request");
-    print("JSESSIONID=${TokenManager().JSESSIONID}");
+    log.finer("getting portlet request : $request");
+    log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
 
     final http.Response res = await client.get(
       request,
@@ -270,42 +249,37 @@ class PortalService{
       },
     );
 
-    print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-    print(res.statusCode);
     if(res.statusCode == 200) {
-
       /// Decode base64 and parse json
-      print(res.body);
+      log.finest('Body of response is ${res.body}');
 
       String base64url = res.body.split('.')[1];
       base64url = base64url.replaceAll("-", "+").replaceAll("_", "/");
-
       if(base64url.length % 4 != 0){
         base64url = base64url + ("=" * (4-(base64url.length % 4)));
       }
+      log.finest('Extracted base64 $base64url');
 
-      print(base64url);
+      final String decodedBase64 = utf8.decode(base64.decode(base64url));
+      log.finer('Decoded base64 $decodedBase64');
 
-      print(utf8.decode(base64.decode(base64url)));
-
-      return json.decode(utf8.decode(base64.decode(base64url)));
-    }
-    else{
-      print("on a un problème là ! :'(");
+      return json.decode(decodedBase64);
+    } else {
+      log.warning('Got an abnormal ${res.statusCode} response status code !');
       return {};
     }
   }
 
   Future<void> loadUserInfo() async {
-    print("LOADING USER INFO");
+    log.info("Loading user info");
     dynamic rawUserInfo = await getUserInfo();
-    print(rawUserInfo);
+    log.fine('Loaded user info ${rawUserInfo.toString()}');
+    log.fine("Setting attributes in UserInfo() singleton");
     UserInfo().setFirstname((rawUserInfo["name"] as String).split(" ")[0]);
   }
 
-  // uri parser for services who are based on cas auth
+  /// uri parser for services who are based on cas auth
   String? serviceUriParser(String completeUri) {
-    print(completeUri);
     return Uri.parse(completeUri).queryParameters["service"];
   }
 

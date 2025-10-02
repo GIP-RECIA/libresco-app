@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/singletons/baseUrl.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,8 +17,8 @@ class UPortalServiceWebview extends StatefulWidget {
 
 class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
 
+  final log = Logger('UPortalServiceWebviewState');
   final GlobalKey webViewKey = GlobalKey();
-
   late CookieManager manager;
 
   InAppWebViewController? webViewController;
@@ -82,9 +83,9 @@ class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
 
   @override
   Widget build(BuildContext context) {
-    print("on init ${widget.uri} : ${TokenManager().JSESSIONID}");
-    print("on init ${widget.uri} : https://${BaseUrl().uPortalBaseURL}/");
-    print("on init ${widget.uri} : https://${BaseUrl().uPortalBaseURL}/portail/p/${widget.uri}");
+    log.finer("on init ${widget.uri} : ${TokenManager().JSESSIONID}");
+    log.finer("on init ${widget.uri} : https://${BaseUrl().uPortalBaseURL}/");
+    log.finer("on init ${widget.uri} : https://${BaseUrl().uPortalBaseURL}/portail/p/${widget.uri}");
     return Scaffold(
         body: SafeArea(
             child: Column(children: <Widget>[
@@ -103,7 +104,6 @@ class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
                         setState(() {
                           this.url = url.toString();
                           urlController.text = this.url;
-                          print(this.url);
                         });
                       },
                       onPermissionRequest: (controller, request) async {
@@ -133,7 +133,6 @@ class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
                             return NavigationActionPolicy.CANCEL;
                           }
                         }
-
                         return NavigationActionPolicy.ALLOW;
                       },
                       onLoadStop: (controller, url) async {
@@ -163,11 +162,10 @@ class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
                       },
                       onConsoleMessage: (controller, consoleMessage) {
                         if (kDebugMode) {
-                          print(consoleMessage);
+                          log.finer('Console message ${consoleMessage.toString()}');
                         }
                       },
                       onReceivedServerTrustAuthRequest: (controller, challenge) async {
-                        print(challenge);
                         return ServerTrustAuthResponse(action: ServerTrustAuthResponseAction.PROCEED);
                       },
                     ),

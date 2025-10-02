@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/services/loginService.dart';
 import 'package:netocentre_app_poc/singletons/baseUrl.dart';
@@ -12,14 +13,13 @@ import '../unconnectedHomePage.dart';
 
 class ServicesCard extends StatelessWidget{
 
+  final log = Logger('ServicesCard');
   final Service service;
-
   final bool isNew = true;
-
   final VoidCallback? onPressed;
 
   ServicesCard(this.service, {super.key, required this.onPressed}) {
-    print("construct ${this.service.text} card | isFav : ${this.service.isFavorite}");
+    log.finer("construct ${this.service.text} card | isFav : ${this.service.isFavorite}");
   }
 
   @override
@@ -41,7 +41,6 @@ class ServicesCard extends StatelessWidget{
       ),
       child: GestureDetector(
         onTapUp: (_) async {
-          print(service.text);
           if(service.isAuthByUPortal){
             if(await PortalService().isAuthorizedByUPortal()){
               if(context.mounted){
@@ -110,7 +109,7 @@ class ServicesCard extends StatelessWidget{
                 child: Container(
                   padding: const EdgeInsets.only(bottom: 10),
                   child: TextButton(
-                    onPressed: () => print("click on En savoir plus"),
+                    onPressed: () => log.finer("click on En savoir plus"),
                     child: const Text(
                       "En savoir plus",
                       style: TextStyle(
@@ -131,15 +130,14 @@ class ServicesCard extends StatelessWidget{
 
 class LogoRow extends StatelessWidget{
 
+  final log = Logger('LogoRow');
   final Service service;
-
   final VoidCallback? onPressed;
-
-  const LogoRow(this.service, {super.key, required this.onPressed});
+  LogoRow(this.service, {super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-    print("icon uri : ${service.iconUri}");
+    log.finer("icon uri : ${service.iconUri}");
     return Stack(
       alignment: Alignment.center,
       children: [
