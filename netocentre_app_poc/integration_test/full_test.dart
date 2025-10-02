@@ -37,7 +37,7 @@ void main() {
     expect($(ServicesPage), findsOneWidget);
 
     // Click on CAS service (MCE)
-    await $.scrollUntilVisible(finder: find.byKey(const Key("Mon compte ENT")));
+    await $.scrollUntilVisible(finder: find.byKey(const Key("Mon compte ENT")), delta: 150, maxScrolls: 30);
     await $.tap(find.byKey(const Key("Mon compte ENT")));
     await $.pumpAndSettle();
     await $.native.waitUntilVisible(Selector(resourceId: "infoPerso:userGivenName"));
@@ -48,7 +48,8 @@ void main() {
     expect($(ServicesPage), findsOneWidget);
 
     // Click on a portal service (protection by soffit)
-    await $.scrollUntilVisible(finder: find.byKey(const Key("Actualités")), scrollDirection: AxisDirection.up);
+    await $.scrollUntilVisible(finder: find.byKey(const Key("Actualités")), scrollDirection: AxisDirection.up,
+        delta: 150, maxScrolls: 30);
     await $.tap(find.byKey(const Key("Actualités")));
     await $.pumpAndSettle();
     await $.native.waitUntilVisible(Selector(resourceId: "portalPageBody"));
