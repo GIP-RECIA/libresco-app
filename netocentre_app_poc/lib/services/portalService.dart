@@ -159,9 +159,9 @@ class PortalService {
     log.info('Switching portlet favorite state for ${service.fname}');
 
     // Switch "is favorite" attribute state
-    bool ApiResponseResult = await requestSwitchPortletIsFavoriteState(service);
+    bool apiResponseResult = await requestSwitchPortletIsFavoriteState(service);
 
-    if(ApiResponseResult) {
+    if(apiResponseResult) {
       List<Service> currentServicesList = Services().servicesList;
       List<Service> currentFavoritesList = Services().favoritesList;
       currentServicesList.removeWhere((indexedService) => indexedService.id == service.id);

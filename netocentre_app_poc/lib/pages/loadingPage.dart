@@ -47,7 +47,7 @@ class LoadingPageUtils {
     navigatorPush();
   }
 
-  navigatorPush(){
+  void navigatorPush(){
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => callbackWidget));
   }
 }

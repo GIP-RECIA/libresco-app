@@ -12,19 +12,19 @@ class UserInfo {
 
   String get pictureURI => _pictureURI;
 
-  setPictureURI(String value) {
+  void setPictureURI(String value) {
     _pictureURI = value;
   }
 
   String get lastname => _lastname;
 
-  setLastname(String value) {
+  void setLastname(String value) {
     _lastname = value;
   }
 
   String get firstname => _firstname;
 
-  setFirstname(String value) {
+  void setFirstname(String value) {
     _firstname = value;
   }
 }

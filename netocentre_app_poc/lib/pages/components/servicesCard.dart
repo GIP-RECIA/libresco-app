@@ -19,7 +19,7 @@ class ServicesCard extends StatelessWidget{
   final VoidCallback? onPressed;
 
   ServicesCard(this.service, {super.key, required this.onPressed}) {
-    log.finer("construct ${this.service.text} card | isFav : ${this.service.isFavorite}");
+    log.finer("construct ${service.text} card | isFav : ${service.isFavorite}");
   }
 
   @override
@@ -56,7 +56,9 @@ class ServicesCard extends StatelessWidget{
           }
           else {
             if(await LoginService().hasCASSession()){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CASServiceWebview(text: service.text, uri: service.serviceUri, fname: service.fname!,)));
+              if(context.mounted){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => CASServiceWebview(text: service.text, uri: service.serviceUri, fname: service.fname!,)));
+              }
             } else {
               TokenManager().reset(flush: true);
               if(context.mounted){

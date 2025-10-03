@@ -17,7 +17,7 @@ class TokenManager {
 
   String get TGT => _TGT;
 
-  setTGT(String token, {bool flush = false}) {
+  void setTGT(String token, {bool flush = false}) {
     _TGT = token;
 
     if(flush){
@@ -27,7 +27,7 @@ class TokenManager {
 
   String get JSESSIONID => _JSESSIONID;
 
-  setJSESSIONID(String token, {bool flush = false}) {
+  void setJSESSIONID(String token, {bool flush = false}) {
     _JSESSIONID = token;
 
     if(flush){
@@ -38,7 +38,7 @@ class TokenManager {
 
   String get idPortal => _idPortal;
 
-  setIdPortal(String value, {bool flush = false}) {
+  void setIdPortal(String value, {bool flush = false}) {
     _idPortal = value;
 
     if(flush){

@@ -5,7 +5,6 @@ import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/pages/components/myAppBar.dart';
 import 'package:netocentre_app_poc/pages/loadingPage.dart';
-import 'package:netocentre_app_poc/services/portalService.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
 
 import '../singletons/baseUrl.dart';
@@ -28,17 +27,6 @@ class HomePageState extends State<HomePage>{
 
   List<Service> renderedServices = Services().servicesList;
   List<Service> renderedFavoriteServices = Services().favoritesList;
-
-  void _switchPortletIsFavoriteState(int index) async {
-    bool isTaskValidated = await PortalService().switchPortletIsFavoriteState(renderedServices[index]);
-
-    if (isTaskValidated){
-      final Service currService = renderedServices[index];
-      setState(() {
-        renderedServices[index] = currService;
-      });
-    }
-  }
 
   @override
   void initState() {

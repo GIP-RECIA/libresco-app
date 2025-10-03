@@ -15,9 +15,6 @@ class AuthenticationInAppBrowser extends InAppBrowser {
   CookieManager cookieManager = CookieManager.instance();
   AuthenticationInAppBrowser(this.context);
 
-  @override
-  InAppWebViewController? get webViewController => super.webViewController;
-
   LoginService loginService = LoginService();
 
   void navigateToHomePage(){

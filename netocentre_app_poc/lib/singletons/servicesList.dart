@@ -14,22 +14,22 @@ class Services {
 
   List<Service> get servicesList => _list;
 
-  setServicesList(List<Service> newList){
+  void setServicesList(List<Service> newList){
     List<Service> neewList = _sort(newList);
     _list = _sort(neewList);
   }
 
-  addToServicesList(Service service){
+  void addToServicesList(Service service){
     _list.add(service);
   }
 
   List<Service> get favoritesList => _favoritesList;
 
-  setFavoritesList(List<Service> newList){
+  void setFavoritesList(List<Service> newList){
     _favoritesList = _sort(newList);
   }
 
-  _sort(List<Service> list){
+  List<Service> _sort(List<Service> list){
     list.sort((a,b) => slugify(a.text).compareTo(slugify(b.text)));
     return list;
   }
