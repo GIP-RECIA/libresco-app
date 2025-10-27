@@ -5,6 +5,7 @@ import 'package:netocentre_app_poc/pages/loadingPage.dart';
 import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
 import 'package:netocentre_app_poc/repositories/tokenRepository.dart';
 import 'package:netocentre_app_poc/services/loginService.dart';
+import 'package:netocentre_app_poc/singletons/baseUrl.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 
 final log = Logger('main');
@@ -33,6 +34,7 @@ Future<void> main({TokenRepository? tokenRepository, TokenManager? tokenManager,
   Logger.root.onRecord.listen((record) {
     print('${record.time} ${record.level.name} [${record.loggerName}] - ${record.message}');
   });
+  await BaseUrl().loadConfig();
   final app = await buildApp();
   runApp(app);
 }
