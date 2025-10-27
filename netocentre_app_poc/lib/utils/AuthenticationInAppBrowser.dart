@@ -32,7 +32,7 @@ class AuthenticationInAppBrowser extends InAppBrowser {
     // We get the cookies and try to detect if there is the TGT when we see the login answer from CAS
     log.fine("Started $url");
     if(url != null){
-      if(url.toString().contains(BaseUrl().serviceURL)){
+      if(url.toString().contains("${BaseUrl().serviceURL}?ticket=")){
         // Get TGT cookie
         List<Cookie> cookies = await cookieManager.getCookies(url: WebUri("https://${BaseUrl().casBaseURL}/cas"));
         for(var current in cookies) {
@@ -46,6 +46,19 @@ class AuthenticationInAppBrowser extends InAppBrowser {
           log.fine("$url was intercepted to get the TGT. Closing browser...");
           close(); // close the navigator
           navigateToHomePage();
+        }
+        // If no TGT is found, it means there is certainly a problem with the cookies
+        else {
+          log.warning("TGC cookie wasn't found. There may be a problem with cookies");
+          close();
+          if(context.mounted){
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Erreur lors de l'authentification : essayez de mettre à jour votre navigateur dans sa dernière version."),
+                duration: Duration(seconds: 10),
+              ),
+            );
+          }
         }
       }
     }
