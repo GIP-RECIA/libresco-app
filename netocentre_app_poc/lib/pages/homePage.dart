@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/pages/components/myAppBar.dart';
-import 'package:netocentre_app_poc/pages/loadingPage.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
 
 import '../singletons/appConfig.dart';
@@ -20,21 +19,13 @@ class HomePage extends StatefulWidget{
 
 class HomePageState extends State<HomePage>{
 
-  static const String title = 'Une actualité concernant des évènements actuels';
-  static const String type = 'Établissement';
-  static const String desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
   final log = Logger('HomePageState');
-
   List<Service> renderedServices = Services().servicesList;
   List<Service> renderedFavoriteServices = Services().favoritesList;
 
   @override
   void initState() {
     super.initState();
-
-    if(UserInfo().firstname == ""){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoadingPage(callbackWidget: HomePage())));
-    }
 
     CookieManager manager = CookieManager.instance();
     manager.removeSessionCookies();
