@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/services/portalService.dart';
-import 'package:netocentre_app_poc/singletons/baseUrl.dart';
+import 'package:netocentre_app_poc/singletons/appConfig.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 
 class LoginService {
@@ -59,7 +59,7 @@ class LoginService {
  Future<bool> hasCASSession() async {
    log.fine("Checking if user is connected to CAS");
    final client = HttpClient();
-   var uri = Uri.https(BaseUrl().casBaseURL, "/cas/login",);
+   var uri = Uri.https(AppConfig().casBaseURL, "/cas/login",);
    var request = await client.getUrl(uri);
    request.followRedirects = false;
    request.headers.add('Cookie', 'TGC=${TokenManager().TGT}');
@@ -96,10 +96,10 @@ class LoginService {
    /// Request 0 - initial request
    final client = HttpClient();
    var uri = Uri.https(
-       BaseUrl().casBaseURL,
+       AppConfig().casBaseURL,
        "/cas/login",
        {
-         'service': 'https://${BaseUrl().uPortalBaseURL}/portail/Login'
+         'service': 'https://${AppConfig().uPortalBaseURL}/portail/Login'
        }
    );
    var request = await client.getUrl(uri);

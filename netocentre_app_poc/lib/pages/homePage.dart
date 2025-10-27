@@ -7,7 +7,7 @@ import 'package:netocentre_app_poc/pages/components/myAppBar.dart';
 import 'package:netocentre_app_poc/pages/loadingPage.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
 
-import '../singletons/baseUrl.dart';
+import '../singletons/appConfig.dart';
 import '../singletons/servicesList.dart';
 import '../singletons/tokenManager.dart';
 
@@ -40,24 +40,24 @@ class HomePageState extends State<HomePage>{
     manager.removeSessionCookies();
 
     manager.setCookie(
-      url: WebUri("https://${BaseUrl().uPortalBaseURL}/"),
+      url: WebUri("https://${AppConfig().uPortalBaseURL}/"),
       name: "JSESSIONID",
       value: TokenManager().JSESSIONID,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
-      domain: BaseUrl().uPortalBaseURL,
+      domain: AppConfig().uPortalBaseURL,
       path: "/",
     );
 
     manager.setCookie(
-      url: WebUri("https://${BaseUrl().uPortalBaseURL}/"),
+      url: WebUri("https://${AppConfig().uPortalBaseURL}/"),
       name: "clusterIDPortail",
       value: TokenManager().idPortal,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
-      domain: BaseUrl().uPortalBaseURL,
+      domain: AppConfig().uPortalBaseURL,
       path: "/",
     );
   }
@@ -98,7 +98,7 @@ class HomePageState extends State<HomePage>{
             <script src="/resource-server/webjars/gip-recia__ui-webcomponents/dist/r-widgets-wrapper.js" type="module" defer></script>
           </head>
           <body style="margin:0; padding:10px; font-family:sans-serif;">
-            <r-widgets-wrapper localization-uri="/commun/widgets-wrapper/20251013/i18n.json" soffit-uri="/portail/api/v5-1/userinfo?claims=private,ENTPersonGARIdentifiant,ESCOUAICourant,ESCOUAI,ENTPersonProfils&amp;groups=" widget-max-count="3" get-prefs-uri="/portail/api/prefs/getentityonlyprefs/Widgets" put-prefs-uri="/portail/api/prefs/putprefs?fname=Widgets" adapter-source-uri="/resource-server/webjars/gip-recia__widgets-to-endpoints-adapter/dist/widgets-to-endpoints-adapter.js" adapter-config-uri="/commun/widgets/adapter/20251013/adapter-configuration.json">
+            <r-widgets-wrapper localization-uri="/commun/widgets/wrapper/20251013/i18n.json" soffit-uri="/portail/api/v5-1/userinfo?claims=private,ENTPersonGARIdentifiant,ESCOUAICourant,ESCOUAI,ENTPersonProfils&amp;groups=" widget-max-count="3" get-prefs-uri="/portail/api/prefs/getentityonlyprefs/Widgets" put-prefs-uri="/portail/api/prefs/putprefs?fname=Widgets" adapter-source-uri="/resource-server/webjars/gip-recia__widgets-to-endpoints-adapter/dist/widgets-to-endpoints-adapter.js" adapter-config-uri="/commun/widgets/adapter/20251013/adapter-configuration.json">
             </r-widgets-wrapper>
             <carrousel-ui user-info-api-url="/portail/api/v5-1/userinfo?claims=private&amp;groups=" get-user-news-url="/publisher/news/myNews/2" get-item-by-id-url="/publisher/news/item/" get-news-reading-informations-url="/publisher/news/readingInfos" set-reading-url="/publisher/news/setNewsReading/" all-news-page-url="/portail/p/News" dnma-fname="News" locale-key="News" use-reading-state="">
             </carrousel-ui>
@@ -107,7 +107,7 @@ class HomePageState extends State<HomePage>{
       """,
                   mimeType: 'text/html',
                   encoding: 'utf-8',
-                  baseUrl: WebUri("https://${BaseUrl().uPortalBaseURL}"),
+                  baseUrl: WebUri("https://${AppConfig().uPortalBaseURL}"),
                 ),
                 initialSettings: InAppWebViewSettings(
                   javaScriptEnabled: true, // autoriser le JS

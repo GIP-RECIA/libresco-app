@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/singletons/baseUrl.dart';
+import 'package:netocentre_app_poc/singletons/appConfig.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -42,24 +42,24 @@ class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
     manager.removeSessionCookies();
 
     manager.setCookie(
-    url: WebUri("https://${BaseUrl().uPortalBaseURL}/"),
+    url: WebUri("https://${AppConfig().uPortalBaseURL}/"),
     name: "JSESSIONID",
     value: TokenManager().JSESSIONID,
     isHttpOnly: true,
     isSecure: true,
     sameSite: HTTPCookieSameSitePolicy.NONE,
-    domain: BaseUrl().uPortalBaseURL,
+    domain: AppConfig().uPortalBaseURL,
     path: "/",
     );
 
     manager.setCookie(
-    url: WebUri("https://${BaseUrl().uPortalBaseURL}/"),
+    url: WebUri("https://${AppConfig().uPortalBaseURL}/"),
     name: "clusterIDPortail",
     value: TokenManager().idPortal,
     isHttpOnly: true,
     isSecure: true,
     sameSite: HTTPCookieSameSitePolicy.NONE,
-    domain: BaseUrl().uPortalBaseURL,
+    domain: AppConfig().uPortalBaseURL,
     path: "/",
     );
 
@@ -84,8 +84,8 @@ class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
   @override
   Widget build(BuildContext context) {
     log.finer("on init ${widget.uri} : ${TokenManager().JSESSIONID}");
-    log.finer("on init ${widget.uri} : https://${BaseUrl().uPortalBaseURL}/");
-    log.finer("on init ${widget.uri} : https://${BaseUrl().uPortalBaseURL}/portail/p/${widget.uri}");
+    log.finer("on init ${widget.uri} : https://${AppConfig().uPortalBaseURL}/");
+    log.finer("on init ${widget.uri} : https://${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}");
     return Scaffold(
         body: SafeArea(
             child: Column(children: <Widget>[
@@ -94,7 +94,7 @@ class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
                   children: [
                     InAppWebView(
                       key: webViewKey,
-                      initialUrlRequest: URLRequest(url: WebUri("https://${BaseUrl().uPortalBaseURL}/portail/p/${widget.uri}")),
+                      initialUrlRequest: URLRequest(url: WebUri("https://${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}")),
                       initialSettings: settings,
                       pullToRefreshController: pullToRefreshController,
                       onWebViewCreated: (controller) async {

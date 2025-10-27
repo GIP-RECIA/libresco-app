@@ -4,7 +4,7 @@ import 'package:netocentre_app_poc/pages/homePage.dart';
 import 'package:netocentre_app_poc/pages/servicesPage.dart';
 import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
 import 'package:netocentre_app_poc/repositories/tokenRepository.dart';
-import 'package:netocentre_app_poc/singletons/baseUrl.dart';
+import 'package:netocentre_app_poc/singletons/appConfig.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
 
@@ -34,7 +34,7 @@ class NavBarState extends State<NavBar> {
       PortalService().loadUserInfo();
     }
     // TODO : pictureUri
-    pictureUri = "https://${BaseUrl().uPortalBaseURL}${UserInfo().pictureURI}";
+    pictureUri = "https://${AppConfig().uPortalBaseURL}${UserInfo().pictureURI}";
   }
 
   @override

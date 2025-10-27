@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:netocentre_app_poc/singletons/baseUrl.dart';
+import 'package:netocentre_app_poc/singletons/appConfig.dart';
 
 import '../utils/AuthenticationInAppBrowser.dart';
 
@@ -71,7 +71,7 @@ class UnconnectedHomePageState extends State<UnconnectedHomePage> {
                     key: const Key("loginButton"),
                     onPressed: () {
                       browser.openUrlRequest(
-                          urlRequest: URLRequest(url: WebUri("https://${BaseUrl().casBaseURL}/cas/login?service=${BaseUrl().serviceURL}")),
+                          urlRequest: URLRequest(url: WebUri("https://${AppConfig().casBaseURL}/cas/login?service=${AppConfig().serviceURL}")),
                           settings: settings);
                     },
                     child: const Text("Se connecter")

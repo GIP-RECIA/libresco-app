@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/singletons/baseUrl.dart';
+import 'package:netocentre_app_poc/singletons/appConfig.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -43,13 +43,13 @@ class CASServiceWebviewState extends State<CASServiceWebview> {
     manager.removeSessionCookies();
 
     manager.setCookie(
-      url: WebUri("https://${BaseUrl().casBaseURL}/cas"),
+      url: WebUri("https://${AppConfig().casBaseURL}/cas"),
       name: "TGC",
       value: TokenManager().TGT,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
-      domain: BaseUrl().casBaseURL,
+      domain: AppConfig().casBaseURL,
       path: "/cas",
     );
 
@@ -82,7 +82,7 @@ class CASServiceWebviewState extends State<CASServiceWebview> {
                   children: [
                     InAppWebView(
                       key: webViewKey,
-                      initialUrlRequest: URLRequest(url: WebUri("https://${BaseUrl().uPortalBaseURL}/portail/api/ExternalURLStats?fname=${widget.fname}&service=${widget.uri}")),
+                      initialUrlRequest: URLRequest(url: WebUri("https://${AppConfig().uPortalBaseURL}/portail/api/ExternalURLStats?fname=${widget.fname}&service=${widget.uri}")),
                       initialSettings: settings,
                       pullToRefreshController: pullToRefreshController,
                       onWebViewCreated: (controller) async {

@@ -5,7 +5,7 @@ import 'package:logging/logging.dart';
 import '../pages/homePage.dart';
 import '../pages/loadingPage.dart';
 import '../services/loginService.dart';
-import '../singletons/baseUrl.dart';
+import '../singletons/appConfig.dart';
 import '../singletons/tokenManager.dart';
 
 class AuthenticationInAppBrowser extends InAppBrowser {
@@ -32,9 +32,9 @@ class AuthenticationInAppBrowser extends InAppBrowser {
     // We get the cookies and try to detect if there is the TGT when we see the login answer from CAS
     log.fine("Started $url");
     if(url != null){
-      if(url.toString().contains("${BaseUrl().serviceURL}?ticket=")){
+      if(url.toString().contains("${AppConfig().serviceURL}?ticket=")){
         // Get TGT cookie
-        List<Cookie> cookies = await cookieManager.getCookies(url: WebUri("https://${BaseUrl().casBaseURL}/cas"));
+        List<Cookie> cookies = await cookieManager.getCookies(url: WebUri("https://${AppConfig().casBaseURL}/cas"));
         for(var current in cookies) {
           if(current.name == "TGC"){
             log.fine("TGT Cookie found with value : $current");

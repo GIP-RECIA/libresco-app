@@ -8,7 +8,7 @@ import 'package:netocentre_app_poc/singletons/servicesList.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
 import 'package:netocentre_app_poc/services/loginService.dart';
 
-import '../singletons/baseUrl.dart';
+import '../singletons/appConfig.dart';
 import '../singletons/tokenManager.dart';
 
 class PortalService {
@@ -38,7 +38,7 @@ class PortalService {
     }
 
     final client = ignoreSslClient();
-    Uri request = Uri.https(BaseUrl().uPortalBaseURL, "/portail/api/session.json");
+    Uri request = Uri.https(AppConfig().uPortalBaseURL, "/portail/api/session.json");
 
     log.finer("Making a request to portal : $request");
     log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
@@ -47,7 +47,7 @@ class PortalService {
       request,
       headers: <String, String>{
         'Cookie': 'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
-        'Host': BaseUrl().uPortalBaseURL
+        'Host': AppConfig().uPortalBaseURL
       },
     );
 
@@ -75,7 +75,7 @@ class PortalService {
     final client = ignoreSslClient();
 
     Uri request = Uri.https(
-        BaseUrl().uPortalBaseURL,
+        AppConfig().uPortalBaseURL,
         "/portail/api/v4-3/dlm/portletRegistry.json",
         {'category': 'All categories'}
     );
@@ -88,7 +88,7 @@ class PortalService {
         request,
         headers: <String, String>{
           'Cookie': 'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
-          'Host': BaseUrl().uPortalBaseURL
+          'Host': AppConfig().uPortalBaseURL
         },
       );
 
@@ -193,7 +193,7 @@ class PortalService {
     final client = ignoreSslClient();
 
     Uri request = Uri.https(
-        BaseUrl().uPortalBaseURL,
+        AppConfig().uPortalBaseURL,
         "/portail/api/layout",
         {
           'action': service.isFavorite ? 'removeFavorite': 'addFavorite',
@@ -209,7 +209,7 @@ class PortalService {
         request,
         headers: <String, String>{
           'Cookie': 'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
-          'Host': BaseUrl().uPortalBaseURL
+          'Host': AppConfig().uPortalBaseURL
         },
       );
 
@@ -230,7 +230,7 @@ class PortalService {
     final client = ignoreSslClient();
 
     Uri request = Uri.https(
-        BaseUrl().uPortalBaseURL,
+        AppConfig().uPortalBaseURL,
         "/portail/api/v5-1/userinfo",
         {
           'claims': 'private,picture,name,ESCOSIRENCourant,ESCOSIREN',
@@ -245,7 +245,7 @@ class PortalService {
       request,
       headers: <String, String>{
         'Cookie': 'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
-        'Host': BaseUrl().uPortalBaseURL
+        'Host': AppConfig().uPortalBaseURL
       },
     );
 

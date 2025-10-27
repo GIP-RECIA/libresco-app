@@ -2,20 +2,20 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 
-class BaseUrl {
+class AppConfig {
 
-  final log = Logger('BaseUrl');
-  static final BaseUrl _instance = BaseUrl._internal();
+  final log = Logger('AppConfig');
+  static final AppConfig _instance = AppConfig._internal();
 
   String? _casBaseURL;
   String? _serviceURL;
   String? _uPortalBaseURL;
 
-  factory BaseUrl() {
+  factory AppConfig() {
     return _instance;
   }
 
-  BaseUrl._internal();
+  AppConfig._internal();
 
   // All the config is loaded from one place : the app does not need to be updated is there is a configuration update
   Future<void> loadConfig() async {

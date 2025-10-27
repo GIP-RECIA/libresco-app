@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/services/loginService.dart';
-import 'package:netocentre_app_poc/singletons/baseUrl.dart';
+import 'package:netocentre_app_poc/singletons/appConfig.dart';
 
 import '../../services/portalService.dart';
 import '../../singletons/tokenManager.dart';
@@ -165,7 +165,7 @@ class LogoRow extends StatelessWidget{
         Align(
           alignment: Alignment.center,
           child: SvgPicture.network(
-            "https://${BaseUrl().uPortalBaseURL}${service.iconUri}",
+            "https://${AppConfig().uPortalBaseURL}${service.iconUri}",
             height: 50,
             width: 50,
           ),
