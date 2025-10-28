@@ -4,6 +4,7 @@ import 'package:netocentre_app_poc/pages/homePage.dart';
 import 'package:netocentre_app_poc/pages/servicesPage.dart';
 import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
 import 'package:netocentre_app_poc/repositories/tokenRepository.dart';
+import 'package:netocentre_app_poc/services/loginService.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
@@ -79,10 +80,14 @@ class NavBarState extends State<NavBar> {
               Icon(Icons.logout_outlined, color: Colors.red,),
             ],
           ),
-          onPressed: () => {
-            TokenRepository().deleteAllRows(),
-            TokenManager().reset(),
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const UnconnectedHomePage() )),
+          onPressed: () async {
+            await LoginService().logout();
+            await TokenRepository().deleteAllRows();
+            TokenManager().reset();
+            if (context.mounted) {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const UnconnectedHomePage()),
+              );
+            }
           },
         ),
       ],

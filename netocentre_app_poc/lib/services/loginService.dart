@@ -75,6 +75,42 @@ class LoginService {
    return false;
  }
 
+ Future<void> logout() async {
+   final client = HttpClient();
+   client.userAgent = AppConfig().userAgent;
+
+   log.fine("Logging out the user from CAS");
+   Uri casURI = Uri.https(AppConfig().casBaseURL, "/cas/logout");
+   log.finer("Making a request to CAS : $casURI");
+   log.finer("TGT=${TokenManager().TGT}");
+
+   var casRequest = await client.getUrl(casURI);
+   casRequest.followRedirects = false;
+   casRequest.headers.add('Cookie', 'TGC=${TokenManager().TGT}');
+
+   var casResponse = await casRequest.close();
+   String casBody = await casResponse.transform(utf8.decoder).join();
+
+   log.finer("Response status code from cas server : ${casResponse.statusCode}");
+   log.finer("Response headers: ${casResponse.headers}");
+   log.finest("Body: $casBody");
+
+   log.fine("Logging out the user from Portal");
+   Uri portalURI = Uri.https(AppConfig().uPortalBaseURL, "/portail/Logout");
+
+   log.finer("Making a request to portal : $portalURI");
+   log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
+
+   var portalRequest = await client.getUrl(portalURI);
+   portalRequest.followRedirects = false;
+   portalRequest.headers.add('Cookie', 'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}');
+   portalRequest.headers.add('Host', AppConfig().uPortalBaseURL);
+
+   var portalResponse = await portalRequest.close();
+   log.finer("Response status code from portal : ${portalResponse.statusCode}");
+   log.finer("Response headers: ${portalResponse.headers}");
+ }
+
  /// Used to earn the JSESSIONID
  Future<bool> unstackedUPortalLogin() async {
 
