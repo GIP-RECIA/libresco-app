@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/services/portalService.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
@@ -10,13 +8,6 @@ import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 class LoginService {
 
   final log = Logger('LoginService');
-
- // Dev only - allow self-signed ssl certificates
- http.Client ignoreSslClient() {
-   var ioClient = HttpClient(context: SecurityContext(withTrustedRoots: false));
-   ioClient.badCertificateCallback = ((cert, host, port) => true);
-   return IOClient(ioClient);
- }
 
  /// Parser - JSESSIONID & idPortal
  ({String jsessionid, String idportal}) uPortalLoginParser(HttpClientResponse response){
@@ -59,6 +50,7 @@ class LoginService {
  Future<bool> hasCASSession() async {
    log.fine("Checking if user is connected to CAS");
    final client = HttpClient();
+   client.userAgent = AppConfig().userAgent;
    var uri = Uri.https(AppConfig().casBaseURL, "/cas/login",);
    var request = await client.getUrl(uri);
    request.followRedirects = false;
@@ -95,6 +87,7 @@ class LoginService {
 
    /// Request 0 - initial request
    final client = HttpClient();
+   client.userAgent = AppConfig().userAgent;
    var uri = Uri.https(
        AppConfig().casBaseURL,
        "/cas/login",

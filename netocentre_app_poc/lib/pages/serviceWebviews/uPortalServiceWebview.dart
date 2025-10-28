@@ -23,6 +23,7 @@ class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
 
   InAppWebViewController? webViewController;
   InAppWebViewSettings settings = InAppWebViewSettings(
+      userAgent: AppConfig().userAgent,
       isInspectable: kDebugMode,
       mediaPlaybackRequiresUserGesture: false,
       allowsInlineMediaPlayback: true,

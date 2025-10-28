@@ -24,6 +24,7 @@ class CASServiceWebviewState extends State<CASServiceWebview> {
 
   InAppWebViewController? webViewController;
   InAppWebViewSettings settings = InAppWebViewSettings(
+      userAgent: AppConfig().userAgent,
       isInspectable: kDebugMode,
       mediaPlaybackRequiresUserGesture: false,
       allowsInlineMediaPlayback: true,

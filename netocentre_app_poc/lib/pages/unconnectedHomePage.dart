@@ -22,8 +22,7 @@ class UnconnectedHomePageState extends State<UnconnectedHomePage> {
 
   final settings = InAppBrowserClassSettings(
       browserSettings: InAppBrowserSettings(hideUrlBar: false),
-      webViewSettings: InAppWebViewSettings(
-          javaScriptEnabled: true, isInspectable: kDebugMode, useShouldInterceptRequest: true, userAgent: HttpClient().userAgent!));
+      webViewSettings: InAppWebViewSettings(javaScriptEnabled: true, isInspectable: kDebugMode, useShouldInterceptRequest: true, userAgent: AppConfig().userAgent));
 
   @override
   void initState() {

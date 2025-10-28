@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AppConfig {
 
@@ -10,6 +12,7 @@ class AppConfig {
   String? _casBaseURL;
   String? _serviceURL;
   String? _uPortalBaseURL;
+  String? _userAgent;
 
   factory AppConfig() {
     return _instance;
@@ -19,6 +22,13 @@ class AppConfig {
 
   // All the config is loaded from one place : the app does not need to be updated is there is a configuration update
   Future<void> loadConfig() async {
+    log.fine("Generating user agent");
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    String appName = packageInfo.appName;
+    String version = packageInfo.version;
+    String plateform = Platform.operatingSystem;
+    _userAgent = "$appName/$version ($plateform)";
+    log.fine("User agent ${_userAgent!} will be used for requests");
     log.fine("Requesting config");
     final response = await http.get(Uri.parse('https://lycees.test.recia.dev/commun/app_mobile_conf.json'),);
     if (response.statusCode == 200) {
@@ -52,5 +62,12 @@ class AppConfig {
       throw Exception("_uPortalBaseURL is not defined. Is the configuration loaded ?");
     }
     return _uPortalBaseURL!;
+  }
+
+  String get userAgent {
+    if (_userAgent == null) {
+      throw Exception("_userAgent is not defined. Is the configuration loaded ?");
+    }
+    return _userAgent!;
   }
 }
