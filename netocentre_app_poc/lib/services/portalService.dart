@@ -15,13 +15,6 @@ class PortalService {
 
   final log = Logger('PortalService');
 
-  http.Client ignoreSslClient() {
-    var ioClient = HttpClient(context: SecurityContext(withTrustedRoots: false));
-    ioClient.badCertificateCallback = ((cert, host, port) => true);
-
-    return IOClient(ioClient);
-  }
-
   Future<bool> isAuthorizedByUPortal() async {
     log.fine("Checking JSESSIONID validity...");
     if(!await hasPortalSession()){
@@ -30,14 +23,14 @@ class PortalService {
     return true;
    }
 
-  Future<bool> hasPortalSession() async{
+  Future<bool> hasPortalSession() async {
     // If user don't have any JSESSIONID it is not necessary to make a request, we know we don't have a session
     if(TokenManager().JSESSIONID == ""){
       log.finer("No JSESSIONID in TokenManager");
       return false;
     }
 
-    final client = ignoreSslClient();
+    final client = IOClient(HttpClient());
     Uri request = Uri.https(AppConfig().uPortalBaseURL, "/portail/api/session.json");
 
     log.finer("Making a request to portal : $request");
@@ -72,7 +65,7 @@ class PortalService {
   Future<void> getAllPortlets() async {
     log.fine("Getting portlets...");
 
-    final client = ignoreSslClient();
+    final client = IOClient(HttpClient());
 
     Uri request = Uri.https(
         AppConfig().uPortalBaseURL,
@@ -190,7 +183,7 @@ class PortalService {
   Future<bool> requestSwitchPortletIsFavoriteState(Service service) async {
     log.info('Requesting API to switch portlet is favorite state');
 
-    final client = ignoreSslClient();
+    final client = IOClient(HttpClient());
 
     Uri request = Uri.https(
         AppConfig().uPortalBaseURL,
@@ -227,7 +220,7 @@ class PortalService {
   Future<Map<String, dynamic>> getUserInfo() async{
     log.info("Getting user infos");
 
-    final client = ignoreSslClient();
+    final client = IOClient(HttpClient());
 
     Uri request = Uri.https(
         AppConfig().uPortalBaseURL,
