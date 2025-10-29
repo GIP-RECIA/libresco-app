@@ -4,6 +4,7 @@ import 'package:netocentre_app_poc/singletons/servicesList.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 
+import '../../services/loginService.dart';
 import '../../services/portalService.dart';
 import '../serviceWebviews/casServiceWebview.dart';
 import '../serviceWebviews/uPortalServiceWebview.dart';
@@ -86,7 +87,7 @@ class _ScaffoldwithIntegratedSearchBarState extends State<ScaffoldwithIntegrated
             title: Text(_filteredItems[index].text),
             onTap: () async {
               if(service.isAuthByUPortal){
-                if(await PortalService().isAuthorizedByUPortal()){
+                if(await LoginService().isAuthorizedByUPortal()){
                   if(context.mounted){
                     Navigator.push(context, MaterialPageRoute(builder: (context) => UPortalServiceWebview(text: service.text, uri: service.serviceUri)));
                   }

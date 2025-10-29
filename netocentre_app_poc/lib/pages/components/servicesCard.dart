@@ -42,7 +42,7 @@ class ServicesCard extends StatelessWidget{
       child: GestureDetector(
         onTapUp: (_) async {
           if(service.isAuthByUPortal){
-            if(await PortalService().isAuthorizedByUPortal()){
+            if(await LoginService().isAuthorizedByUPortal()){
               if(context.mounted){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => UPortalServiceWebview(text: service.text, uri: service.serviceUri)));
               }

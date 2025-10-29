@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/services/portalService.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
@@ -8,6 +10,53 @@ import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 class LoginService {
 
   final log = Logger('LoginService');
+
+  Future<bool> isAuthorizedByUPortal() async {
+    log.fine("Checking JSESSIONID validity...");
+    if(!await hasPortalSession()){
+      return await LoginService().unstackedUPortalLogin();
+    }
+    return true;
+  }
+
+  Future<bool> hasPortalSession() async {
+    // If user don't have any JSESSIONID it is not necessary to make a request, we know we don't have a session
+    if(TokenManager().JSESSIONID == ""){
+      log.finer("No JSESSIONID in TokenManager");
+      return false;
+    }
+
+    final client = IOClient(HttpClient());
+    Uri request = Uri.https(AppConfig().uPortalBaseURL, "/portail/api/session.json");
+
+    log.finer("Making a request to portal : $request");
+    log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
+
+    final http.Response res = await client.get(
+      request,
+      headers: <String, String>{
+        'Cookie': 'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
+        'Host': AppConfig().uPortalBaseURL
+      },
+    );
+
+    log.finest('Status code : ${res.statusCode}');
+    log.finest('Body : ${res.body}');
+    // If we get a 200 we still need to check if the session is not a guest session
+    if(res.statusCode == 200) {
+      if(json.decode(res.body)["person"]["sessionKey"] != null){
+        log.fine("Portal session is valid !");
+        return true;
+      }
+      log.fine("Portal session is guest -> Invalid");
+      return false;
+    }
+    // If we have an invalid session this API will return a 404
+    else{
+      log.fine("Portal session is invalid");
+      return false;
+    }
+  }
 
  /// Parser - JSESSIONID & idPortal
  ({String jsessionid, String idportal}) uPortalLoginParser(HttpClientResponse response){
@@ -211,7 +260,7 @@ class LoginService {
    if(idPortalCookie != "" && jsessionidCookie != ""){
      TokenManager().setIdPortal(idPortalCookie, flush: true);
      TokenManager().setJSESSIONID(jsessionidCookie, flush: true);
-     if(await PortalService().hasPortalSession()){
+     if(await hasPortalSession()){
         return true;
      }
    }

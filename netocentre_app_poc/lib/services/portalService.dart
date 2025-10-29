@@ -15,53 +15,6 @@ class PortalService {
 
   final log = Logger('PortalService');
 
-  Future<bool> isAuthorizedByUPortal() async {
-    log.fine("Checking JSESSIONID validity...");
-    if(!await hasPortalSession()){
-      return await LoginService().unstackedUPortalLogin();
-    }
-    return true;
-   }
-
-  Future<bool> hasPortalSession() async {
-    // If user don't have any JSESSIONID it is not necessary to make a request, we know we don't have a session
-    if(TokenManager().JSESSIONID == ""){
-      log.finer("No JSESSIONID in TokenManager");
-      return false;
-    }
-
-    final client = IOClient(HttpClient());
-    Uri request = Uri.https(AppConfig().uPortalBaseURL, "/portail/api/session.json");
-
-    log.finer("Making a request to portal : $request");
-    log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
-
-    final http.Response res = await client.get(
-      request,
-      headers: <String, String>{
-        'Cookie': 'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
-        'Host': AppConfig().uPortalBaseURL
-      },
-    );
-
-    log.finest('Status code : ${res.statusCode}');
-    log.finest('Body : ${res.body}');
-    // If we get a 200 we still need to check if the session is not a guest session
-    if(res.statusCode == 200) {
-      if(json.decode(res.body)["person"]["sessionKey"] != null){
-        log.fine("Portal session is valid !");
-        return true;
-      }
-      log.fine("Portal session is guest -> Invalid");
-      return false;
-    }
-    // If we have an invalid session this API will return a 404
-    else{
-      log.fine("Portal session is invalid");
-      return false;
-    }
-  }
-
   Future<void> getAllPortlets() async {
     log.fine("Getting portlets...");
 
@@ -76,7 +29,7 @@ class PortalService {
     log.finer("Getting portlet request : $request");
     log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
 
-    if(await isAuthorizedByUPortal()){
+    if(await LoginService().isAuthorizedByUPortal()){
       final http.Response res = await client.get(
         request,
         headers: <String, String>{
@@ -197,7 +150,7 @@ class PortalService {
     log.finer("Getting portlet request : $request");
     log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
 
-    if(await isAuthorizedByUPortal()){
+    if(await LoginService().isAuthorizedByUPortal()){
       final http.Response res = await client.post(
         request,
         headers: <String, String>{

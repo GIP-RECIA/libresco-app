@@ -18,11 +18,11 @@ class LoadingPageUtils {
   Future<void> loadDataFromAPI() async {
     log.info("Loading data from portal API...");
     // Try to login to portal once : if we get a user we're connected
-    if(!await PortalService().hasPortalSession()){
+    if(!await LoginService().hasPortalSession()){
       // If we get a guest user, try again (if the CAS session is still valid)
       log.info("Portal session is invalid");
       await LoginService().unstackedUPortalLogin();
-      if(!await PortalService().hasPortalSession()){
+      if(!await LoginService().hasPortalSession()){
         // If we get a guest user again, that means CAS session is not valid, and we need to redo the login phase
         log.info("CAS session is invalid");
         TokenManager().reset(flush: true);
