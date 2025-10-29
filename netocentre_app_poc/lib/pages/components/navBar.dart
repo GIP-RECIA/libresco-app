@@ -32,7 +32,7 @@ class NavBarState extends State<NavBar> {
 
     if(UserInfo().firstname == ""){
       log.warning("User info should be loaded but is not !");
-      PortalService().loadUserInfo();
+      PortalService.instance.loadUserInfo();
     }
     // TODO : pictureUri
     pictureUri = "https://${AppConfig().uPortalBaseURL}${UserInfo().pictureURI}";

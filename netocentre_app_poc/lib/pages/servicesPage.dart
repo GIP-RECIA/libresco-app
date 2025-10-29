@@ -38,7 +38,7 @@ class ServicesPageState extends State<ServicesPage>{
   }
 
   void _switchPortletIsFavoriteState(int index) async {
-    bool isTaskValidated = await PortalService().switchPortletIsFavoriteState(renderedServices[index]);
+    bool isTaskValidated = await PortalService.instance.switchPortletIsFavoriteState(renderedServices[index]);
 
     if (isTaskValidated){
       final Service currService = renderedServices[index];

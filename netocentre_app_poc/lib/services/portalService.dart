@@ -15,6 +15,10 @@ class PortalService {
 
   final log = Logger('PortalService');
 
+  PortalService._privateConstructor();
+  static final PortalService _instance = PortalService._privateConstructor();
+  static PortalService get instance => _instance;
+
   Future<void> getAllPortlets() async {
     log.fine("Getting portlets...");
 
