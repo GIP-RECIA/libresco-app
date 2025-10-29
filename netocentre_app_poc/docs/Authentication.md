@@ -1,4 +1,3 @@
-
 # Authentification
 
 L'application mobile dispose d'une persistance spécifique des sessions afin d'éviter à l'utilisateur d'avoir à tout le temps se reconnecter. Cette persistance est mise en œuvre grâce à une sauvegarde des cookies de session (portail et CAS) dans une base de données. Ces cookies sont ensuite restitués lors des requêtes en ayant besoin, que ce soit des requêtes directes avec un `HttpClient` ou des requêtes faites par une `WebView`.
