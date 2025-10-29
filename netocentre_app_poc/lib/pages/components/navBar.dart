@@ -81,7 +81,7 @@ class NavBarState extends State<NavBar> {
             ],
           ),
           onPressed: () async {
-            await LoginService().logout();
+            await LoginService.instance.logout();
             await TokenRepository().deleteAllRows();
             TokenManager().reset();
             if (context.mounted) {

@@ -14,7 +14,7 @@ Future<Widget> buildApp() async {
 
   log.fine("Starting app...");
   await TokenRepository().getCookiesInDB();
-  bool connected = await LoginService().hasCASSession();
+  bool connected = await LoginService.instance.hasCASSession();
   if (!connected) {
     log.fine("User is not connected to CAS : database reset");
     TokenManager().reset(flush: true);

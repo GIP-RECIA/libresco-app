@@ -87,7 +87,7 @@ class _ScaffoldwithIntegratedSearchBarState extends State<ScaffoldwithIntegrated
             title: Text(_filteredItems[index].text),
             onTap: () async {
               if(service.isAuthByUPortal){
-                if(await LoginService().isAuthorizedByUPortal()){
+                if(await LoginService.instance.isAuthorizedByUPortal()){
                   if(context.mounted){
                     Navigator.push(context, MaterialPageRoute(builder: (context) => UPortalServiceWebview(text: service.text, uri: service.serviceUri)));
                   }

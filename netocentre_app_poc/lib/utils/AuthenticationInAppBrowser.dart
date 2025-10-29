@@ -4,7 +4,6 @@ import 'package:logging/logging.dart';
 
 import '../pages/homePage.dart';
 import '../pages/loadingPage.dart';
-import '../services/loginService.dart';
 import '../singletons/appConfig.dart';
 import '../singletons/tokenManager.dart';
 
@@ -14,8 +13,6 @@ class AuthenticationInAppBrowser extends InAppBrowser {
   BuildContext context;
   CookieManager cookieManager = CookieManager.instance();
   AuthenticationInAppBrowser(this.context);
-
-  LoginService loginService = LoginService();
 
   void navigateToHomePage(){
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoadingPage(callbackWidget: HomePage())));

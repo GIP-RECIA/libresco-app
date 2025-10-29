@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/services/portalService.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 
@@ -11,10 +10,14 @@ class LoginService {
 
   final log = Logger('LoginService');
 
+  LoginService._privateConstructor();
+  static final LoginService _instance = LoginService._privateConstructor();
+  static LoginService get instance => _instance;
+
   Future<bool> isAuthorizedByUPortal() async {
     log.fine("Checking JSESSIONID validity...");
     if(!await hasPortalSession()){
-      return await LoginService().unstackedUPortalLogin();
+      return await instance.unstackedUPortalLogin();
     }
     return true;
   }

@@ -29,7 +29,7 @@ class PortalService {
     log.finer("Getting portlet request : $request");
     log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
 
-    if(await LoginService().isAuthorizedByUPortal()){
+    if(await LoginService.instance.isAuthorizedByUPortal()){
       final http.Response res = await client.get(
         request,
         headers: <String, String>{
@@ -150,7 +150,7 @@ class PortalService {
     log.finer("Getting portlet request : $request");
     log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
 
-    if(await LoginService().isAuthorizedByUPortal()){
+    if(await LoginService.instance.isAuthorizedByUPortal()){
       final http.Response res = await client.post(
         request,
         headers: <String, String>{
