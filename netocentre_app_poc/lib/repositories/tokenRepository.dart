@@ -81,7 +81,7 @@ class TokenRepository {
     await db.execute("DELETE FROM tokens");
   }
 
-  Future<void> getLastValidRefreshToken() async{
+  Future<void> getCookiesInDB() async{
     final db = await getDB();
     log.fine('Get from database');
     int? count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM tokens'));

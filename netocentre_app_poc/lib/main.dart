@@ -13,7 +13,7 @@ final log = Logger('main');
 Future<Widget> buildApp() async {
 
   log.fine("Starting app...");
-  await TokenRepository().getLastValidRefreshToken();
+  await TokenRepository().getCookiesInDB();
   bool connected = await LoginService().hasCASSession();
   if (!connected) {
     log.fine("User is not connected to CAS : database reset");
