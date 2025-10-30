@@ -6,7 +6,10 @@ import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 class TokenRepository {
 
   final log = Logger('TokenRepository');
-  TokenRepository();
+
+  TokenRepository._privateConstructor();
+  static final TokenRepository _instance = TokenRepository._privateConstructor();
+  static TokenRepository get instance => _instance;
 
   /// DB connection
   Future<Database> getDB() async {

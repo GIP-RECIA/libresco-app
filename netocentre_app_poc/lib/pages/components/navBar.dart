@@ -82,7 +82,7 @@ class NavBarState extends State<NavBar> {
           ),
           onPressed: () async {
             await LoginService.instance.logout();
-            await TokenRepository().deleteAllRows();
+            await TokenRepository.instance.deleteAllRows();
             TokenManager().reset();
             if (context.mounted) {
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const UnconnectedHomePage()),

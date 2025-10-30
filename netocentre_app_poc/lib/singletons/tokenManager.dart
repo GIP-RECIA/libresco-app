@@ -21,7 +21,7 @@ class TokenManager {
     _TGT = token;
 
     if(flush){
-      TokenRepository().flushTokens();
+      TokenRepository.instance.flushTokens();
     }
   }
 
@@ -31,7 +31,7 @@ class TokenManager {
     _JSESSIONID = token;
 
     if(flush){
-      TokenRepository().flushTokens();
+      TokenRepository.instance.flushTokens();
     }
   }
 
@@ -42,7 +42,7 @@ class TokenManager {
     _idPortal = value;
 
     if(flush){
-      TokenRepository().flushTokens();
+      TokenRepository.instance.flushTokens();
     }
   }
 
@@ -51,7 +51,7 @@ class TokenManager {
     _JSESSIONID = "";
     _idPortal = "";
     if(flush){
-      TokenRepository().flushTokens();
+      TokenRepository.instance.flushTokens();
     }
   }
 
