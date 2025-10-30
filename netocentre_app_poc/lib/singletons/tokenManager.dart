@@ -8,12 +8,19 @@ class TokenManager {
   String _TGT = "";
   String _JSESSIONID = "";
   String _idPortal = "";
+  String _currentProfileID = "";
 
   factory TokenManager() {
     return _instance;
   }
 
   TokenManager._internal();
+
+  String get currentProfileID => _currentProfileID;
+
+  void setCurrentProfileID(String id) {
+    _currentProfileID = id;
+  }
 
   String get TGT => _TGT;
 

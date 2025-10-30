@@ -13,6 +13,8 @@ final log = Logger('main');
 Future<Widget> buildApp() async {
 
   log.fine("Starting app...");
+  // Temp : force profile 1
+  TokenManager().setCurrentProfileID("1");
   await TokenRepository.instance.getCookiesInDB();
   bool connected = await LoginService.instance.hasCASSession();
   if (!connected) {

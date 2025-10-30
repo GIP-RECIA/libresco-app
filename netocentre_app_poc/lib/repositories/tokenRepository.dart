@@ -36,7 +36,7 @@ class TokenRepository {
     await db.insert(
         'tokens',
         {
-          'id': 1,
+          'id': TokenManager().currentProfileID,
           'TGT': TokenManager().TGT,
           'JSESSIONID': TokenManager().JSESSIONID,
           'idPortal': TokenManager().idPortal
@@ -53,7 +53,7 @@ class TokenRepository {
     await db.update(
       'tokens',
       {
-        'id': 1,
+        'id': TokenManager().currentProfileID,
         'TGT': TokenManager().TGT,
         'JSESSIONID': TokenManager().JSESSIONID,
         'idPortal': TokenManager().idPortal
@@ -78,10 +78,10 @@ class TokenRepository {
     }
   }
 
-  Future<void> deleteAllRows() async {
+  Future<void> deleteCookiesForCurrentProfile() async {
     log.fine('Delete in database');
     final db = await getDB();
-    await db.execute("DELETE FROM tokens");
+    await db.execute("DELETE FROM tokens where id = ${TokenManager().currentProfileID}");
   }
 
   Future<void> getCookiesInDB() async{
@@ -89,14 +89,22 @@ class TokenRepository {
     log.fine('Get from database');
     int? count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM tokens'));
     if(count! > 0){
-    List<Map<String, Object?>> res = await db.query('tokens', limit: 1);
-      TokenManager().setTGT(res.first["TGT"].toString());
-      TokenManager().setJSESSIONID(res.first["JSESSIONID"].toString());
-      TokenManager().setIdPortal(res.first["idPortal"].toString());
-      log.fine('TokenManager after getting values from database : ${TokenManager().toString()}');
+    List<Map<String, Object?>> res = await db.query('tokens', where: 'id = ?',whereArgs: [TokenManager().currentProfileID] , limit: 1);
+    TokenManager().setTGT(res.first["TGT"].toString());
+    TokenManager().setJSESSIONID(res.first["JSESSIONID"].toString());
+    TokenManager().setIdPortal(res.first["idPortal"].toString());
+    log.fine('TokenManager after getting values from database : ${TokenManager().toString()}');
     }
     else {
       log.fine("Empty database");
     }
   }
+
+  Future<List<int>> getProfilesList() async {
+    final db = await getDB();
+    log.fine('Get profiles from database');
+    final results = await db.query('tokens', columns: ['id'], distinct: true);
+    return results.map((row) => row['id'] as int).toList();
+  }
+
 }
