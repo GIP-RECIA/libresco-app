@@ -5,7 +5,6 @@ import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 
 import '../../services/loginService.dart';
-import '../../services/portalService.dart';
 import '../serviceWebviews/casServiceWebview.dart';
 import '../serviceWebviews/uPortalServiceWebview.dart';
 import 'navBar.dart';

@@ -19,7 +19,7 @@ Au besoin faire un `flutter doctor` pour vérifier si tout est bien configuré.
   - Webviews
 - Un `InAppBrowser` pour l'authentification CAS
 - Des services pour accéder à la base de données, réaliser le flot de login et les requêtes à l'API du portail
-- Des tests unitaires et des tests d'intégrations (TODO)4
+- Des tests unitaires et des tests d'intégrations (TODO)
 
 ## Build et run en local
 
