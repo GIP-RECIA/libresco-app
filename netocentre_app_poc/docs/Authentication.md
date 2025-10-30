@@ -38,7 +38,7 @@ Le cookie portail se récupère avec des requêtes en direct sur le portail via 
 
 ## Vérification de la validité des sessions
 
-Pour éviter de se retrouver bloqué dans un cas où on n'arrive pas à établir de session, on vérifie à plusieurs endroits dans le flot si les sessions portail et CAS sont encore valides. On se sert de 2 méthodes qui sont accessibles de partout car elles font des tests de connexion par rapport aux cookies stockés dans la base de données de l'application.
+Pour éviter de se retrouver bloqué dans un cas où on n'arrive pas à établir de session, on vérifie à plusieurs endroits dans le flot si les sessions portail et CAS sont encore valides. On se sert de 2 méthodes dans le `LoginService` qui sont accessibles de partout (car c'est un singleton).
 
 ### Session CAS
 
@@ -63,7 +63,7 @@ On utilise 2 classes pour stocker et accéder aux cookies de la base de données
 Une fois les cookies récupérés et stockés en base, il faut pouvoir les restituer aux bons endroits. La restitution se passe le plus souvent dans des `WebView` grâce au `CookieManager`. C'est un singleton qui permet de gérer les cookies utilisées par toutes les instances de `WebView`. On accède à cet objet depuis les différentes classes ou c'est nécessaires et il ensuite de faire un `setCookie` avec les bons paramètres (exemple pour un cookie CAS) :
 
 ```dart
-manager.setCookie(  
+manager.setCookie(
   url: WebUri("https://${AppConfig().casBaseURL}/cas"),  
   name: "TGC",  
   value: TokenManager().TGT,  
@@ -76,3 +76,10 @@ manager.setCookie(
 ```
 
 **Note** : on peut faire un `manager.removeSessionCookies()` pour remettre à zéro les cookies avant de les ajouter : cela permet de nettoyer le `CookieManager` pour être sur que d'anciens cookies potentiellement invalides sont bien supprimés.
+
+## Serveur CAS
+
+D'autres modifications moins importantes permettent d'assurer un fonctionnement optimal de la persistance des sessions, notamment :
+- La définition d'un user-agent spécifique et unique partout dans l'application mobile, afin de ne pas avoir à retirer le système de`pin-to-session` au niveau du serveur CAS ;
+- Une configuration spécifique au niveau du serveur CAS pour autoriser des
+sessions plus longues spécifiquement pour ce service, avec un système de soft/hard timeout ajouté pour l'occasion.
