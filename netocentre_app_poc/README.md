@@ -1,16 +1,26 @@
 # netocentre_app_poc
 
-Complete POC that combines the frontend & backend of other POCs.
+POC de l'application mobile, avec la partie backend (gestion de session, appels API au portail) et la partie frontend (widgets flutters, webviews).
 
-## Getting Started
+## Prérequis
 
-This project is a starting point for a Flutter application.
+- Flutter (channel stable, `3.35.5` au moment de l'écriture)
+- Dart `3.9.2+`
+- Java `17+`
 
-A few resources to get you started if this is your first Flutter project:
+Au besoin faire un `flutter doctor` pour vérifier si tout est bien configuré.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Architecture
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Une base de données
+- Plusieurs `StatefulWidget` :
+  - Pages entières
+  - Composants
+  - Webviews
+- Un `InAppBrowser` pour l'authentification CAS
+- Des services pour accéder à la base de données, réaliser le flot de login et les requêtes à l'API du portail
+- Des tests unitaires et des tests d'intégrations (TODO)4
+
+## Build et run en local
+
+Le mieux pour faire tourner le projet en local est d'utiliser Android Studio avec les plugin `Flutter` et `Dart`. Il suffit alors de séléctionner un émulateur ou téléphone si branché en local, et de lancer le `main.dart`. 
