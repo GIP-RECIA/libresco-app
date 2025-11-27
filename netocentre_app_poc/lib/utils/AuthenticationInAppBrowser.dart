@@ -31,10 +31,12 @@ class AuthenticationInAppBrowser extends InAppBrowser {
     if(url != null){
       if(url.toString().contains("${AppConfig().serviceURL}?ticket=")){
         // Get TGT cookie
-        List<Cookie> cookies = await cookieManager.getCookies(url: WebUri("https://${AppConfig().casBaseURL}/cas"));
+        log.finest("Looking for TGC cookie")
+        List<Cookie> cookies = await cookieManager.getCookies(url: WebUri("https://${AppConfig().casBaseURL}/cas/"));
         for(var current in cookies) {
+          log.finest("Checking cookie $current.name");
           if(current.name == "TGC"){
-            log.fine("TGT Cookie found with value : $current");
+            log.fine("TGC Cookie found with value : $current");
             TokenManager().setTGT(current.value, flush: true);
           }
         }
