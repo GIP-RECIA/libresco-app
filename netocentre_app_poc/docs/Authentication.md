@@ -6,7 +6,7 @@ L'application mobile dispose d'une persistance spécifique des sessions afin d'�
 
 Le schéma ci-dessous résume tout le flot d'authentification :
 
-[[images/authentication_flow.png]](images/authentication_flow.png)
+![[images/authentication_flow.png]](images/authentication_flow.png)
 
 ## Obtention des cookies
 
