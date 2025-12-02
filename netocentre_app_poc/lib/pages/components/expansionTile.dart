@@ -10,10 +10,10 @@ class MyExpansionTile extends StatefulWidget {
   final int? nbNotifications;
 
   @override
-  State<MyExpansionTile> createState() => MyExpansionTileState();
+  State<MyExpansionTile> createState() => _MyExpansionTile();
 }
 
-class MyExpansionTileState extends State<MyExpansionTile> {
+class _MyExpansionTile extends State<MyExpansionTile> {
   ExpansibleController controller = ExpansibleController();
   List<Widget> widgets = [];
 

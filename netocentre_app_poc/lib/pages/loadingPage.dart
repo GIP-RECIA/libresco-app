@@ -6,6 +6,52 @@ import 'package:netocentre_app_poc/services/loginService.dart';
 import 'package:netocentre_app_poc/services/portalService.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 
+class LoadingPage extends StatefulWidget {
+  final Widget callbackWidget;
+
+  const LoadingPage({required this.callbackWidget, super.key});
+
+  @override
+  State<StatefulWidget> createState() => _LoadingPage();
+}
+
+class _LoadingPage extends State<LoadingPage> {
+  @override
+  void initState() {
+    super.initState();
+    LoadingPageUtils(context, widget.callbackWidget).loadDataFromAPI();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: const LinearProgressIndicator(),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Text(
+              "Récupération des données en cours.\nVeuillez Patienter.",
+              textAlign: TextAlign.center,
+              style: GoogleFonts.nunito(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class LoadingPageUtils {
   final log = Logger('LoadingPageUtils');
 
@@ -50,51 +96,5 @@ class LoadingPageUtils {
   void navigatorPush() {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => callbackWidget));
-  }
-}
-
-class LoadingPage extends StatefulWidget {
-  final Widget callbackWidget;
-
-  const LoadingPage({required this.callbackWidget, super.key});
-
-  @override
-  State<StatefulWidget> createState() => LoadingPageState();
-}
-
-class LoadingPageState extends State<LoadingPage> {
-  @override
-  void initState() {
-    super.initState();
-    LoadingPageUtils(context, widget.callbackWidget).loadDataFromAPI();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: const LinearProgressIndicator(),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Text(
-              "Récupération des données en cours.\nVeuillez Patienter.",
-              textAlign: TextAlign.center,
-              style: GoogleFonts.nunito(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

@@ -14,11 +14,11 @@ class NavBar extends StatefulWidget {
   const NavBar({super.key});
 
   @override
-  State<NavBar> createState() => NavBarState();
+  State<NavBar> createState() => _NavBar();
 }
 
-class NavBarState extends State<NavBar> {
-  final log = Logger('NavBarState');
+class _NavBar extends State<NavBar> {
+  final log = Logger('_NavBar');
   final FocusNode _buttonFocusNode = FocusNode(debugLabel: 'Menu Button');
   String pictureUri = "";
 

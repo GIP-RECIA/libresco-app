@@ -14,11 +14,11 @@ class UPortalServiceWebview extends StatefulWidget {
       {super.key, required this.uri, required this.text});
 
   @override
-  State<UPortalServiceWebview> createState() => UPortalServiceWebviewState();
+  State<UPortalServiceWebview> createState() => _UPortalServiceWebview();
 }
 
-class UPortalServiceWebviewState extends State<UPortalServiceWebview> {
-  final log = Logger('UPortalServiceWebviewState');
+class _UPortalServiceWebview extends State<UPortalServiceWebview> {
+  final log = Logger('_UPortalServiceWebview');
   final GlobalKey webViewKey = GlobalKey();
   late CookieManager manager;
 

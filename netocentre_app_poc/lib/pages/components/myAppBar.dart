@@ -16,10 +16,10 @@ class ScaffoldwithIntegratedSearchBar extends StatefulWidget {
 
   @override
   State<ScaffoldwithIntegratedSearchBar> createState() =>
-      _ScaffoldwithIntegratedSearchBarState();
+      _ScaffoldwithIntegratedSearchBar();
 }
 
-class _ScaffoldwithIntegratedSearchBarState
+class _ScaffoldwithIntegratedSearchBar
     extends State<ScaffoldwithIntegratedSearchBar> {
   bool _showSearchBar = false;
   final List<Service> _allItems = Services().servicesList;

@@ -9,10 +9,10 @@ class UnconnectedHomePage extends StatefulWidget {
   const UnconnectedHomePage({super.key});
 
   @override
-  State<UnconnectedHomePage> createState() => UnconnectedHomePageState();
+  State<UnconnectedHomePage> createState() => _UnconnectedHomePage();
 }
 
-class UnconnectedHomePageState extends State<UnconnectedHomePage> {
+class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   late InAppBrowser browser;
 
   final settings = InAppBrowserClassSettings(

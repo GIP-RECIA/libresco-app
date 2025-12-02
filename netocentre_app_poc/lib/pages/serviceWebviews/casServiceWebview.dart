@@ -15,11 +15,11 @@ class CASServiceWebview extends StatefulWidget {
       {super.key, required this.uri, required this.text, required this.fname});
 
   @override
-  State<CASServiceWebview> createState() => CASServiceWebviewState();
+  State<CASServiceWebview> createState() => _CASServiceWebview();
 }
 
-class CASServiceWebviewState extends State<CASServiceWebview> {
-  final log = Logger('CASServiceWebviewState');
+class _CASServiceWebview extends State<CASServiceWebview> {
+  final log = Logger('_CASServiceWebview');
   final GlobalKey webViewKey = GlobalKey();
   late CookieManager manager;
 

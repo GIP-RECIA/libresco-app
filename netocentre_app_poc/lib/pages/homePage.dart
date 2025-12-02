@@ -13,11 +13,11 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => HomePageState();
+  State<HomePage> createState() => _HomePage();
 }
 
-class HomePageState extends State<HomePage> {
-  final log = Logger('HomePageState');
+class _HomePage extends State<HomePage> {
+  final log = Logger('_HomePage');
   List<Service> renderedServices = Services().servicesList;
   List<Service> renderedFavoriteServices = Services().favoritesList;
 

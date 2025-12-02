@@ -15,11 +15,11 @@ class ServicesPage extends StatefulWidget {
   const ServicesPage({super.key});
 
   @override
-  State<ServicesPage> createState() => ServicesPageState();
+  State<ServicesPage> createState() => _ServicesPage();
 }
 
-class ServicesPageState extends State<ServicesPage> {
-  final log = Logger('ServicesPageState');
+class _ServicesPage extends State<ServicesPage> {
+  final log = Logger('_ServicesPage');
   List<Service> renderedServices = Services().servicesList;
   String dropwdownValue = "";
 
