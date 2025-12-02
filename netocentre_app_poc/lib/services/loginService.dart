@@ -114,7 +114,7 @@ class LoginService {
     );
     var request = await client.getUrl(uri);
     request.followRedirects = false;
-    request.headers.add('Cookie', 'TGC=${TokenManager().TGT}');
+    request.headers.add('Cookie', 'TGC=${TokenManager().TGC}');
 
     log.finer('Making this request to CAS server : ${request.uri.toString()}');
     log.finer("Request headers are : ${request.headers}");
@@ -142,11 +142,11 @@ class LoginService {
     log.fine("Logging out the user from CAS");
     Uri casURI = Uri.https(AppConfig().casBaseURL, "/cas/logout");
     log.finer("Making a request to CAS : $casURI");
-    log.finer("TGT=${TokenManager().TGT}");
+    log.finer("TGC=${TokenManager().TGC}");
 
     var casRequest = await client.getUrl(casURI);
     casRequest.followRedirects = false;
-    casRequest.headers.add('Cookie', 'TGC=${TokenManager().TGT}');
+    casRequest.headers.add('Cookie', 'TGC=${TokenManager().TGC}');
 
     var casResponse = await casRequest.close();
     String casBody = await casResponse.transform(utf8.decoder).join();
@@ -190,7 +190,7 @@ class LoginService {
         {'service': 'https://${AppConfig().uPortalBaseURL}/portail/Login'});
     var request = await client.getUrl(uri);
     request.followRedirects = false;
-    request.headers.add('Cookie', 'TGC=${TokenManager().TGT}');
+    request.headers.add('Cookie', 'TGC=${TokenManager().TGC}');
 
     log.finer("\nRequest $requestCounter :");
     log.finer(request.uri.toString());

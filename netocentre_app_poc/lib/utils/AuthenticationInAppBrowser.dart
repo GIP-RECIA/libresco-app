@@ -28,11 +28,11 @@ class AuthenticationInAppBrowser extends InAppBrowser {
   // This method is called when the browser loads a new url (~= new request)
   @override
   Future onLoadStart(url) async {
-    // We get the cookies and try to detect if there is the TGT when we see the login answer from CAS
+    // We get the cookies and try to detect if there is the TGC when we see the login answer from CAS
     log.fine("Started $url");
     if (url != null) {
       if (url.toString().contains("${AppConfig().serviceURL}?ticket=")) {
-        // Get TGT cookie
+        // Get TGC cookie
         log.finest("Looking for TGC cookie");
         List<Cookie> cookies = await cookieManager.getCookies(
             url: WebUri("https://${AppConfig().casBaseURL}/cas/"));
@@ -40,16 +40,16 @@ class AuthenticationInAppBrowser extends InAppBrowser {
           log.finest("Checking cookie $current.name");
           if (current.name == "TGC") {
             log.fine("TGC Cookie found with value : $current");
-            TokenManager().setTGT(current.value, flush: true);
+            TokenManager().setTGC(current.value, flush: true);
           }
         }
-        // If we have found a TGT, then we can navigate to home page
-        if (TokenManager().TGT != "") {
-          log.fine("$url was intercepted to get the TGT. Closing browser...");
+        // If we have found a TGC, then we can navigate to home page
+        if (TokenManager().TGC != "") {
+          log.fine("$url was intercepted to get the TGC. Closing browser...");
           close(); // close the navigator
           navigateToHomePage();
         }
-        // If no TGT is found, it means there is certainly a problem with the cookies
+        // If no TGC is found, it means there is certainly a problem with the cookies
         else {
           log.warning(
               "TGC cookie wasn't found. There may be a problem with cookies");

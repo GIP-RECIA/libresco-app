@@ -21,7 +21,7 @@ class TokenRepository {
         return db.execute(
           'CREATE TABLE tokens('
           'id INTEGER, '
-          'TGT VARCHAR(255), '
+          'TGC VARCHAR(255), '
           'JSESSIONID VARCHAR(255), '
           'idPortal VARCHAR(255)'
           ')',
@@ -39,7 +39,7 @@ class TokenRepository {
         'tokens',
         {
           'id': TokenManager().currentProfileID,
-          'TGT': TokenManager().TGT,
+          'TGC': TokenManager().TGC,
           'JSESSIONID': TokenManager().JSESSIONID,
           'idPortal': TokenManager().idPortal
         },
@@ -55,7 +55,7 @@ class TokenRepository {
       'tokens',
       {
         'id': TokenManager().currentProfileID,
-        'TGT': TokenManager().TGT,
+        'TGC': TokenManager().TGC,
         'JSESSIONID': TokenManager().JSESSIONID,
         'idPortal': TokenManager().idPortal
       },
@@ -96,7 +96,7 @@ class TokenRepository {
           where: 'id = ?',
           whereArgs: [TokenManager().currentProfileID],
           limit: 1);
-      TokenManager().setTGT(res.first["TGT"].toString());
+      TokenManager().setTGC(res.first["TGC"].toString());
       TokenManager().setJSESSIONID(res.first["JSESSIONID"].toString());
       TokenManager().setIdPortal(res.first["idPortal"].toString());
       log.fine(

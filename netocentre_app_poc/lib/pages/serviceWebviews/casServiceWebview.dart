@@ -47,7 +47,7 @@ class _CASServiceWebview extends State<CASServiceWebview> {
     manager.setCookie(
       url: WebUri("https://${AppConfig().casBaseURL}/cas"),
       name: "TGC",
-      value: TokenManager().TGT,
+      value: TokenManager().TGC,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
