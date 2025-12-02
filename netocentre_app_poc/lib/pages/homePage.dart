@@ -4,11 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/pages/components/myAppBar.dart';
+import 'package:netocentre_app_poc/singletons/appConfig.dart';
+import 'package:netocentre_app_poc/singletons/servicesList.dart';
+import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
-
-import '../singletons/appConfig.dart';
-import '../singletons/servicesList.dart';
-import '../singletons/tokenManager.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

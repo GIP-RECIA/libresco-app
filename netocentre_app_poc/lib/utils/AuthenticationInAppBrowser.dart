@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
-
-import '../pages/homePage.dart';
-import '../pages/loadingPage.dart';
-import '../singletons/appConfig.dart';
-import '../singletons/tokenManager.dart';
+import 'package:netocentre_app_poc/pages/homePage.dart';
+import 'package:netocentre_app_poc/pages/loadingPage.dart';
+import 'package:netocentre_app_poc/singletons/appConfig.dart';
+import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 
 class AuthenticationInAppBrowser extends InAppBrowser {
   final log = Logger('AuthenticationInAppBrowser');

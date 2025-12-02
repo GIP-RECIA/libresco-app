@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
+import 'package:netocentre_app_poc/pages/components/navBar.dart';
+import 'package:netocentre_app_poc/pages/serviceWebviews/casServiceWebview.dart';
+import 'package:netocentre_app_poc/pages/serviceWebviews/uPortalServiceWebview.dart';
 import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
+import 'package:netocentre_app_poc/services/loginService.dart';
 import 'package:netocentre_app_poc/singletons/servicesList.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
-
-import '../../services/loginService.dart';
-import '../serviceWebviews/casServiceWebview.dart';
-import '../serviceWebviews/uPortalServiceWebview.dart';
-import 'navBar.dart';
 
 // TODO: call from unconnected home page needs some modification
 class ScaffoldwithIntegratedSearchBar extends StatefulWidget {

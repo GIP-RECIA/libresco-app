@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
-
-import '../utils/AuthenticationInAppBrowser.dart';
+import 'package:netocentre_app_poc/utils/AuthenticationInAppBrowser.dart';
 
 class UnconnectedHomePage extends StatefulWidget {
   const UnconnectedHomePage({super.key});

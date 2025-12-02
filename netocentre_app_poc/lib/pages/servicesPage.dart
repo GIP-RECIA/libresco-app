@@ -4,13 +4,12 @@ import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/pages/components/expansionTile.dart';
 import 'package:netocentre_app_poc/pages/components/myAppBar.dart';
+import 'package:netocentre_app_poc/pages/components/servicesCard.dart';
+import 'package:netocentre_app_poc/pages/loadingPage.dart';
+import 'package:netocentre_app_poc/services/portalService.dart';
 import 'package:netocentre_app_poc/singletons/servicesList.dart';
+import 'package:netocentre_app_poc/singletons/userInfo.dart';
 import 'package:slugify/slugify.dart';
-
-import '../services/portalService.dart';
-import '../singletons/userInfo.dart';
-import 'components/servicesCard.dart';
-import 'loadingPage.dart';
 
 class ServicesPage extends StatefulWidget {
   const ServicesPage({super.key});

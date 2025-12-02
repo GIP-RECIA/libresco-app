@@ -5,11 +5,10 @@ import 'package:netocentre_app_poc/pages/servicesPage.dart';
 import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
 import 'package:netocentre_app_poc/repositories/tokenRepository.dart';
 import 'package:netocentre_app_poc/services/loginService.dart';
+import 'package:netocentre_app_poc/services/portalService.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
-
-import '../../services/portalService.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});

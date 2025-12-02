@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
-
-import '../services/loginService.dart';
-import '../services/portalService.dart';
-import '../singletons/tokenManager.dart';
+import 'package:netocentre_app_poc/services/loginService.dart';
+import 'package:netocentre_app_poc/services/portalService.dart';
+import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 
 class LoadingPageUtils {
   final log = Logger('LoadingPageUtils');
