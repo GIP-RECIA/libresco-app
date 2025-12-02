@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -16,12 +14,15 @@ class UnconnectedHomePage extends StatefulWidget {
 }
 
 class UnconnectedHomePageState extends State<UnconnectedHomePage> {
-
   late InAppBrowser browser;
 
   final settings = InAppBrowserClassSettings(
       browserSettings: InAppBrowserSettings(hideUrlBar: false),
-      webViewSettings: InAppWebViewSettings(javaScriptEnabled: true, isInspectable: kDebugMode, useShouldInterceptRequest: true, userAgent: AppConfig().userAgent));
+      webViewSettings: InAppWebViewSettings(
+          javaScriptEnabled: true,
+          isInspectable: kDebugMode,
+          useShouldInterceptRequest: true,
+          userAgent: AppConfig().userAgent));
 
   @override
   void initState() {
@@ -69,11 +70,12 @@ class UnconnectedHomePageState extends State<UnconnectedHomePage> {
                     key: const Key("loginButton"),
                     onPressed: () {
                       browser.openUrlRequest(
-                          urlRequest: URLRequest(url: WebUri("https://${AppConfig().casBaseURL}/cas/login?service=${AppConfig().serviceURL}")),
+                          urlRequest: URLRequest(
+                              url: WebUri(
+                                  "https://${AppConfig().casBaseURL}/cas/login?service=${AppConfig().serviceURL}")),
                           settings: settings);
                     },
-                    child: const Text("Se connecter")
-                ),
+                    child: const Text("Se connecter")),
               ),
               const SizedBox(
                 height: 30,
@@ -112,8 +114,7 @@ class UnconnectedHomePageState extends State<UnconnectedHomePage> {
                 ),
               ),
               Text("{inser menu (lorem ipsum) + tuiles}"),
-            ]
-        ),
+            ]),
       ),
     );
   }

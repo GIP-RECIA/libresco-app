@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/pages/components/expansionTile.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
+import 'package:netocentre_app_poc/pages/components/expansionTile.dart';
 import 'package:netocentre_app_poc/pages/components/myAppBar.dart';
 import 'package:netocentre_app_poc/singletons/servicesList.dart';
 import 'package:slugify/slugify.dart';
@@ -12,35 +12,37 @@ import '../singletons/userInfo.dart';
 import 'components/servicesCard.dart';
 import 'loadingPage.dart';
 
-class ServicesPage extends StatefulWidget{
+class ServicesPage extends StatefulWidget {
   const ServicesPage({super.key});
 
   @override
-  State<ServicesPage> createState() =>ServicesPageState();
+  State<ServicesPage> createState() => ServicesPageState();
 }
 
-class ServicesPageState extends State<ServicesPage>{
-
+class ServicesPageState extends State<ServicesPage> {
   final log = Logger('ServicesPageState');
   List<Service> renderedServices = Services().servicesList;
   String dropwdownValue = "";
 
   void _sortAlphabetically() {
     setState(() {
-      renderedServices.sort((a,b) => slugify(a.text).compareTo(slugify(b.text)));
+      renderedServices
+          .sort((a, b) => slugify(a.text).compareTo(slugify(b.text)));
     });
   }
 
   void _sortUnalphabetically() {
     setState(() {
-      renderedServices.sort((b,a) => slugify(a.text).compareTo(slugify(b.text)));
+      renderedServices
+          .sort((b, a) => slugify(a.text).compareTo(slugify(b.text)));
     });
   }
 
   void _switchPortletIsFavoriteState(int index) async {
-    bool isTaskValidated = await PortalService.instance.switchPortletIsFavoriteState(renderedServices[index]);
+    bool isTaskValidated = await PortalService.instance
+        .switchPortletIsFavoriteState(renderedServices[index]);
 
-    if (isTaskValidated){
+    if (isTaskValidated) {
       final Service currService = renderedServices[index];
       setState(() {
         renderedServices[index] = currService;
@@ -52,8 +54,12 @@ class ServicesPageState extends State<ServicesPage>{
   void initState() {
     super.initState();
 
-    if(UserInfo().firstname == ""){
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoadingPage(callbackWidget: ServicesPage())));
+    if (UserInfo().firstname == "") {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const LoadingPage(callbackWidget: ServicesPage())));
     }
   }
 
@@ -79,8 +85,12 @@ class ServicesPageState extends State<ServicesPage>{
                 ),
               ),
             ),
+
             /// expansion tile classique  utiliser ici, adaptation du code generique trop complexeé
-            const MyExpansionTile("Filtres", dataset: [],),
+            const MyExpansionTile(
+              "Filtres",
+              dataset: [],
+            ),
             Container(
               margin: const EdgeInsets.all(18),
               width: MediaQuery.of(context).size.width - 10,
@@ -91,36 +101,38 @@ class ServicesPageState extends State<ServicesPage>{
                     margin: const EdgeInsets.only(right: 5),
                     child: const Text(
                       "Trier par : ",
-                      style: TextStyle(
-                        fontSize: 15
-                      ),
+                      style: TextStyle(fontSize: 15),
                     ),
                   ),
                   DropdownMenu<String>(
                     trailingIcon: const Icon(Icons.keyboard_arrow_down),
                     selectedTrailingIcon: const Icon(Icons.keyboard_arrow_up),
                     menuStyle: const MenuStyle(
-                      backgroundColor: WidgetStatePropertyAll<Color>(Colors.white),
+                      backgroundColor:
+                          WidgetStatePropertyAll<Color>(Colors.white),
                     ),
                     textStyle: const TextStyle(
                       color: Colors.black,
                     ),
                     onSelected: (value) {
                       log.info("Selected service $value");
-                      if(value != dropwdownValue && value != null){
+                      if (value != dropwdownValue && value != null) {
                         dropwdownValue = value;
                         switch (value) {
-                        case 'a-z':
-                          _sortAlphabetically();
-                        case 'z-a':
-                          _sortUnalphabetically();
-                        default: {}
+                          case 'a-z':
+                            _sortAlphabetically();
+                          case 'z-a':
+                            _sortUnalphabetically();
+                          default:
+                            {}
                         }
                       }
                     },
                     dropdownMenuEntries: const <DropdownMenuEntry<String>>[
-                      DropdownMenuEntry(label: "Popularité", value: "popularite"),
-                      DropdownMenuEntry(label: "Plus récents", value: "plus_recents"),
+                      DropdownMenuEntry(
+                          label: "Popularité", value: "popularite"),
+                      DropdownMenuEntry(
+                          label: "Plus récents", value: "plus_recents"),
                       DropdownMenuEntry(label: "A-Z", value: "a-z"),
                       DropdownMenuEntry(label: "Z-A", value: "z-a"),
                     ],
@@ -129,9 +141,8 @@ class ServicesPageState extends State<ServicesPage>{
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(left: 15.0, right: 15.0),
-              child:
-                GridView.builder(
+                margin: const EdgeInsets.only(left: 15.0, right: 15.0),
+                child: GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -143,10 +154,10 @@ class ServicesPageState extends State<ServicesPage>{
                   itemCount: renderedServices.length,
                   itemBuilder: (context, index) {
                     final Service service = renderedServices[index];
-                    return ServicesCard(service, onPressed: () => _switchPortletIsFavoriteState(index));
+                    return ServicesCard(service,
+                        onPressed: () => _switchPortletIsFavoriteState(index));
                   },
-                )
-            ),
+                )),
             const SizedBox(
               height: 20,
             ),
@@ -156,4 +167,3 @@ class ServicesPageState extends State<ServicesPage>{
     );
   }
 }
-

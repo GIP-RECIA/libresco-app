@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
+
 import '../services/loginService.dart';
 import '../services/portalService.dart';
 import '../singletons/tokenManager.dart';
 
 class LoadingPageUtils {
-
   final log = Logger('LoadingPageUtils');
 
   BuildContext context;
@@ -18,18 +18,19 @@ class LoadingPageUtils {
   Future<void> loadDataFromAPI() async {
     log.info("Loading data from portal API...");
     // Try to login to portal once : if we get a user we're connected
-    if(!await LoginService.instance.hasPortalSession()){
+    if (!await LoginService.instance.hasPortalSession()) {
       // If we get a guest user, try again (if the CAS session is still valid)
       log.info("Portal session is invalid");
       await LoginService.instance.unstackedUPortalLogin();
-      if(!await LoginService.instance.hasPortalSession()){
+      if (!await LoginService.instance.hasPortalSession()) {
         // If we get a guest user again, that means CAS session is not valid, and we need to redo the login phase
         log.info("CAS session is invalid");
         TokenManager().reset(flush: true);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const UnconnectedHomePage()),
+            MaterialPageRoute(
+                builder: (context) => const UnconnectedHomePage()),
           );
         });
         return;
@@ -47,24 +48,22 @@ class LoadingPageUtils {
     navigatorPush();
   }
 
-  void navigatorPush(){
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => callbackWidget));
+  void navigatorPush() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => callbackWidget));
   }
 }
 
 class LoadingPage extends StatefulWidget {
-
   final Widget callbackWidget;
 
   const LoadingPage({required this.callbackWidget, super.key});
 
   @override
   State<StatefulWidget> createState() => LoadingPageState();
-
 }
 
 class LoadingPageState extends State<LoadingPage> {
-
   @override
   void initState() {
     super.initState();
@@ -73,7 +72,6 @@ class LoadingPageState extends State<LoadingPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Center(
         child: Column(
@@ -99,6 +97,5 @@ class LoadingPageState extends State<LoadingPage> {
         ),
       ),
     );
-
   }
 }

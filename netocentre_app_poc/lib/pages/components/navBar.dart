@@ -11,17 +11,14 @@ import 'package:netocentre_app_poc/singletons/userInfo.dart';
 
 import '../../services/portalService.dart';
 
-class NavBar extends StatefulWidget{
-
+class NavBar extends StatefulWidget {
   const NavBar({super.key});
 
   @override
   State<NavBar> createState() => NavBarState();
-
 }
 
 class NavBarState extends State<NavBar> {
-
   final log = Logger('NavBarState');
   final FocusNode _buttonFocusNode = FocusNode(debugLabel: 'Menu Button');
   String pictureUri = "";
@@ -30,12 +27,13 @@ class NavBarState extends State<NavBar> {
   void initState() {
     super.initState();
 
-    if(UserInfo().firstname == ""){
+    if (UserInfo().firstname == "") {
       log.warning("User info should be loaded but is not !");
       PortalService.instance.loadUserInfo();
     }
     // TODO : pictureUri
-    pictureUri = "https://${AppConfig().uPortalBaseURL}${UserInfo().pictureURI}";
+    pictureUri =
+        "https://${AppConfig().uPortalBaseURL}${UserInfo().pictureURI}";
   }
 
   @override
@@ -73,11 +71,12 @@ class NavBarState extends State<NavBar> {
             children: [
               Text(
                 "Déconnexion",
-                style: TextStyle(
-                    color: Colors.red
-                ),
+                style: TextStyle(color: Colors.red),
               ),
-              Icon(Icons.logout_outlined, color: Colors.red,),
+              Icon(
+                Icons.logout_outlined,
+                color: Colors.red,
+              ),
             ],
           ),
           onPressed: () async {
@@ -85,7 +84,10 @@ class NavBarState extends State<NavBar> {
             await TokenRepository.instance.deleteCookiesForCurrentProfile();
             TokenManager().reset();
             if (context.mounted) {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const UnconnectedHomePage()),
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const UnconnectedHomePage()),
               );
             }
           },
@@ -106,7 +108,10 @@ class NavBarState extends State<NavBar> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomePage()));
                 },
               ),
               IconButton(
@@ -116,23 +121,25 @@ class NavBarState extends State<NavBar> {
                   color: Colors.white,
                 ),
                 onPressed: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ServicesPage()));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ServicesPage()));
                 },
               ),
               IconButton(
-                key: const Key("profileInfo"),
-                icon: const Icon(
-                  Icons.account_box,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  if (controller.isOpen) {
-                    controller.close();
-                  } else {
-                    controller.open();
-                  }
-                }
-              ),
+                  key: const Key("profileInfo"),
+                  icon: const Icon(
+                    Icons.account_box,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    if (controller.isOpen) {
+                      controller.close();
+                    } else {
+                      controller.open();
+                    }
+                  }),
             ],
           ),
         );

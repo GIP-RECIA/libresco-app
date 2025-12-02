@@ -10,8 +10,7 @@ import '../serviceWebviews/casServiceWebview.dart';
 import '../serviceWebviews/uPortalServiceWebview.dart';
 import '../unconnectedHomePage.dart';
 
-class ServicesCard extends StatelessWidget{
-
+class ServicesCard extends StatelessWidget {
   final log = Logger('ServicesCard');
   final Service service;
   final bool isNew = true;
@@ -40,28 +39,43 @@ class ServicesCard extends StatelessWidget{
       ),
       child: GestureDetector(
         onTapUp: (_) async {
-          if(service.isAuthByUPortal){
-            if(await LoginService.instance.isAuthorizedByUPortal()){
-              if(context.mounted){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => UPortalServiceWebview(text: service.text, uri: service.serviceUri)));
-              }
-            }
-            else {
-              TokenManager().reset(flush: true);
-              if(context.mounted){
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const UnconnectedHomePage()));
-              }
-            }
-          }
-          else {
-            if(await LoginService.instance.hasCASSession()){
-              if(context.mounted){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CASServiceWebview(text: service.text, uri: service.serviceUri, fname: service.fname!,)));
+          if (service.isAuthByUPortal) {
+            if (await LoginService.instance.isAuthorizedByUPortal()) {
+              if (context.mounted) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UPortalServiceWebview(
+                            text: service.text, uri: service.serviceUri)));
               }
             } else {
               TokenManager().reset(flush: true);
-              if(context.mounted){
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const UnconnectedHomePage()));
+              if (context.mounted) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const UnconnectedHomePage()));
+              }
+            }
+          } else {
+            if (await LoginService.instance.hasCASSession()) {
+              if (context.mounted) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CASServiceWebview(
+                              text: service.text,
+                              uri: service.serviceUri,
+                              fname: service.fname!,
+                            )));
+              }
+            } else {
+              TokenManager().reset(flush: true);
+              if (context.mounted) {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const UnconnectedHomePage()));
               }
             }
           }
@@ -75,24 +89,26 @@ class ServicesCard extends StatelessWidget{
                   Container(
                     height: 18,
                     decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(18),
-                        topRight: Radius.circular(18),
-                      ),
-                      color: Color(0xFFAD0780)
-                    ),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(18),
+                          topRight: Radius.circular(18),
+                        ),
+                        color: Color(0xFFAD0780)),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  LogoRow(service, onPressed: onPressed,),
+                  LogoRow(
+                    service,
+                    onPressed: onPressed,
+                  ),
                   const SizedBox(
                     height: 2,
                   ),
                   Text(
-                      "Type Service",
+                    "Type Service",
                     style: TextStyle(
-                     color: Colors.grey.shade500,
+                      color: Colors.grey.shade500,
                     ),
                   ),
                   Text(
@@ -129,11 +145,11 @@ class ServicesCard extends StatelessWidget{
   }
 }
 
-class LogoRow extends StatelessWidget{
-
+class LogoRow extends StatelessWidget {
   final log = Logger('LogoRow');
   final Service service;
   final VoidCallback? onPressed;
+
   LogoRow(this.service, {super.key, required this.onPressed});
 
   @override
@@ -142,25 +158,23 @@ class LogoRow extends StatelessWidget{
     return Stack(
       alignment: Alignment.center,
       children: [
-        if (service.isNew) Positioned(
-          left: 5,
-          child: Container(
-            padding: const EdgeInsets.all(3),
-            decoration: const BoxDecoration(
-              color: Color(0xFFad1919),
-              borderRadius: BorderRadius.all(
-                Radius.circular(6),
+        if (service.isNew)
+          Positioned(
+            left: 5,
+            child: Container(
+              padding: const EdgeInsets.all(3),
+              decoration: const BoxDecoration(
+                color: Color(0xFFad1919),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(6),
+                ),
               ),
-            ),
-            child: const Text(
-              "Nouveau",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 11
+              child: const Text(
+                "Nouveau",
+                style: TextStyle(color: Colors.white, fontSize: 11),
               ),
             ),
           ),
-        ),
         Align(
           alignment: Alignment.center,
           child: SvgPicture.network(
@@ -168,29 +182,30 @@ class LogoRow extends StatelessWidget{
             height: 50,
             width: 50,
           ),
-
         ),
-        if (service.isFavorite) Positioned(
-          right: 5,
-          child: TextButton(
-            onPressed: onPressed,
-            child: const Icon(
-              Icons.star_rounded,
-              color: Color(0xFFF1C903),
-              size: 32.0,
+        if (service.isFavorite)
+          Positioned(
+              right: 5,
+              child: TextButton(
+                onPressed: onPressed,
+                child: const Icon(
+                  Icons.star_rounded,
+                  color: Color(0xFFF1C903),
+                  size: 32.0,
+                ),
+              ))
+        else
+          Positioned(
+            right: 5,
+            child: TextButton(
+              onPressed: onPressed,
+              child: Icon(
+                Icons.star_border_rounded,
+                color: Colors.grey.shade600,
+                size: 32.0,
+              ),
             ),
           )
-        ) else Positioned(
-          right: 5,
-          child: TextButton(
-            onPressed: onPressed,
-            child: Icon(
-              Icons.star_border_rounded,
-              color: Colors.grey.shade600,
-              size: 32.0,
-            ),
-          ),
-        )
       ],
     );
   }

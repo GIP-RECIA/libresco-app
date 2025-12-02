@@ -8,14 +8,17 @@ import '../singletons/appConfig.dart';
 import '../singletons/tokenManager.dart';
 
 class AuthenticationInAppBrowser extends InAppBrowser {
-
   final log = Logger('AuthenticationInAppBrowser');
   BuildContext context;
   CookieManager cookieManager = CookieManager.instance();
+
   AuthenticationInAppBrowser(this.context);
 
-  void navigateToHomePage(){
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoadingPage(callbackWidget: HomePage())));
+  void navigateToHomePage() {
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (_) => const LoadingPage(callbackWidget: HomePage())));
   }
 
   @override
@@ -28,32 +31,35 @@ class AuthenticationInAppBrowser extends InAppBrowser {
   Future onLoadStart(url) async {
     // We get the cookies and try to detect if there is the TGT when we see the login answer from CAS
     log.fine("Started $url");
-    if(url != null){
-      if(url.toString().contains("${AppConfig().serviceURL}?ticket=")){
+    if (url != null) {
+      if (url.toString().contains("${AppConfig().serviceURL}?ticket=")) {
         // Get TGT cookie
         log.finest("Looking for TGC cookie");
-        List<Cookie> cookies = await cookieManager.getCookies(url: WebUri("https://${AppConfig().casBaseURL}/cas/"));
-        for(var current in cookies) {
+        List<Cookie> cookies = await cookieManager.getCookies(
+            url: WebUri("https://${AppConfig().casBaseURL}/cas/"));
+        for (var current in cookies) {
           log.finest("Checking cookie $current.name");
-          if(current.name == "TGC"){
+          if (current.name == "TGC") {
             log.fine("TGC Cookie found with value : $current");
             TokenManager().setTGT(current.value, flush: true);
           }
         }
         // If we have found a TGT, then we can navigate to home page
-        if(TokenManager().TGT != ""){
+        if (TokenManager().TGT != "") {
           log.fine("$url was intercepted to get the TGT. Closing browser...");
           close(); // close the navigator
           navigateToHomePage();
         }
         // If no TGT is found, it means there is certainly a problem with the cookies
         else {
-          log.warning("TGC cookie wasn't found. There may be a problem with cookies");
+          log.warning(
+              "TGC cookie wasn't found. There may be a problem with cookies");
           close();
-          if(context.mounted){
+          if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text("Erreur lors de l'authentification : essayez de mettre à jour votre navigateur dans sa dernière version."),
+                content: Text(
+                    "Erreur lors de l'authentification : essayez de mettre à jour votre navigateur dans sa dernière version."),
                 duration: Duration(seconds: 10),
               ),
             );
@@ -74,5 +80,4 @@ class AuthenticationInAppBrowser extends InAppBrowser {
     // remove session cookies to avoid lost cookies
     cookieManager.removeSessionCookies();
   }
-
 }

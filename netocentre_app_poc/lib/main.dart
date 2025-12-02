@@ -11,7 +11,6 @@ import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 final log = Logger('main');
 
 Future<Widget> buildApp() async {
-
   log.fine("Starting app...");
   // Temp : force profile 1
   TokenManager().setCurrentProfileID("1");
@@ -30,11 +29,16 @@ Future<Widget> buildApp() async {
   );
 }
 
-Future<void> main({TokenRepository? tokenRepository, TokenManager? tokenManager, LoginService? loginService,}) async {
+Future<void> main({
+  TokenRepository? tokenRepository,
+  TokenManager? tokenManager,
+  LoginService? loginService,
+}) async {
   WidgetsFlutterBinding.ensureInitialized();
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) {
-    print('${record.time} ${record.level.name} [${record.loggerName}] - ${record.message}');
+    print(
+        '${record.time} ${record.level.name} [${record.loggerName}] - ${record.message}');
   });
   await AppConfig().loadConfig();
   final app = await buildApp();

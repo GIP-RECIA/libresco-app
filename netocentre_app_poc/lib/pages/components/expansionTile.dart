@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MyExpansionTile extends StatefulWidget {
-
-  const MyExpansionTile(this.title, {this.subtitle, this.nbNotifications, super.key, required this.dataset});
+  const MyExpansionTile(this.title,
+      {this.subtitle, this.nbNotifications, super.key, required this.dataset});
 
   final String title;
   final List<({String name, String? url})> dataset;
@@ -11,7 +11,6 @@ class MyExpansionTile extends StatefulWidget {
 
   @override
   State<MyExpansionTile> createState() => MyExpansionTileState();
-
 }
 
 class MyExpansionTileState extends State<MyExpansionTile> {
@@ -22,23 +21,16 @@ class MyExpansionTileState extends State<MyExpansionTile> {
   void initState() {
     super.initState();
 
-    widgets = widget.dataset.map( (data) {
+    widgets = widget.dataset.map((data) {
       return Container(
         color: Colors.white,
         width: 400,
         alignment: Alignment.centerLeft,
         child: GestureDetector(
-          onTapDown: (aaa){
-          },
-          onTapUp: (bbb){
-          },
-          onTapCancel: (){
-          },
-          child: TextButton(
-              onPressed: () => {
-              },
-              child: Text(data.name)
-          ),
+          onTapDown: (aaa) {},
+          onTapUp: (bbb) {},
+          onTapCancel: () {},
+          child: TextButton(onPressed: () => {}, child: Text(data.name)),
         ),
       );
     }).toList();
@@ -50,53 +42,51 @@ class MyExpansionTileState extends State<MyExpansionTile> {
       margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
       width: MediaQuery.of(context).size.width - 10,
       decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFFe9e9e9)),
-        borderRadius: const BorderRadius.all(Radius.circular(18))
-      ),
+          border: Border.all(color: const Color(0xFFe9e9e9)),
+          borderRadius: const BorderRadius.all(Radius.circular(18))),
       child: Theme(
         data: Theme.of(context).copyWith(
-          listTileTheme: ListTileTheme.of(context).copyWith(
-            dense: false,
-          )
-        ),
+            listTileTheme: ListTileTheme.of(context).copyWith(
+          dense: false,
+        )),
         child: ExpansionTile(
-          title:  Row(
+          title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold
-                    ),
+                  Text(
+                    widget.title,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  if (widget.subtitle != null) Text(widget.subtitle!,
-                    style: TextStyle(
-                      color: Colors.grey.shade700,
-                      fontSize: 11.0
+                  if (widget.subtitle != null)
+                    Text(
+                      widget.subtitle!,
+                      style: TextStyle(
+                          color: Colors.grey.shade700, fontSize: 11.0),
                     ),
-                  ),
                 ],
               ),
-              if (widget.nbNotifications != null) Container(
-                width: 38,
-                decoration: const BoxDecoration(
-                  color: Colors.blueAccent,
-                  borderRadius: BorderRadius.all(Radius.circular(12))
-                ),
-                child: Center(
-                  child: Text("${widget.nbNotifications!}",
-                  style: const TextStyle(
-                      color: Colors.white
+              if (widget.nbNotifications != null)
+                Container(
+                  width: 38,
+                  decoration: const BoxDecoration(
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.all(Radius.circular(12))),
+                  child: Center(
+                    child: Text(
+                      "${widget.nbNotifications!}",
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
-                ),
-              )
+                )
             ],
           ),
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18))),
-          collapsedShape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(18))),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(18))),
+          collapsedShape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(18))),
           backgroundColor: const Color(0xFFf4f4f4),
           collapsedBackgroundColor: const Color(0xFFf4f4f4),
           children: widgets,
@@ -104,6 +94,4 @@ class MyExpansionTileState extends State<MyExpansionTile> {
       ),
     );
   }
-
 }
-

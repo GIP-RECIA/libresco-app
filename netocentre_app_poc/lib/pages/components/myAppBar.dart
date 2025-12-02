@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
 import 'package:netocentre_app_poc/singletons/servicesList.dart';
-import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 
 import '../../services/loginService.dart';
@@ -16,18 +16,22 @@ class ScaffoldwithIntegratedSearchBar extends StatefulWidget {
   const ScaffoldwithIntegratedSearchBar({super.key, required this.child});
 
   @override
-  State<ScaffoldwithIntegratedSearchBar> createState() => _ScaffoldwithIntegratedSearchBarState();
+  State<ScaffoldwithIntegratedSearchBar> createState() =>
+      _ScaffoldwithIntegratedSearchBarState();
 }
 
-class _ScaffoldwithIntegratedSearchBarState extends State<ScaffoldwithIntegratedSearchBar> {
+class _ScaffoldwithIntegratedSearchBarState
+    extends State<ScaffoldwithIntegratedSearchBar> {
   bool _showSearchBar = false;
   final List<Service> _allItems = Services().servicesList;
   List<Service> _filteredItems = [];
 
   void _filterSearchResults(String query) {
     setState(() {
-      _filteredItems = _allItems.where((item) =>
-          item.text.toLowerCase().contains(query.toLowerCase())).toList();
+      _filteredItems = _allItems
+          .where(
+              (item) => item.text.toLowerCase().contains(query.toLowerCase()))
+          .toList();
     });
   }
 
@@ -43,31 +47,34 @@ class _ScaffoldwithIntegratedSearchBarState extends State<ScaffoldwithIntegrated
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: CustomSearchAppBar(
-        showSearchBar: _showSearchBar,
-        toggleSearchBar: _toggleSearchBar,
-        onSearch: _filterSearchResults,
-        schoolTitle: "Lycée fictif",
-      ),
-      body: Stack(
-        children: [
-          widget.child,
-          if (_showSearchBar && _filteredItems.isNotEmpty)
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: (_filteredItems.length < 3 ? _filteredItems.length : 3) * 60.0, // Multiple de 60 - max 180 pour 3 affichés en simultané
-                color: Colors.white, // Couleur de fond pour la liste
-                child: _buildSearchResultsListView(),
+        backgroundColor: Colors.white,
+        appBar: CustomSearchAppBar(
+          showSearchBar: _showSearchBar,
+          toggleSearchBar: _toggleSearchBar,
+          onSearch: _filterSearchResults,
+          schoolTitle: "Lycée fictif",
+        ),
+        body: Stack(
+          children: [
+            widget.child,
+            if (_showSearchBar && _filteredItems.isNotEmpty)
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height:
+                      (_filteredItems.length < 3 ? _filteredItems.length : 3) *
+                          60.0,
+                  // Multiple de 60 - max 180 pour 3 affichés en simultané
+                  color: Colors.white,
+                  // Couleur de fond pour la liste
+                  child: _buildSearchResultsListView(),
+                ),
               ),
-            ),
-        ],
-      ),
-      bottomNavigationBar: const NavBar()
-    );
+          ],
+        ),
+        bottomNavigationBar: const NavBar());
   }
 
   // TODO: generate list from search in the same way than normal list
@@ -81,25 +88,37 @@ class _ScaffoldwithIntegratedSearchBarState extends State<ScaffoldwithIntegrated
             color: Color(0xfff3f1f1),
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
-          margin: const EdgeInsets.fromLTRB(8,3,8,3),
+          margin: const EdgeInsets.fromLTRB(8, 3, 8, 3),
           child: ListTile(
             title: Text(_filteredItems[index].text),
             onTap: () async {
-              if(service.isAuthByUPortal){
-                if(await LoginService.instance.isAuthorizedByUPortal()){
-                  if(context.mounted){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => UPortalServiceWebview(text: service.text, uri: service.serviceUri)));
+              if (service.isAuthByUPortal) {
+                if (await LoginService.instance.isAuthorizedByUPortal()) {
+                  if (context.mounted) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UPortalServiceWebview(
+                                text: service.text, uri: service.serviceUri)));
                   }
-                }
-                else {
+                } else {
                   TokenManager().reset(flush: true);
-                  if(context.mounted){
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const UnconnectedHomePage()));
+                  if (context.mounted) {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UnconnectedHomePage()));
                   }
                 }
-              }
-              else {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => CASServiceWebview(text: service.text, uri: service.serviceUri, fname: service.fname!,)));
+              } else {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CASServiceWebview(
+                              text: service.text,
+                              uri: service.serviceUri,
+                              fname: service.fname!,
+                            )));
               }
             },
           ),
@@ -109,13 +128,15 @@ class _ScaffoldwithIntegratedSearchBarState extends State<ScaffoldwithIntegrated
   }
 }
 
-class CustomSearchAppBar extends StatelessWidget implements PreferredSizeWidget {
+class CustomSearchAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
   final bool showSearchBar;
   final VoidCallback toggleSearchBar;
   final Function(String) onSearch;
   final String schoolTitle;
 
-  const CustomSearchAppBar({super.key,
+  const CustomSearchAppBar({
+    super.key,
     required this.showSearchBar,
     required this.toggleSearchBar,
     required this.onSearch,
@@ -129,17 +150,19 @@ class CustomSearchAppBar extends StatelessWidget implements PreferredSizeWidget 
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
-      leading: !showSearchBar ? Builder(
-        builder: (BuildContext context) {
-          return IconButton(
-            icon: const Icon(Icons.motion_photos_on_outlined),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Clicked on App Logo Button')));
-            },
-          );
-        },
-      ) : null,
+      leading: !showSearchBar
+          ? Builder(
+              builder: (BuildContext context) {
+                return IconButton(
+                  icon: const Icon(Icons.motion_photos_on_outlined),
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Clicked on App Logo Button')));
+                  },
+                );
+              },
+            )
+          : null,
       title: showSearchBar
           ? TextField(
               decoration: const InputDecoration(
@@ -165,24 +188,24 @@ class CustomSearchAppBar extends StatelessWidget implements PreferredSizeWidget 
   }
 }
 
-class MyAppBar extends StatelessWidget implements PreferredSizeWidget{
-
+class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String schoolTitle;
+
   const MyAppBar(this.schoolTitle, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return PreferredSize(
       preferredSize: const Size.fromHeight(kToolbarHeight),
-      child:  AppBar(
+      child: AppBar(
         backgroundColor: Colors.white,
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
               icon: const Icon(Icons.motion_photos_on_outlined),
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Clicked on App Logo Button')));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text('Clicked on App Logo Button')));
               },
             );
           },

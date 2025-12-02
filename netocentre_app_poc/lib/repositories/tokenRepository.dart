@@ -1,14 +1,16 @@
 import 'package:logging/logging.dart';
+import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:netocentre_app_poc/singletons/tokenManager.dart';
 
 class TokenRepository {
-
   final log = Logger('TokenRepository');
 
   TokenRepository._privateConstructor();
-  static final TokenRepository _instance = TokenRepository._privateConstructor();
+
+  static final TokenRepository _instance =
+      TokenRepository._privateConstructor();
+
   static TokenRepository get instance => _instance;
 
   /// DB connection
@@ -18,10 +20,10 @@ class TokenRepository {
       onCreate: (db, version) {
         return db.execute(
           'CREATE TABLE tokens('
-            'id INTEGER, '
-            'TGT VARCHAR(255), '
-            'JSESSIONID VARCHAR(255), '
-            'idPortal VARCHAR(255)'
+          'id INTEGER, '
+          'TGT VARCHAR(255), '
+          'JSESSIONID VARCHAR(255), '
+          'idPortal VARCHAR(255)'
           ')',
         );
       },
@@ -41,8 +43,7 @@ class TokenRepository {
           'JSESSIONID': TokenManager().JSESSIONID,
           'idPortal': TokenManager().idPortal
         },
-        conflictAlgorithm: ConflictAlgorithm.replace
-    );
+        conflictAlgorithm: ConflictAlgorithm.replace);
     log.fine('Save in database for ${TokenManager().toString()}');
   }
 
@@ -69,11 +70,11 @@ class TokenRepository {
 
     log.fine('Flush in database for ${TokenManager().toString()}');
 
-    int? count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM tokens'));
-    if(count! > 0){
+    int? count =
+        Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM tokens'));
+    if (count! > 0) {
       updateTokens();
-    }
-    else{
+    } else {
       insertTokens();
     }
   }
@@ -81,21 +82,26 @@ class TokenRepository {
   Future<void> deleteCookiesForCurrentProfile() async {
     log.fine('Delete in database');
     final db = await getDB();
-    await db.execute("DELETE FROM tokens where id = ${TokenManager().currentProfileID}");
+    await db.execute(
+        "DELETE FROM tokens where id = ${TokenManager().currentProfileID}");
   }
 
-  Future<void> getCookiesInDB() async{
+  Future<void> getCookiesInDB() async {
     final db = await getDB();
     log.fine('Get from database');
-    int? count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM tokens'));
-    if(count! > 0){
-    List<Map<String, Object?>> res = await db.query('tokens', where: 'id = ?',whereArgs: [TokenManager().currentProfileID] , limit: 1);
-    TokenManager().setTGT(res.first["TGT"].toString());
-    TokenManager().setJSESSIONID(res.first["JSESSIONID"].toString());
-    TokenManager().setIdPortal(res.first["idPortal"].toString());
-    log.fine('TokenManager after getting values from database : ${TokenManager().toString()}');
-    }
-    else {
+    int? count =
+        Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM tokens'));
+    if (count! > 0) {
+      List<Map<String, Object?>> res = await db.query('tokens',
+          where: 'id = ?',
+          whereArgs: [TokenManager().currentProfileID],
+          limit: 1);
+      TokenManager().setTGT(res.first["TGT"].toString());
+      TokenManager().setJSESSIONID(res.first["JSESSIONID"].toString());
+      TokenManager().setIdPortal(res.first["idPortal"].toString());
+      log.fine(
+          'TokenManager after getting values from database : ${TokenManager().toString()}');
+    } else {
       log.fine("Empty database");
     }
   }
@@ -106,5 +112,4 @@ class TokenRepository {
     final results = await db.query('tokens', columns: ['id'], distinct: true);
     return results.map((row) => row['id'] as int).toList();
   }
-
 }
