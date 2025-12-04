@@ -71,7 +71,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
                       browser.openUrlRequest(
                           urlRequest: URLRequest(
                               url: WebUri(
-                                  "https://${AppConfig().casBaseURL}/cas/login?service=${AppConfig().serviceURL}")),
+                                  "${AppConfig().casBaseURL}/cas/login?service=${AppConfig().serviceURL}")),
                           settings: settings);
                     },
                     child: const Text("Se connecter")),

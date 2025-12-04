@@ -26,7 +26,7 @@ class PortalService {
     final client = IOClient(HttpClient());
 
     Uri request = Uri.https(
-        AppConfig().uPortalBaseURL,
+        AppConfig().uPortalHost,
         "/portail/api/v4-3/dlm/portletRegistry.json",
         {'category': 'All categories'});
 
@@ -39,7 +39,7 @@ class PortalService {
         headers: <String, String>{
           'Cookie':
               'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
-          'Host': AppConfig().uPortalBaseURL
+          'Host': AppConfig().uPortalHost
         },
       );
 
@@ -165,7 +165,7 @@ class PortalService {
 
     final client = IOClient(HttpClient());
 
-    Uri request = Uri.https(AppConfig().uPortalBaseURL, "/portail/api/layout", {
+    Uri request = Uri.https(AppConfig().uPortalHost, "/portail/api/layout", {
       'action': service.isFavorite ? 'removeFavorite' : 'addFavorite',
       'channelId': service.id.toString()
     });
@@ -179,7 +179,7 @@ class PortalService {
         headers: <String, String>{
           'Cookie':
               'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
-          'Host': AppConfig().uPortalBaseURL
+          'Host': AppConfig().uPortalHost
         },
       );
 
@@ -199,7 +199,7 @@ class PortalService {
     final client = IOClient(HttpClient());
 
     Uri request = Uri.https(
-        AppConfig().uPortalBaseURL, "/portail/api/v5-1/userinfo", {
+        AppConfig().uPortalHost, "/portail/api/v5-1/userinfo", {
       'claims': 'private,picture,name,ESCOSIRENCourant,ESCOSIREN',
       'groups': ''
     });
@@ -212,7 +212,7 @@ class PortalService {
       headers: <String, String>{
         'Cookie':
             'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
-        'Host': AppConfig().uPortalBaseURL
+        'Host': AppConfig().uPortalHost
       },
     );
 

@@ -32,7 +32,7 @@ class _NavBar extends State<NavBar> {
     }
     // TODO : pictureUri
     pictureUri =
-        "https://${AppConfig().uPortalBaseURL}${UserInfo().pictureURI}";
+        "${AppConfig().uPortalBaseURL}${UserInfo().pictureURI}";
   }
 
   @override

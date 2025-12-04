@@ -45,13 +45,13 @@ class _CASServiceWebview extends State<CASServiceWebview> {
     manager.removeSessionCookies();
 
     manager.setCookie(
-      url: WebUri("https://${AppConfig().casBaseURL}/cas"),
+      url: WebUri("${AppConfig().casBaseURL}/cas"),
       name: "TGC",
       value: TokenManager().TGC,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
-      domain: AppConfig().casBaseURL,
+      domain: AppConfig().casHost,
       path: "/cas",
     );
 
@@ -85,7 +85,7 @@ class _CASServiceWebview extends State<CASServiceWebview> {
               key: webViewKey,
               initialUrlRequest: URLRequest(
                   url: WebUri(
-                      "https://${AppConfig().uPortalBaseURL}/portail/api/ExternalURLStats?fname=${widget.fname}&service=${widget.uri}")),
+                      "${AppConfig().uPortalBaseURL}/portail/api/ExternalURLStats?fname=${widget.fname}&service=${widget.uri}")),
               initialSettings: settings,
               pullToRefreshController: pullToRefreshController,
               onWebViewCreated: (controller) async {

@@ -35,7 +35,7 @@ class AuthenticationInAppBrowser extends InAppBrowser {
         // Get TGC cookie
         log.finest("Looking for TGC cookie");
         List<Cookie> cookies = await cookieManager.getCookies(
-            url: WebUri("https://${AppConfig().casBaseURL}/cas/"));
+            url: WebUri("${AppConfig().casBaseURL}/cas/"));
         for (var current in cookies) {
           log.finest("Checking cookie $current.name");
           if (current.name == "TGC") {

@@ -44,24 +44,24 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
     manager.removeSessionCookies();
 
     manager.setCookie(
-      url: WebUri("https://${AppConfig().uPortalBaseURL}/"),
+      url: WebUri("${AppConfig().uPortalBaseURL}/"),
       name: "JSESSIONID",
       value: TokenManager().JSESSIONID,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
-      domain: AppConfig().uPortalBaseURL,
+      domain: AppConfig().uPortalHost,
       path: "/",
     );
 
     manager.setCookie(
-      url: WebUri("https://${AppConfig().uPortalBaseURL}/"),
+      url: WebUri("${AppConfig().uPortalBaseURL}/"),
       name: "clusterIDPortail",
       value: TokenManager().idPortal,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
-      domain: AppConfig().uPortalBaseURL,
+      domain: AppConfig().uPortalHost,
       path: "/",
     );
 
@@ -86,9 +86,9 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
   @override
   Widget build(BuildContext context) {
     log.finer("on init ${widget.uri} : ${TokenManager().JSESSIONID}");
-    log.finer("on init ${widget.uri} : https://${AppConfig().uPortalBaseURL}/");
+    log.finer("on init ${widget.uri} : ${AppConfig().uPortalBaseURL}/");
     log.finer(
-        "on init ${widget.uri} : https://${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}");
+        "on init ${widget.uri} : ${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}");
     return Scaffold(
         body: SafeArea(
             child: Column(children: <Widget>[
@@ -99,7 +99,7 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
               key: webViewKey,
               initialUrlRequest: URLRequest(
                   url: WebUri(
-                      "https://${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}")),
+                      "${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}")),
               initialSettings: settings,
               pullToRefreshController: pullToRefreshController,
               onWebViewCreated: (controller) async {

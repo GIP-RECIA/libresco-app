@@ -12,7 +12,10 @@ class AppConfig {
   String? _userAgent;
   String? _casBaseURL;
   String? _serviceURL;
+  String _idpIdQueryParam = 'idpId';
   String? _uPortalBaseURL;
+  String? _staticsBaseURL;
+  bool _cache = true;
 
   factory AppConfig() {
     return _instance;
@@ -39,7 +42,10 @@ class AppConfig {
       final data = jsonDecode(response.body);
       _casBaseURL = data['casBaseURL'];
       _serviceURL = data['serviceURL'];
+      _idpIdQueryParam = data['idpIdQueryParam'];
       _uPortalBaseURL = data['uPortalBaseURL'];
+      _staticsBaseURL = data['staticsBaseURL'];
+      _cache = data['cache'];
 
       log.info('Config was successfully loaded : ${toString()}');
     } else {
@@ -59,17 +65,32 @@ class AppConfig {
 
   String get casBaseURL => getAttribute('_casBaseURL', _casBaseURL);
 
+  String get casHost => casBaseURL.replaceFirst(RegExp(r'^https?://'), '');
+
   String get serviceURL => getAttribute('_serviceURL', _serviceURL);
+
+  String get idpIdQueryParam =>
+      getAttribute('_idpIdQueryParam', _idpIdQueryParam);
 
   String get uPortalBaseURL => getAttribute('_uPortalBaseURL', _uPortalBaseURL);
 
+  String get uPortalHost =>
+      uPortalBaseURL.replaceFirst(RegExp(r'^https?://'), '');
+
+  String get staticsBaseURL => getAttribute('_staticsBaseURL', _staticsBaseURL);
+
+  bool get cache => _cache;
+
   @override
   String toString() {
-    return 'AppConfig{ '
+    return 'AppConfig{'
         '_userAgent: $_userAgent, '
         '_casBaseURL: $_casBaseURL, '
-        '_serviceURL: $_serviceURL, ''
-        '_uPortalBaseURL: $_uPortalBaseURL'
-        ' }';
+        '_serviceURL: $_serviceURL, '
+        '_idpIdQueryParam: $_idpIdQueryParam, '
+        '_uPortalBaseURL: $_uPortalBaseURL, '
+        '_staticsBaseURL: $_staticsBaseURL, '
+        '_cache: $_cache'
+        '}';
   }
 }

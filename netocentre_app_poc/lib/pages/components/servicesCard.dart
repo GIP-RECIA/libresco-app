@@ -177,7 +177,7 @@ class LogoRow extends StatelessWidget {
         Align(
           alignment: Alignment.center,
           child: SvgPicture.network(
-            "https://${AppConfig().uPortalBaseURL}${service.iconUri}",
+            "${AppConfig().uPortalBaseURL}${service.iconUri}",
             height: 50,
             width: 50,
           ),

@@ -33,7 +33,7 @@ class LoginService {
 
     final client = IOClient(HttpClient());
     Uri request =
-        Uri.https(AppConfig().uPortalBaseURL, "/portail/api/session.json");
+        Uri.https(AppConfig().uPortalHost, "/portail/api/session.json");
 
     log.finer("Making a request to portal : $request");
     log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
@@ -43,7 +43,7 @@ class LoginService {
       headers: <String, String>{
         'Cookie':
             'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
-        'Host': AppConfig().uPortalBaseURL
+        'Host': AppConfig().uPortalHost
       },
     );
 
@@ -109,7 +109,7 @@ class LoginService {
     final client = HttpClient();
     client.userAgent = AppConfig().userAgent;
     var uri = Uri.https(
-      AppConfig().casBaseURL,
+      AppConfig().casHost,
       "/cas/login",
     );
     var request = await client.getUrl(uri);
@@ -140,7 +140,7 @@ class LoginService {
     client.userAgent = AppConfig().userAgent;
 
     log.fine("Logging out the user from CAS");
-    Uri casURI = Uri.https(AppConfig().casBaseURL, "/cas/logout");
+    Uri casURI = Uri.https(AppConfig().casHost, "/cas/logout");
     log.finer("Making a request to CAS : $casURI");
     log.finer("TGC=${TokenManager().TGC}");
 
@@ -157,7 +157,7 @@ class LoginService {
     log.finest("Body: $casBody");
 
     log.fine("Logging out the user from Portal");
-    Uri portalURI = Uri.https(AppConfig().uPortalBaseURL, "/portail/Logout");
+    Uri portalURI = Uri.https(AppConfig().uPortalHost, "/portail/Logout");
 
     log.finer("Making a request to portal : $portalURI");
     log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
@@ -166,7 +166,7 @@ class LoginService {
     portalRequest.followRedirects = false;
     portalRequest.headers.add('Cookie',
         'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}');
-    portalRequest.headers.add('Host', AppConfig().uPortalBaseURL);
+    portalRequest.headers.add('Host', AppConfig().uPortalHost);
 
     var portalResponse = await portalRequest.close();
     log.finer(
@@ -186,8 +186,8 @@ class LoginService {
     /// Request 0 - initial request
     final client = HttpClient();
     client.userAgent = AppConfig().userAgent;
-    var uri = Uri.https(AppConfig().casBaseURL, "/cas/login",
-        {'service': 'https://${AppConfig().uPortalBaseURL}/portail/Login'});
+    var uri = Uri.https(AppConfig().casHost, "/cas/login",
+        {'service': '${AppConfig().uPortalBaseURL}/portail/Login'});
     var request = await client.getUrl(uri);
     request.followRedirects = false;
     request.headers.add('Cookie', 'TGC=${TokenManager().TGC}');

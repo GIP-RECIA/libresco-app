@@ -29,24 +29,24 @@ class _HomePage extends State<HomePage> {
     manager.removeSessionCookies();
 
     manager.setCookie(
-      url: WebUri("https://${AppConfig().uPortalBaseURL}/"),
+      url: WebUri("${AppConfig().uPortalBaseURL}/"),
       name: "JSESSIONID",
       value: TokenManager().JSESSIONID,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
-      domain: AppConfig().uPortalBaseURL,
+      domain: AppConfig().uPortalHost,
       path: "/",
     );
 
     manager.setCookie(
-      url: WebUri("https://${AppConfig().uPortalBaseURL}/"),
+      url: WebUri("${AppConfig().uPortalBaseURL}/"),
       name: "clusterIDPortail",
       value: TokenManager().idPortal,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
-      domain: AppConfig().uPortalBaseURL,
+      domain: AppConfig().uPortalHost,
       path: "/",
     );
   }
@@ -114,7 +114,7 @@ class _HomePage extends State<HomePage> {
                   """,
                   mimeType: 'text/html',
                   encoding: 'utf-8',
-                  baseUrl: WebUri("https://${AppConfig().uPortalBaseURL}"),
+                  baseUrl: WebUri("${AppConfig().uPortalBaseURL}"),
                 ),
                 initialSettings: InAppWebViewSettings(
                   javaScriptEnabled: true, // autoriser le JS

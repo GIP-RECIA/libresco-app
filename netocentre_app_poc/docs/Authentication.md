@@ -64,13 +64,13 @@ Une fois les cookies récupérés et stockés en base, il faut pouvoir les resti
 
 ```dart
 manager.setCookie(
-  url: WebUri("https://${AppConfig().casBaseURL}/cas"),  
+  url: WebUri("${AppConfig().casBaseURL}/cas"),  
   name: "TGC",  
   value: TokenManager().TGC,  
   isHttpOnly: true,  
   isSecure: true,  
   sameSite: HTTPCookieSameSitePolicy.NONE,  
-  domain: AppConfig().casBaseURL,  
+  domain: AppConfig().casHost,  
   path: "/cas",  
 );
 ```
