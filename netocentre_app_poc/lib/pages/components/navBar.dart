@@ -3,11 +3,10 @@ import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/pages/homePage.dart';
 import 'package:netocentre_app_poc/pages/servicesPage.dart';
 import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
-import 'package:netocentre_app_poc/repositories/tokenRepository.dart';
-import 'package:netocentre_app_poc/services/loginService.dart';
 import 'package:netocentre_app_poc/services/portalService.dart';
+import 'package:netocentre_app_poc/singletons/account.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
-import 'package:netocentre_app_poc/singletons/tokenManager.dart';
+import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
 
 class NavBar extends StatefulWidget {
@@ -76,8 +75,8 @@ class _NavBar extends State<NavBar> {
             ],
           ),
           onPressed: () async {
-            TokenManager().reset();
-            TokenManager().setId('');
+            Session().reset();
+            Account().setId('');
             if (context.mounted) {
               Navigator.pushReplacement(
                 context,

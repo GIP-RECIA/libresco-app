@@ -1,5 +1,5 @@
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/repositories/tokenRepository.dart';
+import 'package:netocentre_app_poc/repositories/UserInfoRepository.dart';
 
 class UserInfo {
   final log = Logger('UserInfo');
@@ -35,7 +35,7 @@ class UserInfo {
   }
 
   void saveUserInfo() {
-    TokenRepository.instance.flushUserInfo();
+    UserInfoRepository.instance.flushUserInfo();
   }
 
   @override

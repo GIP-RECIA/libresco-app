@@ -7,7 +7,7 @@ import 'package:netocentre_app_poc/pages/serviceWebviews/uPortalServiceWebview.d
 import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
 import 'package:netocentre_app_poc/services/loginService.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
-import 'package:netocentre_app_poc/singletons/tokenManager.dart';
+import 'package:netocentre_app_poc/singletons/session.dart';
 
 class ServicesCard extends StatelessWidget {
   final log = Logger('ServicesCard');
@@ -48,7 +48,7 @@ class ServicesCard extends StatelessWidget {
                             text: service.text, uri: service.serviceUri)));
               }
             } else {
-              TokenManager().reset(flush: true);
+              Session().reset(flush: true);
               if (context.mounted) {
                 Navigator.pushReplacement(
                     context,
@@ -69,7 +69,7 @@ class ServicesCard extends StatelessWidget {
                             )));
               }
             } else {
-              TokenManager().reset(flush: true);
+              Session().reset(flush: true);
               if (context.mounted) {
                 Navigator.pushReplacement(
                     context,

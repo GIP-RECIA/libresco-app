@@ -3,24 +3,26 @@ import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/pages/homePage.dart';
 import 'package:netocentre_app_poc/pages/loadingPage.dart';
 import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
-import 'package:netocentre_app_poc/repositories/tokenRepository.dart';
+import 'package:netocentre_app_poc/repositories/SessionRepository.dart';
 import 'package:netocentre_app_poc/services/loginService.dart';
+import 'package:netocentre_app_poc/singletons/account.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
-import 'package:netocentre_app_poc/singletons/tokenManager.dart';
+import 'package:netocentre_app_poc/singletons/session.dart';
 
 final log = Logger('main');
 
 Future<Widget> buildApp() async {
   log.fine("Starting app...");
   bool connected = false;
-  List<Map<String, Object?>> profiles = await TokenRepository.instance.getProfilesList();
+  List<Map<String, Object?>> profiles =
+      await SessionRepository.instance.getProfilesList();
   if (profiles.length == 1) {
-    TokenManager().setId(profiles[0]['id'].toString());
-    await TokenRepository.instance.getCookiesInDB();
+    Account().setId(profiles[0]['id'].toString());
+    await SessionRepository.instance.getCookiesInDB();
     connected = await LoginService.instance.hasCASSession();
     if (!connected) {
       log.fine("User is not connected to CAS : database reset");
-      TokenManager().reset(flush: true);
+      Session().reset(flush: true);
     }
   }
 
@@ -33,8 +35,8 @@ Future<Widget> buildApp() async {
 }
 
 Future<void> main({
-  TokenRepository? tokenRepository,
-  TokenManager? tokenManager,
+  SessionRepository? sessionRepository,
+  Session? session,
   LoginService? loginService,
 }) async {
   WidgetsFlutterBinding.ensureInitialized();

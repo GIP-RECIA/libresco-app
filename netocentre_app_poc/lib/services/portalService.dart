@@ -8,7 +8,7 @@ import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/services/loginService.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
 import 'package:netocentre_app_poc/singletons/servicesList.dart';
-import 'package:netocentre_app_poc/singletons/tokenManager.dart';
+import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
 
 class PortalService {
@@ -31,14 +31,14 @@ class PortalService {
         {'category': 'All categories'});
 
     log.finer("Getting portlet request : $request");
-    log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
+    log.finer("JSESSIONID=${Session().JSESSIONID}");
 
     if (await LoginService.instance.isAuthorizedByUPortal()) {
       final http.Response res = await client.get(
         request,
         headers: <String, String>{
           'Cookie':
-              'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
+              'JSESSIONID=${Session().JSESSIONID}; clusterIDPortail=${Session().idPortal}',
           'Host': AppConfig().uPortalHost
         },
       );
@@ -171,14 +171,14 @@ class PortalService {
     });
 
     log.finer("Getting portlet request : $request");
-    log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
+    log.finer("JSESSIONID=${Session().JSESSIONID}");
 
     if (await LoginService.instance.isAuthorizedByUPortal()) {
       final http.Response res = await client.post(
         request,
         headers: <String, String>{
           'Cookie':
-              'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
+              'JSESSIONID=${Session().JSESSIONID}; clusterIDPortail=${Session().idPortal}',
           'Host': AppConfig().uPortalHost
         },
       );
@@ -205,13 +205,13 @@ class PortalService {
     });
 
     log.finer("getting portlet request : $request");
-    log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
+    log.finer("JSESSIONID=${Session().JSESSIONID}");
 
     final http.Response res = await client.get(
       request,
       headers: <String, String>{
         'Cookie':
-            'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
+            'JSESSIONID=${Session().JSESSIONID}; clusterIDPortail=${Session().idPortal}',
         'Host': AppConfig().uPortalHost
       },
     );

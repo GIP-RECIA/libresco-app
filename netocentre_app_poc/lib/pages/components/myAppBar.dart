@@ -6,7 +6,7 @@ import 'package:netocentre_app_poc/pages/serviceWebviews/uPortalServiceWebview.d
 import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
 import 'package:netocentre_app_poc/services/loginService.dart';
 import 'package:netocentre_app_poc/singletons/servicesList.dart';
-import 'package:netocentre_app_poc/singletons/tokenManager.dart';
+import 'package:netocentre_app_poc/singletons/session.dart';
 
 // TODO: call from unconnected home page needs some modification
 class ScaffoldwithIntegratedSearchBar extends StatefulWidget {
@@ -101,7 +101,7 @@ class _ScaffoldwithIntegratedSearchBar
                                 text: service.text, uri: service.serviceUri)));
                   }
                 } else {
-                  TokenManager().reset(flush: true);
+                  Session().reset(flush: true);
                   if (context.mounted) {
                     Navigator.pushReplacement(
                         context,

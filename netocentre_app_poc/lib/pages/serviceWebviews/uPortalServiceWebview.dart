@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
-import 'package:netocentre_app_poc/singletons/tokenManager.dart';
+import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UPortalServiceWebview extends StatefulWidget {
@@ -46,7 +46,7 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
     manager.setCookie(
       url: WebUri("${AppConfig().uPortalBaseURL}/"),
       name: "JSESSIONID",
-      value: TokenManager().JSESSIONID,
+      value: Session().JSESSIONID,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
@@ -57,7 +57,7 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
     manager.setCookie(
       url: WebUri("${AppConfig().uPortalBaseURL}/"),
       name: "clusterIDPortail",
-      value: TokenManager().idPortal,
+      value: Session().idPortal,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
@@ -85,7 +85,7 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
 
   @override
   Widget build(BuildContext context) {
-    log.finer("on init ${widget.uri} : ${TokenManager().JSESSIONID}");
+    log.finer("on init ${widget.uri} : ${Session().JSESSIONID}");
     log.finer("on init ${widget.uri} : ${AppConfig().uPortalBaseURL}/");
     log.finer(
         "on init ${widget.uri} : ${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}");

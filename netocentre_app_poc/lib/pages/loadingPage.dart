@@ -4,7 +4,7 @@ import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
 import 'package:netocentre_app_poc/services/loginService.dart';
 import 'package:netocentre_app_poc/services/portalService.dart';
-import 'package:netocentre_app_poc/singletons/tokenManager.dart';
+import 'package:netocentre_app_poc/singletons/session.dart';
 
 class LoadingPage extends StatefulWidget {
   final Widget callbackWidget;
@@ -70,7 +70,7 @@ class LoadingPageUtils {
       if (!await LoginService.instance.hasPortalSession()) {
         // If we get a guest user again, that means CAS session is not valid, and we need to redo the login phase
         log.info("CAS session is invalid");
-        TokenManager().reset(flush: true);
+        Session().reset(flush: true);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.pushReplacement(
             context,

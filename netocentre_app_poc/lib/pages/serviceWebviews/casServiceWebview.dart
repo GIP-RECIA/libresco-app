@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
-import 'package:netocentre_app_poc/singletons/tokenManager.dart';
+import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CASServiceWebview extends StatefulWidget {
@@ -47,7 +47,7 @@ class _CASServiceWebview extends State<CASServiceWebview> {
     manager.setCookie(
       url: WebUri("${AppConfig().casBaseURL}/cas"),
       name: "TGC",
-      value: TokenManager().TGC,
+      value: Session().TGC,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,

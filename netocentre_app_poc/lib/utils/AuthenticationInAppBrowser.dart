@@ -4,7 +4,7 @@ import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/pages/homePage.dart';
 import 'package:netocentre_app_poc/pages/loadingPage.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
-import 'package:netocentre_app_poc/singletons/tokenManager.dart';
+import 'package:netocentre_app_poc/singletons/session.dart';
 
 class AuthenticationInAppBrowser extends InAppBrowser {
   final log = Logger('AuthenticationInAppBrowser');
@@ -40,11 +40,11 @@ class AuthenticationInAppBrowser extends InAppBrowser {
           log.finest("Checking cookie $current.name");
           if (current.name == "TGC") {
             log.fine("TGC Cookie found with value : $current");
-            TokenManager().setTGC(current.value, flush: true);
+            Session().setTGC(current.value, flush: true);
           }
         }
         // If we have found a TGC, then we can navigate to home page
-        if (TokenManager().TGC != "") {
+        if (Session().TGC != "") {
           log.fine("$url was intercepted to get the TGC. Closing browser...");
           close(); // close the navigator
           navigateToHomePage();

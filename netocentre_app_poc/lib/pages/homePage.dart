@@ -6,7 +6,7 @@ import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/pages/components/myAppBar.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
 import 'package:netocentre_app_poc/singletons/servicesList.dart';
-import 'package:netocentre_app_poc/singletons/tokenManager.dart';
+import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
 
 class HomePage extends StatefulWidget {
@@ -31,7 +31,7 @@ class _HomePage extends State<HomePage> {
     manager.setCookie(
       url: WebUri("${AppConfig().uPortalBaseURL}/"),
       name: "JSESSIONID",
-      value: TokenManager().JSESSIONID,
+      value: Session().JSESSIONID,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
@@ -42,7 +42,7 @@ class _HomePage extends State<HomePage> {
     manager.setCookie(
       url: WebUri("${AppConfig().uPortalBaseURL}/"),
       name: "clusterIDPortail",
-      value: TokenManager().idPortal,
+      value: Session().idPortal,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,

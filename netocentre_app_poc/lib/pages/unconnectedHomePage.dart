@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:netocentre_app_poc/pages/homePage.dart';
 import 'package:netocentre_app_poc/pages/loadingPage.dart';
-import 'package:netocentre_app_poc/repositories/tokenRepository.dart';
+import 'package:netocentre_app_poc/repositories/SessionRepository.dart';
 import 'package:netocentre_app_poc/services/loginService.dart';
+import 'package:netocentre_app_poc/singletons/account.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
-import 'package:netocentre_app_poc/singletons/tokenManager.dart';
+import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:netocentre_app_poc/utils/AuthenticationInAppBrowser.dart';
 
 class UnconnectedHomePage extends StatefulWidget {
@@ -17,7 +18,7 @@ class UnconnectedHomePage extends StatefulWidget {
 }
 
 class _UnconnectedHomePage extends State<UnconnectedHomePage> {
-  List<Account> accounts = List.empty(growable: true);
+  List<AccountData> accounts = List.empty(growable: true);
   late InAppBrowser browser;
 
   final settings = InAppBrowserClassSettings(
@@ -37,10 +38,11 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   }
 
   Future<void> initAccounts() async {
-    List<Map<String, Object?>> profiles = await TokenRepository.instance.getProfilesList();
+    List<Map<String, Object?>> profiles =
+        await SessionRepository.instance.getProfilesList();
 
     final loadedAccounts = profiles
-        .map((p) => Account(
+        .map((p) => AccountData(
               id: p['id'] as int,
               name: p['name'] as String,
               establishment: '',
@@ -53,13 +55,13 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
     });
   }
 
-  Future<void> _openAccount(BuildContext context, Account account) async {
+  Future<void> _openAccount(BuildContext context, AccountData account) async {
     bool connected = false;
-    TokenManager().setId(account.id.toString());
-    await TokenRepository.instance.getCookiesInDB();
+    Account().setId(account.id.toString());
+    await SessionRepository.instance.getCookiesInDB();
     connected = await LoginService.instance.hasCASSession();
     if (!connected) {
-      TokenManager().reset(flush: true);
+      Session().reset(flush: true);
       browser.openUrlRequest(
           urlRequest: URLRequest(
               url: WebUri('${AppConfig().casBaseURL}/cas/login'
@@ -73,25 +75,25 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
     }
   }
 
-  Future<void> _logoutAccount(BuildContext context, Account account) async {
-    TokenManager().setId(account.id.toString());
-    await TokenRepository.instance.getCookiesInDB();
+  Future<void> _logoutAccount(BuildContext context, AccountData account) async {
+    Account().setId(account.id.toString());
+    await SessionRepository.instance.getCookiesInDB();
     await LoginService.instance.logout();
-    TokenManager().reset();
-    TokenManager().setId('');
+    Session().reset();
+    Account().setId('');
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text("Déconnexion ${account.name}")),
     );
   }
 
-  Future<void> _deleteAccount(BuildContext context, Account account) async {
-    TokenManager().setId(account.id.toString());
-    await TokenRepository.instance.getCookiesInDB();
+  Future<void> _deleteAccount(BuildContext context, AccountData account) async {
+    Account().setId(account.id.toString());
+    await SessionRepository.instance.getCookiesInDB();
     await LoginService.instance.logout();
-    await TokenRepository.instance.deleteCookiesForCurrentProfile();
-    TokenManager().reset();
-    TokenManager().setId('');
+    await SessionRepository.instance.deleteCookiesForCurrentProfile();
+    Session().reset();
+    Account().setId('');
 
     await initAccounts();
 
@@ -149,13 +151,13 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   }
 }
 
-class Account {
+class AccountData {
   final int id;
   final String name;
   final String establishment;
   final String avatarUrl;
 
-  Account({
+  AccountData({
     required this.id,
     required this.name,
     required this.establishment,
@@ -164,7 +166,7 @@ class Account {
 }
 
 class AccountCard extends StatelessWidget {
-  final Account account;
+  final AccountData account;
   final VoidCallback onTap;
   final VoidCallback onDelete;
   final VoidCallback onLogout;

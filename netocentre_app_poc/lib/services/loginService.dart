@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
-import 'package:netocentre_app_poc/singletons/tokenManager.dart';
+import 'package:netocentre_app_poc/singletons/session.dart';
 
 class LoginService {
   final log = Logger('LoginService');
@@ -26,8 +26,8 @@ class LoginService {
 
   Future<bool> hasPortalSession() async {
     // If user don't have any JSESSIONID it is not necessary to make a request, we know we don't have a session
-    if (TokenManager().JSESSIONID == "") {
-      log.finer("No JSESSIONID in TokenManager");
+    if (Session().JSESSIONID == "") {
+      log.finer("No JSESSIONID in Session");
       return false;
     }
 
@@ -36,13 +36,13 @@ class LoginService {
         Uri.https(AppConfig().uPortalHost, "/portail/api/session.json");
 
     log.finer("Making a request to portal : $request");
-    log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
+    log.finer("JSESSIONID=${Session().JSESSIONID}");
 
     final http.Response res = await client.get(
       request,
       headers: <String, String>{
         'Cookie':
-            'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}',
+            'JSESSIONID=${Session().JSESSIONID}; clusterIDPortail=${Session().idPortal}',
         'Host': AppConfig().uPortalHost
       },
     );
@@ -114,7 +114,7 @@ class LoginService {
     );
     var request = await client.getUrl(uri);
     request.followRedirects = false;
-    request.headers.add('Cookie', 'TGC=${TokenManager().TGC}');
+    request.headers.add('Cookie', 'TGC=${Session().TGC}');
 
     log.finer('Making this request to CAS server : ${request.uri.toString()}');
     log.finer("Request headers are : ${request.headers}");
@@ -142,11 +142,11 @@ class LoginService {
     log.fine("Logging out the user from CAS");
     Uri casURI = Uri.https(AppConfig().casHost, "/cas/logout");
     log.finer("Making a request to CAS : $casURI");
-    log.finer("TGC=${TokenManager().TGC}");
+    log.finer("TGC=${Session().TGC}");
 
     var casRequest = await client.getUrl(casURI);
     casRequest.followRedirects = false;
-    casRequest.headers.add('Cookie', 'TGC=${TokenManager().TGC}');
+    casRequest.headers.add('Cookie', 'TGC=${Session().TGC}');
 
     var casResponse = await casRequest.close();
     String casBody = await casResponse.transform(utf8.decoder).join();
@@ -160,12 +160,12 @@ class LoginService {
     Uri portalURI = Uri.https(AppConfig().uPortalHost, "/portail/Logout");
 
     log.finer("Making a request to portal : $portalURI");
-    log.finer("JSESSIONID=${TokenManager().JSESSIONID}");
+    log.finer("JSESSIONID=${Session().JSESSIONID}");
 
     var portalRequest = await client.getUrl(portalURI);
     portalRequest.followRedirects = false;
     portalRequest.headers.add('Cookie',
-        'JSESSIONID=${TokenManager().JSESSIONID}; clusterIDPortail=${TokenManager().idPortal}');
+        'JSESSIONID=${Session().JSESSIONID}; clusterIDPortail=${Session().idPortal}');
     portalRequest.headers.add('Host', AppConfig().uPortalHost);
 
     var portalResponse = await portalRequest.close();
@@ -190,7 +190,7 @@ class LoginService {
         {'service': '${AppConfig().uPortalBaseURL}/portail/Login'});
     var request = await client.getUrl(uri);
     request.followRedirects = false;
-    request.headers.add('Cookie', 'TGC=${TokenManager().TGC}');
+    request.headers.add('Cookie', 'TGC=${Session().TGC}');
 
     log.finer("\nRequest $requestCounter :");
     log.finer(request.uri.toString());
@@ -268,8 +268,8 @@ class LoginService {
     log.fine("=== End of unstacked uPortal login ===");
 
     if (idPortalCookie != "" && jsessionidCookie != "") {
-      TokenManager().setIdPortal(idPortalCookie, flush: true);
-      TokenManager().setJSESSIONID(jsessionidCookie, flush: true);
+      Session().setIdPortal(idPortalCookie, flush: true);
+      Session().setJSESSIONID(jsessionidCookie, flush: true);
       if (await hasPortalSession()) {
         return true;
       }

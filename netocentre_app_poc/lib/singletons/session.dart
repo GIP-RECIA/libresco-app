@@ -1,27 +1,20 @@
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/repositories/tokenRepository.dart';
+import 'package:netocentre_app_poc/repositories/SessionRepository.dart';
 
-class TokenManager {
-  final log = Logger('TokenManager');
+class Session {
+  final log = Logger('Session');
 
-  static final TokenManager _instance = TokenManager._internal();
+  static final Session _instance = Session._internal();
 
-  String _id = '';
   String _TGC = '';
   String _JSESSIONID = '';
   String _idPortal = '';
 
-  factory TokenManager() {
+  factory Session() {
     return _instance;
   }
 
-  TokenManager._internal();
-
-  String get id => _id;
-
-  void setId(String id) {
-    _id = id;
-  }
+  Session._internal();
 
   String get TGC => _TGC;
 
@@ -29,7 +22,7 @@ class TokenManager {
     _TGC = token;
 
     if (flush) {
-      TokenRepository.instance.flushTokens();
+      SessionRepository.instance.flushTokens();
     }
   }
 
@@ -39,7 +32,7 @@ class TokenManager {
     _JSESSIONID = token;
 
     if (flush) {
-      TokenRepository.instance.flushTokens();
+      SessionRepository.instance.flushTokens();
     }
   }
 
@@ -49,7 +42,7 @@ class TokenManager {
     _idPortal = value;
 
     if (flush) {
-      TokenRepository.instance.flushTokens();
+      SessionRepository.instance.flushTokens();
     }
   }
 
@@ -58,14 +51,13 @@ class TokenManager {
     _JSESSIONID = '';
     _idPortal = '';
     if (flush) {
-      TokenRepository.instance.flushTokens();
+      SessionRepository.instance.flushTokens();
     }
   }
 
   @override
   String toString() {
-    return 'TokenManager{'
-        '_id: $_id, '
+    return 'Session{'
         '_TGC: $_TGC, '
         '_JSESSIONID: $_JSESSIONID, '
         '_idPortal: $_idPortal, '
