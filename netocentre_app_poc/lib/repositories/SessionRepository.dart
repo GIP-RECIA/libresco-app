@@ -1,5 +1,5 @@
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/repositories/DatabaseProvider.dart';
+import 'package:netocentre_app_poc/repositories/databaseProvider.dart';
 import 'package:netocentre_app_poc/singletons/account.dart';
 import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:sqflite/sqflite.dart';
