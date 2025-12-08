@@ -12,13 +12,17 @@ final log = Logger('main');
 
 Future<Widget> buildApp() async {
   log.fine("Starting app...");
-  // Temp : force profile 1
-  TokenManager().setCurrentProfileID("1");
-  await TokenRepository.instance.getCookiesInDB();
-  bool connected = await LoginService.instance.hasCASSession();
-  if (!connected) {
-    log.fine("User is not connected to CAS : database reset");
-    TokenManager().reset(flush: true);
+  bool connected = false;
+  List<int> profiles = await TokenRepository.instance.getProfilesList();
+  log.fine("Profiles : $profiles");
+  if (profiles.length == 1) {
+    TokenManager().setCurrentProfileID(profiles[0].toString());
+    await TokenRepository.instance.getCookiesInDB();
+    connected = await LoginService.instance.hasCASSession();
+    if (!connected) {
+      log.fine("User is not connected to CAS : database reset");
+      TokenManager().reset(flush: true);
+    }
   }
 
   return MaterialApp(

@@ -62,6 +62,6 @@ class TokenManager {
 
   @override
   String toString() {
-    return 'TokenManager{_TGC: $_TGC, _JSESSIONID: $_JSESSIONID, _idPortal: $_idPortal}';
+    return 'TokenManager{_currentProfileID: $_currentProfileID, _TGC: $_TGC, _JSESSIONID: $_JSESSIONID, _idPortal: $_idPortal}';
   }
 }

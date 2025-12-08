@@ -31,8 +31,7 @@ class _NavBar extends State<NavBar> {
       PortalService.instance.loadUserInfo();
     }
     // TODO : pictureUri
-    pictureUri =
-        "${AppConfig().uPortalBaseURL}${UserInfo().pictureURI}";
+    pictureUri = "${AppConfig().uPortalBaseURL}${UserInfo().pictureURI}";
   }
 
   @override
@@ -64,24 +63,21 @@ class _NavBar extends State<NavBar> {
           onPressed: () => {},
         ),
         MenuItemButton(
-          key: const Key("logout"),
+          key: const Key("change-account"),
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                "Déconnexion",
-                style: TextStyle(color: Colors.red),
+                "Changer de compte",
               ),
               Icon(
-                Icons.logout_outlined,
-                color: Colors.red,
+                Icons.swap_horiz,
               ),
             ],
           ),
           onPressed: () async {
-            await LoginService.instance.logout();
-            await TokenRepository.instance.deleteCookiesForCurrentProfile();
             TokenManager().reset();
+            TokenManager().setCurrentProfileID('');
             if (context.mounted) {
               Navigator.pushReplacement(
                 context,

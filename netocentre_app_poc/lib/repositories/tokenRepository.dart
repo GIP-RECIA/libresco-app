@@ -20,13 +20,14 @@ class TokenRepository {
       onCreate: (db, version) {
         return db.execute(
           'CREATE TABLE tokens('
-          'id INTEGER, '
+          'id INTEGER PRIMARY KEY AUTOINCREMENT, '
           'TGC VARCHAR(255), '
           'JSESSIONID VARCHAR(255), '
           'idPortal VARCHAR(255)'
           ')',
         );
       },
+      onDowngrade: onDatabaseDowngradeDelete,
       version: 1,
     );
   }
@@ -35,15 +36,15 @@ class TokenRepository {
   Future<void> insertTokens() async {
     final db = await getDB();
 
-    await db.insert(
+    int id = await db.insert(
         'tokens',
         {
-          'id': TokenManager().currentProfileID,
           'TGC': TokenManager().TGC,
           'JSESSIONID': TokenManager().JSESSIONID,
           'idPortal': TokenManager().idPortal
         },
         conflictAlgorithm: ConflictAlgorithm.replace);
+    TokenManager().setCurrentProfileID(id.toString());
     log.fine('Save in database for ${TokenManager().toString()}');
   }
 
@@ -54,25 +55,20 @@ class TokenRepository {
     await db.update(
       'tokens',
       {
-        'id': TokenManager().currentProfileID,
         'TGC': TokenManager().TGC,
         'JSESSIONID': TokenManager().JSESSIONID,
         'idPortal': TokenManager().idPortal
       },
-      where: 'id=1',
+      where: 'id = ${TokenManager().currentProfileID}',
     );
     log.fine('Update in database for ${TokenManager().toString()}');
   }
 
   /// Synchronize tokens from TokenManager singleton with tokens who are in the database
   Future<void> flushTokens() async {
-    final db = await getDB();
-
     log.fine('Flush in database for ${TokenManager().toString()}');
 
-    int? count =
-        Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM tokens'));
-    if (count! > 0) {
+    if (TokenManager().currentProfileID != "") {
       updateTokens();
     } else {
       insertTokens();
@@ -93,9 +89,7 @@ class TokenRepository {
         Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM tokens'));
     if (count! > 0) {
       List<Map<String, Object?>> res = await db.query('tokens',
-          where: 'id = ?',
-          whereArgs: [TokenManager().currentProfileID],
-          limit: 1);
+          where: 'id = ${TokenManager().currentProfileID}');
       TokenManager().setTGC(res.first["TGC"].toString());
       TokenManager().setJSESSIONID(res.first["JSESSIONID"].toString());
       TokenManager().setIdPortal(res.first["idPortal"].toString());
