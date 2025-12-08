@@ -242,11 +242,10 @@ class PortalService {
     dynamic rawUserInfo = await getUserInfo();
     log.fine('Loaded user info ${rawUserInfo.toString()}');
     log.fine("Setting attributes in UserInfo() singleton");
-    UserInfo().setFirstname((rawUserInfo["name"] as String).split(" ")[0]);
-    TokenManager().setUid(rawUserInfo['sub']);
-    TokenManager().setName(rawUserInfo['name']);
-    TokenManager().setPicture(rawUserInfo['picture']);
-    TokenManager().saveUserInfo();
+    UserInfo().setUid(rawUserInfo['sub']);
+    UserInfo().setName(rawUserInfo['name']);
+    UserInfo().setPicture(rawUserInfo['picture']);
+    UserInfo().saveUserInfo();
   }
 
   /// uri parser for services who are based on cas auth

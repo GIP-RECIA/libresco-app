@@ -15,7 +15,7 @@ Future<Widget> buildApp() async {
   bool connected = false;
   List<Map<String, Object?>> profiles = await TokenRepository.instance.getProfilesList();
   if (profiles.length == 1) {
-    TokenManager().setCurrentProfileID(profiles[0]['id'].toString());
+    TokenManager().setId(profiles[0]['id'].toString());
     await TokenRepository.instance.getCookiesInDB();
     connected = await LoginService.instance.hasCASSession();
     if (!connected) {

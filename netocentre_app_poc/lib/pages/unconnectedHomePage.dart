@@ -55,7 +55,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
 
   Future<void> _openAccount(BuildContext context, Account account) async {
     bool connected = false;
-    TokenManager().setCurrentProfileID(account.id.toString());
+    TokenManager().setId(account.id.toString());
     await TokenRepository.instance.getCookiesInDB();
     connected = await LoginService.instance.hasCASSession();
     if (!connected) {
@@ -74,11 +74,11 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   }
 
   Future<void> _logoutAccount(BuildContext context, Account account) async {
-    TokenManager().setCurrentProfileID(account.id.toString());
+    TokenManager().setId(account.id.toString());
     await TokenRepository.instance.getCookiesInDB();
     await LoginService.instance.logout();
     TokenManager().reset();
-    TokenManager().setCurrentProfileID('');
+    TokenManager().setId('');
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text("Déconnexion ${account.name}")),
@@ -86,12 +86,12 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   }
 
   Future<void> _deleteAccount(BuildContext context, Account account) async {
-    TokenManager().setCurrentProfileID(account.id.toString());
+    TokenManager().setId(account.id.toString());
     await TokenRepository.instance.getCookiesInDB();
     await LoginService.instance.logout();
     await TokenRepository.instance.deleteCookiesForCurrentProfile();
     TokenManager().reset();
-    TokenManager().setCurrentProfileID('');
+    TokenManager().setId('');
 
     await initAccounts();
 

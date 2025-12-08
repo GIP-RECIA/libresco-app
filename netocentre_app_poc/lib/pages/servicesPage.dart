@@ -53,7 +53,7 @@ class _ServicesPage extends State<ServicesPage> {
   void initState() {
     super.initState();
 
-    if (UserInfo().firstname == "") {
+    if (UserInfo().name == "") {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(

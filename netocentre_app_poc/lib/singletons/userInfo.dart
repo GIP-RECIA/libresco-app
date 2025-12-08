@@ -1,8 +1,14 @@
+import 'package:logging/logging.dart';
+import 'package:netocentre_app_poc/repositories/tokenRepository.dart';
+
 class UserInfo {
+  final log = Logger('UserInfo');
+
   static final UserInfo _instance = UserInfo._internal();
-  String _firstname = "";
-  String _lastname = "";
-  String _pictureURI = "";
+
+  String _uid = '';
+  String _name = '';
+  String _picture = '';
 
   factory UserInfo() {
     return _instance;
@@ -10,21 +16,34 @@ class UserInfo {
 
   UserInfo._internal();
 
-  String get pictureURI => _pictureURI;
+  String get uid => _uid;
 
-  void setPictureURI(String value) {
-    _pictureURI = value;
+  void setUid(String value) {
+    _uid = value;
   }
 
-  String get lastname => _lastname;
+  String get name => _name;
 
-  void setLastname(String value) {
-    _lastname = value;
+  void setName(String value) {
+    _name = value;
   }
 
-  String get firstname => _firstname;
+  String get picture => _picture;
 
-  void setFirstname(String value) {
-    _firstname = value;
+  void setPicture(String value) {
+    _picture = value;
+  }
+
+  void saveUserInfo() {
+    TokenRepository.instance.flushUserInfo();
+  }
+
+  @override
+  String toString() {
+    return 'UserInfo{'
+        '_uid: $_uid, '
+        '_name: $_name, '
+        '_picture: $_picture'
+        '}';
   }
 }

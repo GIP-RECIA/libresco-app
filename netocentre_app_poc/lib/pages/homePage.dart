@@ -65,7 +65,7 @@ class _HomePage extends State<HomePage> {
               child: Container(
                 margin: const EdgeInsets.only(left: 10, bottom: 10),
                 child: Text(
-                  "Bienvenue sur votre ENT, ${UserInfo().firstname}",
+                  "Bienvenue sur votre ENT, ${UserInfo().name}",
                   style: GoogleFonts.nunito(
                     fontSize: 24,
                     fontWeight: FontWeight.w800,

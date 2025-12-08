@@ -6,14 +6,10 @@ class TokenManager {
 
   static final TokenManager _instance = TokenManager._internal();
 
-  String _currentProfileID = '';
+  String _id = '';
   String _TGC = '';
   String _JSESSIONID = '';
   String _idPortal = '';
-
-  String _uid = '';
-  String _name = '';
-  String _picture = '';
 
   factory TokenManager() {
     return _instance;
@@ -21,10 +17,10 @@ class TokenManager {
 
   TokenManager._internal();
 
-  String get currentProfileID => _currentProfileID;
+  String get id => _id;
 
-  void setCurrentProfileID(String id) {
-    _currentProfileID = id;
+  void setId(String id) {
+    _id = id;
   }
 
   String get TGC => _TGC;
@@ -57,28 +53,6 @@ class TokenManager {
     }
   }
 
-  String get uid => _uid;
-
-  void setUid(String value) {
-    _uid = value;
-  }
-
-  String get name => _name;
-
-  void setName(String value) {
-    _name = value;
-  }
-
-  String get picture => _picture;
-
-  void setPicture(String value) {
-    _picture = value;
-  }
-
-  void saveUserInfo() {
-    TokenRepository.instance.flushUserInfo();
-  }
-
   void reset({bool flush = false}) {
     _TGC = '';
     _JSESSIONID = '';
@@ -91,13 +65,10 @@ class TokenManager {
   @override
   String toString() {
     return 'TokenManager{'
-        '_currentProfileID: $_currentProfileID, '
+        '_id: $_id, '
         '_TGC: $_TGC, '
         '_JSESSIONID: $_JSESSIONID, '
         '_idPortal: $_idPortal, '
-        '_uid: $_uid, '
-        '_name: $_name, '
-        '_picture: $_picture'
         '}';
   }
 }

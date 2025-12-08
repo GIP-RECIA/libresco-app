@@ -26,12 +26,12 @@ class _NavBar extends State<NavBar> {
   void initState() {
     super.initState();
 
-    if (UserInfo().firstname == "") {
+    if (UserInfo().name == "") {
       log.warning("User info should be loaded but is not !");
       PortalService.instance.loadUserInfo();
     }
     // TODO : pictureUri
-    pictureUri = "${AppConfig().uPortalBaseURL}${UserInfo().pictureURI}";
+    pictureUri = "${AppConfig().uPortalBaseURL}${UserInfo().picture}";
   }
 
   @override
@@ -77,7 +77,7 @@ class _NavBar extends State<NavBar> {
           ),
           onPressed: () async {
             TokenManager().reset();
-            TokenManager().setCurrentProfileID('');
+            TokenManager().setId('');
             if (context.mounted) {
               Navigator.pushReplacement(
                 context,
