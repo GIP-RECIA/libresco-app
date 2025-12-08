@@ -15,9 +15,11 @@ class AuthenticationInAppBrowser extends InAppBrowser {
 
   void navigateToHomePage() {
     Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (_) => const LoadingPage(callbackWidget: HomePage())));
+      context,
+      MaterialPageRoute(
+        builder: (_) => const LoadingPage(callbackWidget: HomePage()),
+      ),
+    );
   }
 
   @override
@@ -35,7 +37,8 @@ class AuthenticationInAppBrowser extends InAppBrowser {
         // Get TGC cookie
         log.finest("Looking for TGC cookie");
         List<Cookie> cookies = await cookieManager.getCookies(
-            url: WebUri("${AppConfig().casBaseURL}/cas/"));
+          url: WebUri("${AppConfig().casBaseURL}/cas/"),
+        );
         for (var current in cookies) {
           log.finest("Checking cookie $current.name");
           if (current.name == "TGC") {
@@ -52,13 +55,15 @@ class AuthenticationInAppBrowser extends InAppBrowser {
         // If no TGC is found, it means there is certainly a problem with the cookies
         else {
           log.warning(
-              "TGC cookie wasn't found. There may be a problem with cookies");
+            "TGC cookie wasn't found. There may be a problem with cookies",
+          );
           close();
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text(
-                    "Erreur lors de l'authentification : essayez de mettre à jour votre navigateur dans sa dernière version."),
+                  "Erreur lors de l'authentification : essayez de mettre à jour votre navigateur dans sa dernière version.",
+                ),
                 duration: Duration(seconds: 10),
               ),
             );

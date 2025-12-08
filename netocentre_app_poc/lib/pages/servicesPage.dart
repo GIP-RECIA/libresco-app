@@ -25,15 +25,17 @@ class _ServicesPage extends State<ServicesPage> {
 
   void _sortAlphabetically() {
     setState(() {
-      renderedServices
-          .sort((a, b) => slugify(a.text).compareTo(slugify(b.text)));
+      renderedServices.sort(
+        (a, b) => slugify(a.text).compareTo(slugify(b.text)),
+      );
     });
   }
 
   void _sortUnalphabetically() {
     setState(() {
-      renderedServices
-          .sort((b, a) => slugify(a.text).compareTo(slugify(b.text)));
+      renderedServices.sort(
+        (b, a) => slugify(a.text).compareTo(slugify(b.text)),
+      );
     });
   }
 
@@ -55,10 +57,12 @@ class _ServicesPage extends State<ServicesPage> {
 
     if (UserInfo().name == "") {
       Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  const LoadingPage(callbackWidget: ServicesPage())));
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              const LoadingPage(callbackWidget: ServicesPage()),
+        ),
+      );
     }
   }
 
@@ -68,9 +72,7 @@ class _ServicesPage extends State<ServicesPage> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 30),
             Align(
               alignment: Alignment.center,
               child: Container(
@@ -129,37 +131,46 @@ class _ServicesPage extends State<ServicesPage> {
                     },
                     dropdownMenuEntries: const <DropdownMenuEntry<String>>[
                       DropdownMenuEntry(
-                          label: "Popularité", value: "popularite"),
+                        label: "Popularité",
+                        value: "popularite",
+                      ),
                       DropdownMenuEntry(
-                          label: "Plus récents", value: "plus_recents"),
-                      DropdownMenuEntry(label: "A-Z", value: "a-z"),
-                      DropdownMenuEntry(label: "Z-A", value: "z-a"),
+                        label: "Plus récents",
+                        value: "plus_recents",
+                      ),
+                      DropdownMenuEntry(
+                        label: "A-Z",
+                        value: "a-z",
+                      ),
+                      DropdownMenuEntry(
+                        label: "Z-A",
+                        value: "z-a",
+                      ),
                     ],
                   ),
                 ],
               ),
             ),
             Container(
-                margin: const EdgeInsets.only(left: 15.0, right: 15.0),
-                child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 15.0,
-                    mainAxisSpacing: 15.0,
-                    childAspectRatio: (1 / 1.15),
-                  ),
-                  itemCount: renderedServices.length,
-                  itemBuilder: (context, index) {
-                    final Service service = renderedServices[index];
-                    return ServicesCard(service,
-                        onPressed: () => _switchPortletIsFavoriteState(index));
-                  },
-                )),
-            const SizedBox(
-              height: 20,
+              margin: const EdgeInsets.only(left: 15.0, right: 15.0),
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 15.0,
+                  mainAxisSpacing: 15.0,
+                  childAspectRatio: (1 / 1.15),
+                ),
+                itemCount: renderedServices.length,
+                itemBuilder: (context, index) {
+                  final Service service = renderedServices[index];
+                  return ServicesCard(service,
+                      onPressed: () => _switchPortletIsFavoriteState(index));
+                },
+              ),
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

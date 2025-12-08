@@ -17,13 +17,15 @@ class ExternalAppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: () async => {
-              await LaunchApp.openApp(
-                  androidPackageName: androidPackageName,
-                  iosUrlScheme: iosUrlScheme,
-                  // there may be no UrlScheme, and/or they may not be known
-                  appStoreLink: appStoreLink)
-            },
-        child: Text(text));
+      onPressed: () async => {
+        await LaunchApp.openApp(
+          androidPackageName: androidPackageName,
+          iosUrlScheme: iosUrlScheme,
+          // there may be no UrlScheme, and/or they may not be known
+          appStoreLink: appStoreLink,
+        )
+      },
+      child: Text(text),
+    );
   }
 }

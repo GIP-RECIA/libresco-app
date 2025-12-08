@@ -21,7 +21,7 @@ class AccountCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => {onTap()},
+      onTap: () => onTap(),
       child: Card.filled(
         color: Colors.white,
         child: ListTile(
@@ -41,33 +41,39 @@ class AccountCard extends StatelessWidget {
             },
             itemBuilder: (context) => [
               const PopupMenuItem(
-                  value: 'logout',
-                  child: Row(children: [
+                value: 'logout',
+                child: Row(
+                  children: [
                     Expanded(
-                        child: Text(
-                      "Se déconnecter",
-                      style: TextStyle(color: Colors.red),
-                    )),
+                      child: Text(
+                        "Se déconnecter",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
                     Icon(
                       Icons.logout,
                       color: Colors.red,
                     )
-                  ])),
+                  ],
+                ),
+              ),
               const PopupMenuItem(
-                  value: 'delete',
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Text(
+                value: 'delete',
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
                         "Supprimer",
                         style: TextStyle(color: Colors.red),
-                      )),
-                      Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                      )
-                    ],
-                  )),
+                      ),
+                    ),
+                    Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ),

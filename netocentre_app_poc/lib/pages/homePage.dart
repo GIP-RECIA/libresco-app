@@ -57,9 +57,7 @@ class _HomePage extends State<HomePage> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 30),
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
@@ -127,9 +125,7 @@ class _HomePage extends State<HomePage> {
                 },
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 30),
           ],
         ),
       ),

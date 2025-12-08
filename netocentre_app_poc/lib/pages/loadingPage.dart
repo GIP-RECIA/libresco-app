@@ -34,9 +34,7 @@ class _LoadingPage extends State<LoadingPage> {
               width: MediaQuery.of(context).size.width * 0.9,
               child: const LinearProgressIndicator(),
             ),
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 30),
             Text(
               "Récupération des données en cours.\nVeuillez Patienter.",
               textAlign: TextAlign.center,
@@ -75,7 +73,8 @@ class LoadingPageUtils {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => const UnconnectedHomePage()),
+              builder: (context) => const UnconnectedHomePage(),
+            ),
           );
         });
         return;
@@ -95,6 +94,8 @@ class LoadingPageUtils {
 
   void navigatorPush() {
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => callbackWidget));
+      context,
+      MaterialPageRoute(builder: (context) => callbackWidget),
+    );
   }
 }

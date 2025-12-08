@@ -26,9 +26,12 @@ class PortalService {
     final client = IOClient(HttpClient());
 
     Uri request = Uri.https(
-        AppConfig().uPortalHost,
-        "/portail/api/v4-3/dlm/portletRegistry.json",
-        {'category': 'All categories'});
+      AppConfig().uPortalHost,
+      "/portail/api/v4-3/dlm/portletRegistry.json",
+      {
+        'category': 'All categories',
+      },
+    );
 
     log.finer("Getting portlet request : $request");
     log.finer("JSESSIONID=${Session().JSESSIONID}");
@@ -56,7 +59,8 @@ class PortalService {
           for (var portlet in subcategory["portlets"]) {
             if (!portletsSet.contains(portlet["fname"])) {
               log.finer(
-                  "portlet ${portlet["title"]} favorite : ${portlet["favorite"]}");
+                "portlet ${portlet["title"]} favorite : ${portlet["favorite"]}",
+              );
 
               String portletIconUri = "";
 
@@ -65,7 +69,8 @@ class PortalService {
                 portletIconUri =
                     portlet["parameters"]["mobileIconUrl"]["value"];
                 log.finer(
-                    "portlet ${portlet["title"]} icon url : $portletIconUri");
+                  "portlet ${portlet["title"]} icon url : $portletIconUri",
+                );
               }
 
               // if auth directly on CAS
@@ -74,42 +79,57 @@ class PortalService {
                 String? serviceUri = serviceUriParser(
                     portlet["parameters"]["alternativeMaximizedLink"]["value"]);
                 if (serviceUri != null) {
-                  servicesList.add(Service.CASBased(
+                  servicesList.add(
+                    Service.CASBased(
                       id: portlet["id"],
                       text: portlet["title"],
                       serviceUri: serviceUri,
                       iconUri: portletIconUri,
                       isFavorite: portlet["favorite"],
-                      fname: portlet["fname"]));
+                      fname: portlet["fname"],
+                    ),
+                  );
                   if (portlet["favorite"]) {
-                    favoritesList.add(Service.CASBased(
+                    favoritesList.add(
+                      Service.CASBased(
                         id: portlet["id"],
                         text: portlet["title"],
                         serviceUri: serviceUri,
                         iconUri: portletIconUri,
                         isFavorite: portlet["favorite"],
-                        fname: portlet["fname"]));
+                        fname: portlet["fname"],
+                      ),
+                    );
                   }
                 } else {
                   log.warning('service uri is null for ${portlet["title"]}');
                 }
               } else {
-                servicesList.add(Service.UPortalBased(
+                servicesList.add(
+                  Service.UPortalBased(
                     id: portlet["id"],
                     text: portlet["title"],
                     serviceUri: portlet["fname"],
                     iconUri: portletIconUri,
-                    isFavorite: portlet["favorite"]));
+                    isFavorite: portlet["favorite"],
+                  ),
+                );
                 if (portlet["favorite"]) {
-                  favoritesList.add(Service.UPortalBased(
+                  favoritesList.add(
+                    Service.UPortalBased(
                       id: portlet["id"],
                       text: portlet["title"],
                       serviceUri: portlet["fname"],
                       iconUri: portletIconUri,
-                      isFavorite: portlet["favorite"]));
+                      isFavorite: portlet["favorite"],
+                    ),
+                  );
                 }
               }
-              portletsSet = {...portletsSet, portlet["fname"]};
+              portletsSet = {
+                ...portletsSet,
+                portlet["fname"],
+              };
             }
           }
         }
@@ -117,7 +137,8 @@ class PortalService {
         Services().setServicesList(servicesList);
         Services().setFavoritesList(favoritesList);
         log.fine(
-            'Final list of services :${Services().servicesList.toString()}');
+          'Final list of services :${Services().servicesList.toString()}',
+        );
       } else {
         log.warning('Got an abnormal ${res.statusCode} response status code !');
       }
@@ -165,10 +186,14 @@ class PortalService {
 
     final client = IOClient(HttpClient());
 
-    Uri request = Uri.https(AppConfig().uPortalHost, "/portail/api/layout", {
-      'action': service.isFavorite ? 'removeFavorite' : 'addFavorite',
-      'channelId': service.id.toString()
-    });
+    Uri request = Uri.https(
+      AppConfig().uPortalHost,
+      "/portail/api/layout",
+      {
+        'action': service.isFavorite ? 'removeFavorite' : 'addFavorite',
+        'channelId': service.id.toString()
+      },
+    );
 
     log.finer("Getting portlet request : $request");
     log.finer("JSESSIONID=${Session().JSESSIONID}");
@@ -199,10 +224,13 @@ class PortalService {
     final client = IOClient(HttpClient());
 
     Uri request = Uri.https(
-        AppConfig().uPortalHost, "/portail/api/v5-1/userinfo", {
-      'claims': 'private,picture,name,ESCOSIRENCourant,ESCOSIREN',
-      'groups': ''
-    });
+      AppConfig().uPortalHost,
+      "/portail/api/v5-1/userinfo",
+      {
+        'claims': 'private,picture,name,ESCOSIRENCourant,ESCOSIREN',
+        'groups': ''
+      },
+    );
 
     log.finer("getting portlet request : $request");
     log.finer("JSESSIONID=${Session().JSESSIONID}");

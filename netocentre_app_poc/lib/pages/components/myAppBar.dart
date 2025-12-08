@@ -29,7 +29,8 @@ class _ScaffoldwithIntegratedSearchBar
     setState(() {
       _filteredItems = _allItems
           .where(
-              (item) => item.text.toLowerCase().contains(query.toLowerCase()))
+            (item) => item.text.toLowerCase().contains(query.toLowerCase()),
+          )
           .toList();
     });
   }
@@ -46,34 +47,35 @@ class _ScaffoldwithIntegratedSearchBar
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: CustomSearchAppBar(
-          showSearchBar: _showSearchBar,
-          toggleSearchBar: _toggleSearchBar,
-          onSearch: _filterSearchResults,
-          schoolTitle: "Lycée fictif",
-        ),
-        body: Stack(
-          children: [
-            widget.child,
-            if (_showSearchBar && _filteredItems.isNotEmpty)
-              Positioned(
-                top: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height:
-                      (_filteredItems.length < 3 ? _filteredItems.length : 3) *
-                          60.0,
-                  // Multiple de 60 - max 180 pour 3 affichés en simultané
-                  color: Colors.white,
-                  // Couleur de fond pour la liste
-                  child: _buildSearchResultsListView(),
-                ),
+      backgroundColor: Colors.white,
+      appBar: CustomSearchAppBar(
+        showSearchBar: _showSearchBar,
+        toggleSearchBar: _toggleSearchBar,
+        onSearch: _filterSearchResults,
+        schoolTitle: "Lycée fictif",
+      ),
+      body: Stack(
+        children: [
+          widget.child,
+          if (_showSearchBar && _filteredItems.isNotEmpty)
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height:
+                    (_filteredItems.length < 3 ? _filteredItems.length : 3) *
+                        60.0,
+                // Multiple de 60 - max 180 pour 3 affichés en simultané
+                color: Colors.white,
+                // Couleur de fond pour la liste
+                child: _buildSearchResultsListView(),
               ),
-          ],
-        ),
-        bottomNavigationBar: const NavBar());
+            ),
+        ],
+      ),
+      bottomNavigationBar: const NavBar(),
+    );
   }
 
   // TODO: generate list from search in the same way than normal list
@@ -95,29 +97,37 @@ class _ScaffoldwithIntegratedSearchBar
                 if (await LoginService.instance.isAuthorizedByUPortal()) {
                   if (context.mounted) {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => UPortalServiceWebview(
-                                text: service.text, uri: service.serviceUri)));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UPortalServiceWebview(
+                          text: service.text,
+                          uri: service.serviceUri,
+                        ),
+                      ),
+                    );
                   }
                 } else {
                   Session().reset(flush: true);
                   if (context.mounted) {
                     Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const UnconnectedHomePage()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const UnconnectedHomePage(),
+                      ),
+                    );
                   }
                 }
               } else {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CASServiceWebview(
-                              text: service.text,
-                              uri: service.serviceUri,
-                              fname: service.fname!,
-                            )));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CASServiceWebview(
+                      text: service.text,
+                      uri: service.serviceUri,
+                      fname: service.fname!,
+                    ),
+                  ),
+                );
               }
             },
           ),
@@ -155,8 +165,11 @@ class CustomSearchAppBar extends StatelessWidget
                 return IconButton(
                   icon: const Icon(Icons.motion_photos_on_outlined),
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text('Clicked on App Logo Button')));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Clicked on App Logo Button'),
+                      ),
+                    );
                   },
                 );
               },
@@ -179,7 +192,10 @@ class CustomSearchAppBar extends StatelessWidget
           icon: const Icon(Icons.info_outline),
           onPressed: () {
             ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Clicked on Info Button')));
+              const SnackBar(
+                content: Text('Clicked on Info Button'),
+              ),
+            );
           },
         ),
       ],
@@ -203,8 +219,11 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             return IconButton(
               icon: const Icon(Icons.motion_photos_on_outlined),
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('Clicked on App Logo Button')));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Clicked on App Logo Button'),
+                  ),
+                );
               },
             );
           },
@@ -215,14 +234,20 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             icon: const Icon(Icons.info_outline),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Clicked on Info Button')));
+                const SnackBar(
+                  content: Text('Clicked on Info Button'),
+                ),
+              );
             },
           ),
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Clicked on Search Button')));
+                const SnackBar(
+                  content: Text('Clicked on Search Button'),
+                ),
+              );
             },
           ),
         ],

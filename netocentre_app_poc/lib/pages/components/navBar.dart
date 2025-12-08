@@ -66,12 +66,8 @@ class _NavBar extends State<NavBar> {
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text(
-                "Changer de compte",
-              ),
-              Icon(
-                Icons.swap_horiz,
-              ),
+              Text("Changer de compte"),
+              Icon(Icons.swap_horiz),
             ],
           ),
           onPressed: () async {
@@ -81,7 +77,8 @@ class _NavBar extends State<NavBar> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const UnconnectedHomePage()),
+                  builder: (context) => const UnconnectedHomePage(),
+                ),
               );
             }
           },
@@ -103,9 +100,11 @@ class _NavBar extends State<NavBar> {
                 ),
                 onPressed: () {
                   Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const HomePage()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HomePage(),
+                    ),
+                  );
                 },
               ),
               IconButton(
@@ -116,24 +115,27 @@ class _NavBar extends State<NavBar> {
                 ),
                 onPressed: () {
                   Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ServicesPage()));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ServicesPage(),
+                    ),
+                  );
                 },
               ),
               IconButton(
-                  key: const Key("profileInfo"),
-                  icon: const Icon(
-                    Icons.account_box,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    if (controller.isOpen) {
-                      controller.close();
-                    } else {
-                      controller.open();
-                    }
-                  }),
+                key: const Key("profileInfo"),
+                icon: const Icon(
+                  Icons.account_box,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  if (controller.isOpen) {
+                    controller.close();
+                  } else {
+                    controller.open();
+                  }
+                },
+              ),
             ],
           ),
         );

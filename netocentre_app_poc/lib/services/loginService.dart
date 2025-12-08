@@ -32,8 +32,10 @@ class LoginService {
     }
 
     final client = IOClient(HttpClient());
-    Uri request =
-        Uri.https(AppConfig().uPortalHost, "/portail/api/session.json");
+    Uri request = Uri.https(
+      AppConfig().uPortalHost,
+      "/portail/api/session.json",
+    );
 
     log.finer("Making a request to portal : $request");
     log.finer("JSESSIONID=${Session().JSESSIONID}");
@@ -152,7 +154,8 @@ class LoginService {
     String casBody = await casResponse.transform(utf8.decoder).join();
 
     log.finer(
-        "Response status code from cas server : ${casResponse.statusCode}");
+      "Response status code from cas server : ${casResponse.statusCode}",
+    );
     log.finer("Response headers: ${casResponse.headers}");
     log.finest("Body: $casBody");
 
@@ -164,13 +167,16 @@ class LoginService {
 
     var portalRequest = await client.getUrl(portalURI);
     portalRequest.followRedirects = false;
-    portalRequest.headers.add('Cookie',
-        'JSESSIONID=${Session().JSESSIONID}; clusterIDPortail=${Session().idPortal}');
+    portalRequest.headers.add(
+      'Cookie',
+      'JSESSIONID=${Session().JSESSIONID}; clusterIDPortail=${Session().idPortal}',
+    );
     portalRequest.headers.add('Host', AppConfig().uPortalHost);
 
     var portalResponse = await portalRequest.close();
     log.finer(
-        "Response status code from portal : ${portalResponse.statusCode}");
+      "Response status code from portal : ${portalResponse.statusCode}",
+    );
     log.finer("Response headers: ${portalResponse.headers}");
   }
 
@@ -186,8 +192,13 @@ class LoginService {
     /// Request 0 - initial request
     final client = HttpClient();
     client.userAgent = AppConfig().userAgent;
-    var uri = Uri.https(AppConfig().casHost, "/cas/login",
-        {'service': '${AppConfig().uPortalBaseURL}/portail/Login'});
+    var uri = Uri.https(
+      AppConfig().casHost,
+      "/cas/login",
+      {
+        'service': '${AppConfig().uPortalBaseURL}/portail/Login',
+      },
+    );
     var request = await client.getUrl(uri);
     request.followRedirects = false;
     request.headers.add('Cookie', 'TGC=${Session().TGC}');
@@ -236,7 +247,8 @@ class LoginService {
         }
 
         log.finer(
-            "\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+          "\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-",
+        );
         log.finer("\nRequest ${requestCounter + 1} :");
         log.finer(request.uri.toString());
         log.finer("request headers : ${request.headers}");

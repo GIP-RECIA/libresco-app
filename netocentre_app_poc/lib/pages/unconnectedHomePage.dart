@@ -24,13 +24,15 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   late InAppBrowser browser;
 
   final settings = InAppBrowserClassSettings(
-      browserSettings: InAppBrowserSettings(hideToolbarTop: true),
-      webViewSettings: InAppWebViewSettings(
-          javaScriptEnabled: true,
-          isInspectable: kDebugMode,
-          useShouldInterceptRequest: true,
-          userAgent: AppConfig().userAgent,
-          supportZoom: false));
+    browserSettings: InAppBrowserSettings(hideToolbarTop: true),
+    webViewSettings: InAppWebViewSettings(
+      javaScriptEnabled: true,
+      isInspectable: kDebugMode,
+      useShouldInterceptRequest: true,
+      userAgent: AppConfig().userAgent,
+      supportZoom: false,
+    ),
+  );
 
   @override
   void initState() {
@@ -44,11 +46,13 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
         await SessionRepository.instance.getProfilesList();
 
     final loadedAccounts = profiles
-        .map((p) => AccountData(
-              id: p['id'] as int,
-              name: p['name'] as String,
-              avatarUrl: AppConfig().uPortalBaseURL + (p['picture'] as String),
-            ))
+        .map(
+          (p) => AccountData(
+            id: p['id'] as int,
+            name: p['name'] as String,
+            avatarUrl: AppConfig().uPortalBaseURL + (p['picture'] as String),
+          ),
+        )
         .toList();
 
     setState(() {
@@ -65,14 +69,19 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
       Session().reset(flush: true);
       browser.openUrlRequest(
           urlRequest: URLRequest(
-              url: WebUri('${AppConfig().casBaseURL}/cas/login'
-                  '?service=${AppConfig().serviceURL}')),
+            url: WebUri(
+              '${AppConfig().casBaseURL}/cas/login'
+              '?service=${AppConfig().serviceURL}',
+            ),
+          ),
           settings: settings);
     } else {
       Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (_) => const LoadingPage(callbackWidget: HomePage())));
+        context,
+        MaterialPageRoute(
+          builder: (_) => const LoadingPage(callbackWidget: HomePage()),
+        ),
+      );
     }
   }
 
@@ -136,10 +145,14 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
                 FilledButton.icon(
                   onPressed: () {
                     browser.openUrlRequest(
-                        urlRequest: URLRequest(
-                            url: WebUri('${AppConfig().casBaseURL}/cas/login'
-                                '?service=${AppConfig().serviceURL}')),
-                        settings: settings);
+                      urlRequest: URLRequest(
+                        url: WebUri(
+                          '${AppConfig().casBaseURL}/cas/login'
+                          '?service=${AppConfig().serviceURL}',
+                        ),
+                      ),
+                      settings: settings,
+                    );
                   },
                   icon: const Icon(Icons.add),
                   label: const Text("Ajouter un compte"),

@@ -20,13 +20,14 @@ class SessionRepository {
     final db = await DatabaseProvider.instance.db;
 
     int id = await db.insert(
-        tableName,
-        {
-          'TGC': Session().TGC,
-          'JSESSIONID': Session().JSESSIONID,
-          'idPortal': Session().idPortal
-        },
-        conflictAlgorithm: ConflictAlgorithm.replace);
+      tableName,
+      {
+        'TGC': Session().TGC,
+        'JSESSIONID': Session().JSESSIONID,
+        'idPortal': Session().idPortal
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
     Account().setId(id.toString());
     log.fine('Save in database for ${Session().toString()}');
   }
@@ -74,7 +75,8 @@ class SessionRepository {
       Session().setJSESSIONID(res.first["JSESSIONID"].toString());
       Session().setIdPortal(res.first["idPortal"].toString());
       log.fine(
-          'Session after getting values from database : ${Session().toString()}');
+        'Session after getting values from database : ${Session().toString()}',
+      );
     } else {
       log.fine("Empty database");
     }

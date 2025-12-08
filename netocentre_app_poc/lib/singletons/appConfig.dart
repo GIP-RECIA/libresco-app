@@ -50,7 +50,8 @@ class AppConfig {
       log.info('Config was successfully loaded : ${toString()}');
     } else {
       throw Exception(
-          'Error while loading config, error code is (${response.statusCode})');
+        'Error while loading config, error code is (${response.statusCode})',
+      );
     }
   }
 

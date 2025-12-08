@@ -42,39 +42,49 @@ class ServicesCard extends StatelessWidget {
             if (await LoginService.instance.isAuthorizedByUPortal()) {
               if (context.mounted) {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => UPortalServiceWebview(
-                            text: service.text, uri: service.serviceUri)));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UPortalServiceWebview(
+                      text: service.text,
+                      uri: service.serviceUri,
+                    ),
+                  ),
+                );
               }
             } else {
               Session().reset(flush: true);
               if (context.mounted) {
                 Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const UnconnectedHomePage()));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const UnconnectedHomePage(),
+                  ),
+                );
               }
             }
           } else {
             if (await LoginService.instance.hasCASSession()) {
               if (context.mounted) {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CASServiceWebview(
-                              text: service.text,
-                              uri: service.serviceUri,
-                              fname: service.fname!,
-                            )));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CASServiceWebview(
+                      text: service.text,
+                      uri: service.serviceUri,
+                      fname: service.fname!,
+                    ),
+                  ),
+                );
               }
             } else {
               Session().reset(flush: true);
               if (context.mounted) {
                 Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const UnconnectedHomePage()));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const UnconnectedHomePage(),
+                  ),
+                );
               }
             }
           }
@@ -88,27 +98,22 @@ class ServicesCard extends StatelessWidget {
                   Container(
                     height: 18,
                     decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(18),
-                          topRight: Radius.circular(18),
-                        ),
-                        color: Color(0xFFAD0780)),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(18),
+                        topRight: Radius.circular(18),
+                      ),
+                      color: Color(0xFFAD0780),
+                    ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   LogoRow(
                     service,
                     onPressed: onPressed,
                   ),
-                  const SizedBox(
-                    height: 2,
-                  ),
+                  const SizedBox(height: 2),
                   Text(
                     "Type Service",
-                    style: TextStyle(
-                      color: Colors.grey.shade500,
-                    ),
+                    style: TextStyle(color: Colors.grey.shade500),
                   ),
                   Text(
                     service.text,
@@ -164,9 +169,7 @@ class LogoRow extends StatelessWidget {
               padding: const EdgeInsets.all(3),
               decoration: const BoxDecoration(
                 color: Color(0xFFad1919),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(6),
-                ),
+                borderRadius: BorderRadius.all(Radius.circular(6)),
               ),
               child: const Text(
                 "Nouveau",
@@ -184,15 +187,16 @@ class LogoRow extends StatelessWidget {
         ),
         if (service.isFavorite)
           Positioned(
-              right: 5,
-              child: TextButton(
-                onPressed: onPressed,
-                child: const Icon(
-                  Icons.star_rounded,
-                  color: Color(0xFFF1C903),
-                  size: 32.0,
-                ),
-              ))
+            right: 5,
+            child: TextButton(
+              onPressed: onPressed,
+              child: const Icon(
+                Icons.star_rounded,
+                color: Color(0xFFF1C903),
+                size: 32.0,
+              ),
+            ),
+          )
         else
           Positioned(
             right: 5,
