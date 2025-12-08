@@ -16,12 +16,13 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   late InAppBrowser browser;
 
   final settings = InAppBrowserClassSettings(
-      browserSettings: InAppBrowserSettings(hideUrlBar: false),
+      browserSettings: InAppBrowserSettings(hideToolbarTop: true),
       webViewSettings: InAppWebViewSettings(
           javaScriptEnabled: true,
           isInspectable: kDebugMode,
           useShouldInterceptRequest: true,
-          userAgent: AppConfig().userAgent));
+          userAgent: AppConfig().userAgent,
+          supportZoom: false));
 
   @override
   void initState() {
