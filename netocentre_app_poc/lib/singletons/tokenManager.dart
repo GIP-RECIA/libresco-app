@@ -3,11 +3,17 @@ import 'package:netocentre_app_poc/repositories/tokenRepository.dart';
 
 class TokenManager {
   final log = Logger('TokenManager');
+
   static final TokenManager _instance = TokenManager._internal();
-  String _TGC = "";
-  String _JSESSIONID = "";
-  String _idPortal = "";
-  String _currentProfileID = "";
+
+  String _currentProfileID = '';
+  String _TGC = '';
+  String _JSESSIONID = '';
+  String _idPortal = '';
+
+  String _uid = '';
+  String _name = '';
+  String _picture = '';
 
   factory TokenManager() {
     return _instance;
@@ -51,10 +57,32 @@ class TokenManager {
     }
   }
 
+  String get uid => _uid;
+
+  void setUid(String value) {
+    _uid = value;
+  }
+
+  String get name => _name;
+
+  void setName(String value) {
+    _name = value;
+  }
+
+  String get picture => _picture;
+
+  void setPicture(String value) {
+    _picture = value;
+  }
+
+  void saveUserInfo() {
+    TokenRepository.instance.flushUserInfo();
+  }
+
   void reset({bool flush = false}) {
-    _TGC = "";
-    _JSESSIONID = "";
-    _idPortal = "";
+    _TGC = '';
+    _JSESSIONID = '';
+    _idPortal = '';
     if (flush) {
       TokenRepository.instance.flushTokens();
     }
@@ -62,6 +90,14 @@ class TokenManager {
 
   @override
   String toString() {
-    return 'TokenManager{_currentProfileID: $_currentProfileID, _TGC: $_TGC, _JSESSIONID: $_JSESSIONID, _idPortal: $_idPortal}';
+    return 'TokenManager{'
+        '_currentProfileID: $_currentProfileID, '
+        '_TGC: $_TGC, '
+        '_JSESSIONID: $_JSESSIONID, '
+        '_idPortal: $_idPortal, '
+        '_uid: $_uid, '
+        '_name: $_name, '
+        '_picture: $_picture'
+        '}';
   }
 }

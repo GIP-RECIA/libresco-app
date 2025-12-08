@@ -23,7 +23,10 @@ class TokenRepository {
           'id INTEGER PRIMARY KEY AUTOINCREMENT, '
           'TGC VARCHAR(255), '
           'JSESSIONID VARCHAR(255), '
-          'idPortal VARCHAR(255)'
+          'idPortal VARCHAR(255), '
+          'uid VARCHAR(255), '
+          'name VARCHAR(255), '
+          'picture VARCHAR(255)'
           ')',
         );
       },
@@ -58,6 +61,21 @@ class TokenRepository {
         'TGC': TokenManager().TGC,
         'JSESSIONID': TokenManager().JSESSIONID,
         'idPortal': TokenManager().idPortal
+      },
+      where: 'id = ${TokenManager().currentProfileID}',
+    );
+    log.fine('Update in database for ${TokenManager().toString()}');
+  }
+
+  Future<void> flushUserInfo() async {
+    final db = await getDB();
+
+    await db.update(
+      'tokens',
+      {
+        'uid': TokenManager().uid,
+        'name': TokenManager().name,
+        'picture': TokenManager().picture
       },
       where: 'id = ${TokenManager().currentProfileID}',
     );
@@ -100,10 +118,10 @@ class TokenRepository {
     }
   }
 
-  Future<List<int>> getProfilesList() async {
+  Future<List<Map<String, Object?>>> getProfilesList() async {
     final db = await getDB();
     log.fine('Get profiles from database');
-    final results = await db.query('tokens', columns: ['id'], distinct: true);
-    return results.map((row) => row['id'] as int).toList();
+    final results = await db.query('tokens', distinct: true);
+    return results.toList();
   }
 }

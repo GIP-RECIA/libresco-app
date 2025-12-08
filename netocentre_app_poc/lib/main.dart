@@ -13,10 +13,9 @@ final log = Logger('main');
 Future<Widget> buildApp() async {
   log.fine("Starting app...");
   bool connected = false;
-  List<int> profiles = await TokenRepository.instance.getProfilesList();
-  log.fine("Profiles : $profiles");
+  List<Map<String, Object?>> profiles = await TokenRepository.instance.getProfilesList();
   if (profiles.length == 1) {
-    TokenManager().setCurrentProfileID(profiles[0].toString());
+    TokenManager().setCurrentProfileID(profiles[0]['id'].toString());
     await TokenRepository.instance.getCookiesInDB();
     connected = await LoginService.instance.hasCASSession();
     if (!connected) {

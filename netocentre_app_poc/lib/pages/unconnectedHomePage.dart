@@ -37,14 +37,14 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   }
 
   Future<void> initAccounts() async {
-    List<int> profiles = await TokenRepository.instance.getProfilesList();
+    List<Map<String, Object?>> profiles = await TokenRepository.instance.getProfilesList();
 
     final loadedAccounts = profiles
         .map((p) => Account(
-              id: p,
-              name: 'name $p',
-              establishment: 'establishment $p',
-              avatarUrl: '',
+              id: p['id'] as int,
+              name: p['name'] as String,
+              establishment: '',
+              avatarUrl: AppConfig().uPortalBaseURL + (p['picture'] as String),
             ))
         .toList();
 
