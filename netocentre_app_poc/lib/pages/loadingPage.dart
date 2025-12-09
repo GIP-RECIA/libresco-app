@@ -90,7 +90,6 @@ class LoadingPageUtils {
 
     // Once we are sure to be connected, we can request the infos from the portal APIs
     await PortalService.instance.loadUserInfo();
-    await PortalService.instance.getAllPortlets();
     log.info("Data was loaded successfully, now exiting loading page...");
     navigatorPush();
   }

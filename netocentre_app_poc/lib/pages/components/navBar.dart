@@ -6,6 +6,7 @@ import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
 import 'package:netocentre_app_poc/services/portalService.dart';
 import 'package:netocentre_app_poc/singletons/account.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
+import 'package:netocentre_app_poc/singletons/servicesList.dart';
 import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
 
@@ -73,6 +74,7 @@ class _NavBar extends State<NavBar> {
             ],
           ),
           onPressed: () async {
+            Services().setServicesList([]);
             Session().reset();
             Account().setId('');
             if (context.mounted) {

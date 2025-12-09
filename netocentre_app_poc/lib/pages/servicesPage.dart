@@ -5,10 +5,8 @@ import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/pages/components/expansionTile.dart';
 import 'package:netocentre_app_poc/pages/components/myAppBar.dart';
 import 'package:netocentre_app_poc/pages/components/servicesCard.dart';
-import 'package:netocentre_app_poc/pages/loadingPage.dart';
 import 'package:netocentre_app_poc/services/portalService.dart';
 import 'package:netocentre_app_poc/singletons/servicesList.dart';
-import 'package:netocentre_app_poc/singletons/userInfo.dart';
 import 'package:slugify/slugify.dart';
 
 class ServicesPage extends StatefulWidget {
@@ -55,15 +53,17 @@ class _ServicesPage extends State<ServicesPage> {
   void initState() {
     super.initState();
 
-    if (UserInfo().name == "") {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              const LoadingPage(callbackWidget: ServicesPage()),
-        ),
-      );
+    if (Services().servicesList.isEmpty) {
+      initServices();
     }
+  }
+
+  Future<void> initServices() async {
+    await PortalService.instance.getAllPortlets();
+
+    setState(() {
+      renderedServices = Services().servicesList;
+    });
   }
 
   @override
