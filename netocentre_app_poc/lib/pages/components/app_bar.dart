@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomSearchAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showSearchBar;
   final VoidCallback toggleSearchBar;
   final Function(String) onSearch;
@@ -13,7 +12,7 @@ class CustomSearchAppBar extends StatelessWidget
   final VoidCallback onChangeEtab;
   final VoidCallback onChangeAccount;
 
-  const CustomSearchAppBar({
+  const CustomAppBar({
     super.key,
     required this.showSearchBar,
     required this.toggleSearchBar,

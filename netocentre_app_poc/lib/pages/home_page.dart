@@ -51,7 +51,7 @@ class _HomePage extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldwithIntegratedSearchBar(
+    return AppContainer(
       child: InAppWebView(
         initialUrlRequest: URLRequest(
           url: WebUri(

@@ -66,7 +66,7 @@ class _ServicesPage extends State<ServicesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldwithIntegratedSearchBar(
+    return AppContainer(
       child: SingleChildScrollView(
         child: Column(
           children: [

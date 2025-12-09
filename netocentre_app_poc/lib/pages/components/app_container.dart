@@ -12,21 +12,19 @@ import 'package:netocentre_app_poc/singletons/services_list.dart';
 import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:netocentre_app_poc/singletons/user_info.dart';
 
-class ScaffoldwithIntegratedSearchBar extends StatefulWidget {
+class AppContainer extends StatefulWidget {
   final Widget child;
 
-  const ScaffoldwithIntegratedSearchBar({
+  const AppContainer({
     super.key,
     required this.child,
   });
 
   @override
-  State<ScaffoldwithIntegratedSearchBar> createState() =>
-      _ScaffoldwithIntegratedSearchBar();
+  State<AppContainer> createState() => _AppContainer();
 }
 
-class _ScaffoldwithIntegratedSearchBar
-    extends State<ScaffoldwithIntegratedSearchBar> {
+class _AppContainer extends State<AppContainer> {
   bool _showSearchBar = false;
   final List<Service> _allItems = Services().servicesList;
   List<Service> _filteredItems = [];
@@ -76,7 +74,7 @@ class _ScaffoldwithIntegratedSearchBar
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: CustomSearchAppBar(
+      appBar: CustomAppBar(
         showSearchBar: _showSearchBar,
         toggleSearchBar: _toggleSearchBar,
         onSearch: _filterSearchResults,
