@@ -127,22 +127,22 @@ class ServicesCard extends StatelessWidget {
                   ),
                 ],
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: TextButton(
-                    onPressed: () => log.finer("click on En savoir plus"),
-                    child: const Text(
-                      "En savoir plus",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: Colors.blue,
-                      ),
-                    ),
-                  ),
-                ),
-              )
+              // Align(
+              //   alignment: Alignment.bottomCenter,
+              //   child: Container(
+              //     padding: const EdgeInsets.only(bottom: 10),
+              //     child: TextButton(
+              //       onPressed: () => log.finer("click on En savoir plus"),
+              //       child: const Text(
+              //         "En savoir plus",
+              //         style: TextStyle(
+              //           fontWeight: FontWeight.w700,
+              //           color: Colors.blue,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
