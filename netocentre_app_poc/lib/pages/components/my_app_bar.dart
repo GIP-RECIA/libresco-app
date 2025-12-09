@@ -5,8 +5,11 @@ import 'package:netocentre_app_poc/pages/serviceWebviews/cas_service_web_view.da
 import 'package:netocentre_app_poc/pages/serviceWebviews/uportal_service_web_view.dart';
 import 'package:netocentre_app_poc/pages/unconnected_home_page.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
+import 'package:netocentre_app_poc/singletons/account.dart';
+import 'package:netocentre_app_poc/singletons/app_config.dart';
 import 'package:netocentre_app_poc/singletons/services_list.dart';
 import 'package:netocentre_app_poc/singletons/session.dart';
+import 'package:netocentre_app_poc/singletons/user_info.dart';
 
 // TODO: call from unconnected home page needs some modification
 class ScaffoldwithIntegratedSearchBar extends StatefulWidget {
@@ -47,6 +50,28 @@ class _ScaffoldwithIntegratedSearchBar
     });
   }
 
+  void _openNotifications(BuildContext context) {}
+
+  void _openMyAccount(BuildContext context) {}
+
+  void _openInfoEtab(BuildContext context) {}
+
+  void _openChangeEtab(BuildContext context) {}
+
+  void _changeAccount(BuildContext context) {
+    Session().reset();
+    Account().setId('');
+    Services().setServicesList([]);
+    if (context.mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const UnconnectedHomePage(),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +81,12 @@ class _ScaffoldwithIntegratedSearchBar
         toggleSearchBar: _toggleSearchBar,
         onSearch: _filterSearchResults,
         schoolTitle: "Lycée fictif",
+        avatarUrl: AppConfig().uPortalBaseURL + UserInfo().picture,
+        onNotification: () => _openNotifications(context),
+        onAccount: () => _openMyAccount(context),
+        onInfoEtab: () => _openInfoEtab(context),
+        onChangeEtab: () => _openChangeEtab(context),
+        onChangeAccount: () => _changeAccount(context),
       ),
       body: Stack(
         children: [
@@ -146,6 +177,12 @@ class CustomSearchAppBar extends StatelessWidget
   final VoidCallback toggleSearchBar;
   final Function(String) onSearch;
   final String schoolTitle;
+  final String avatarUrl;
+  final VoidCallback onNotification;
+  final VoidCallback onAccount;
+  final VoidCallback onInfoEtab;
+  final VoidCallback onChangeEtab;
+  final VoidCallback onChangeAccount;
 
   const CustomSearchAppBar({
     super.key,
@@ -153,6 +190,12 @@ class CustomSearchAppBar extends StatelessWidget
     required this.toggleSearchBar,
     required this.onSearch,
     required this.schoolTitle,
+    required this.avatarUrl,
+    required this.onNotification,
+    required this.onAccount,
+    required this.onInfoEtab,
+    required this.onChangeEtab,
+    required this.onChangeAccount,
   });
 
   @override
@@ -187,77 +230,81 @@ class CustomSearchAppBar extends StatelessWidget
             )
           : Text(schoolTitle),
       actions: [
-        IconButton(
-          icon: Icon(showSearchBar ? Icons.close : Icons.search),
-          onPressed: toggleSearchBar,
-        ),
-        IconButton(
-          icon: const Icon(Icons.info_outline),
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Clicked on Info Button'),
-              ),
-            );
+        // IconButton(
+        //   icon: Icon(showSearchBar ? Icons.close : Icons.search),
+        //   onPressed: toggleSearchBar,
+        // ),
+        PopupMenuButton<String>(
+          position: PopupMenuPosition.under,
+          color: Colors.white,
+          icon: CircleAvatar(
+            backgroundImage: NetworkImage(avatarUrl),
+          ),
+          onSelected: (value) {
+            if (value == 'notification') onNotification();
+            if (value == 'account') onAccount();
+            if (value == 'info-etab') onInfoEtab();
+            if (value == 'change-etab') onChangeEtab();
+            if (value == 'change-account') onChangeAccount();
           },
+          itemBuilder: (context) => [
+            const PopupMenuItem(
+              value: 'notification',
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text('Notifications'),
+                  ),
+                ],
+              ),
+            ),
+            const PopupMenuItem(
+              value: 'account',
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text('Mon profil'),
+                  ),
+                  Icon(Icons.person),
+                ],
+              ),
+            ),
+            const PopupMenuItem(
+              value: 'info-etab',
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text('Informations de l\'établissement'),
+                  ),
+                  Icon(Icons.info),
+                ],
+              ),
+            ),
+            const PopupMenuItem(
+              value: 'change-etab',
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text('Changer d\'établissement'),
+                  ),
+                  Icon(Icons.swap_horiz),
+                ],
+              ),
+            ),
+            const PopupMenuItem(
+              value: 'change-account',
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text('Changer de compte'),
+                  ),
+                  Icon(Icons.swap_horiz),
+                ],
+              ),
+            ),
+          ],
         ),
       ],
     );
   }
-}
-
-class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String schoolTitle;
-
-  const MyAppBar(this.schoolTitle, {super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(kToolbarHeight),
-      child: AppBar(
-        backgroundColor: Colors.white,
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(Icons.motion_photos_on_outlined),
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Clicked on App Logo Button'),
-                  ),
-                );
-              },
-            );
-          },
-        ),
-        title: Text(schoolTitle),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.info_outline),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Clicked on Info Button'),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Clicked on Search Button'),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
