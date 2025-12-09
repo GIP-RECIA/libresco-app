@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/entities/service.dart';
 import 'package:netocentre_app_poc/pages/components/myAppBar.dart';
 import 'package:netocentre_app_poc/singletons/appConfig.dart';
-import 'package:netocentre_app_poc/singletons/servicesList.dart';
 import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
 
@@ -25,7 +23,7 @@ class _HomePage extends State<HomePage> {
     super.initState();
     defineUPortalCookies();
   }
-  
+
   void defineUPortalCookies() {
     CookieManager manager = CookieManager.instance();
     manager.removeSessionCookies();
@@ -68,7 +66,8 @@ class _HomePage extends State<HomePage> {
         ),
         onLoadStop: (controller, url) async {
           await controller.evaluateJavascript(
-            source: 'document.getElementById("displayname").innerText = \'${UserInfo().name}\';',
+            source:
+                'document.getElementById("displayname").innerText = \'${UserInfo().name}\';',
           );
         },
         shouldOverrideUrlLoading: (controller, navigationAction) async {

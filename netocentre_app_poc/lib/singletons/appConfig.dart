@@ -23,7 +23,8 @@ class AppConfig {
 
   AppConfig._internal();
 
-  // All the config is loaded from one place : the app does not need to be updated is there is a configuration update
+  // All the config is loaded from one place :
+  // the app does not need to be updated is there is a configuration update
   Future<void> loadConfig() async {
     log.fine('Generating user agent');
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
