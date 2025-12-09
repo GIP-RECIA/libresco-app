@@ -12,7 +12,10 @@ import 'package:netocentre_app_poc/singletons/session.dart';
 class ScaffoldwithIntegratedSearchBar extends StatefulWidget {
   final Widget child; // Le contenu principal de la page
 
-  const ScaffoldwithIntegratedSearchBar({super.key, required this.child});
+  const ScaffoldwithIntegratedSearchBar({
+    super.key,
+    required this.child,
+  });
 
   @override
   State<ScaffoldwithIntegratedSearchBar> createState() =>

@@ -7,12 +7,13 @@ class ExternalAppButton extends StatelessWidget {
   final String iosUrlScheme;
   final String appStoreLink;
 
-  const ExternalAppButton(
-      {required this.text,
-      required this.androidPackageName,
-      required this.iosUrlScheme,
-      required this.appStoreLink,
-      super.key});
+  const ExternalAppButton({
+    required this.text,
+    required this.androidPackageName,
+    required this.iosUrlScheme,
+    required this.appStoreLink,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

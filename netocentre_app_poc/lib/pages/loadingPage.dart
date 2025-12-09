@@ -9,7 +9,10 @@ import 'package:netocentre_app_poc/singletons/session.dart';
 class LoadingPage extends StatefulWidget {
   final Widget callbackWidget;
 
-  const LoadingPage({required this.callbackWidget, super.key});
+  const LoadingPage({
+    required this.callbackWidget,
+    super.key,
+  });
 
   @override
   State<StatefulWidget> createState() => _LoadingPage();

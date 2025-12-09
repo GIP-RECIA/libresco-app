@@ -10,7 +10,9 @@ import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({
+    super.key,
+  });
 
   @override
   State<HomePage> createState() => _HomePage();

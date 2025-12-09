@@ -10,8 +10,11 @@ class UPortalServiceWebview extends StatefulWidget {
   final String uri;
   final String text;
 
-  const UPortalServiceWebview(
-      {super.key, required this.uri, required this.text});
+  const UPortalServiceWebview({
+    super.key,
+    required this.uri,
+    required this.text,
+  });
 
   @override
   State<UPortalServiceWebview> createState() => _UPortalServiceWebview();

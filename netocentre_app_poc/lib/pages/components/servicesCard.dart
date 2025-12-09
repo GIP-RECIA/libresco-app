@@ -15,7 +15,11 @@ class ServicesCard extends StatelessWidget {
   final bool isNew = true;
   final VoidCallback? onPressed;
 
-  ServicesCard(this.service, {super.key, required this.onPressed}) {
+  ServicesCard(
+    this.service, {
+    super.key,
+    required this.onPressed,
+  }) {
     log.finer("construct ${service.text} card | isFav : ${service.isFavorite}");
   }
 
@@ -24,9 +28,7 @@ class ServicesCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(18),
-        ),
+        borderRadius: const BorderRadius.all(Radius.circular(18)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.shade200,

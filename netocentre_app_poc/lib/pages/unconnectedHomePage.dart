@@ -13,7 +13,9 @@ import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:netocentre_app_poc/utils/AuthenticationInAppBrowser.dart';
 
 class UnconnectedHomePage extends StatefulWidget {
-  const UnconnectedHomePage({super.key});
+  const UnconnectedHomePage({
+    super.key,
+  });
 
   @override
   State<UnconnectedHomePage> createState() => _UnconnectedHomePage();

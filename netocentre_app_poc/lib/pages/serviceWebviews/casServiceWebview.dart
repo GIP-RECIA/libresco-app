@@ -11,8 +11,12 @@ class CASServiceWebview extends StatefulWidget {
   final String text;
   final String fname;
 
-  const CASServiceWebview(
-      {super.key, required this.uri, required this.text, required this.fname});
+  const CASServiceWebview({
+    super.key,
+    required this.uri,
+    required this.text,
+    required this.fname,
+  });
 
   @override
   State<CASServiceWebview> createState() => _CASServiceWebview();

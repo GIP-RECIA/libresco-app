@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
 class MyExpansionTile extends StatefulWidget {
-  const MyExpansionTile(this.title,
-      {this.subtitle, this.nbNotifications, super.key, required this.dataset});
+  const MyExpansionTile(
+    this.title, {
+    this.subtitle,
+    this.nbNotifications,
+    super.key,
+    required this.dataset,
+  });
 
   final String title;
   final List<({String name, String? url})> dataset;

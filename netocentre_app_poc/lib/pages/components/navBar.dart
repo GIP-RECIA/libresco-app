@@ -10,7 +10,9 @@ import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:netocentre_app_poc/singletons/userInfo.dart';
 
 class NavBar extends StatefulWidget {
-  const NavBar({super.key});
+  const NavBar({
+    super.key,
+  });
 
   @override
   State<NavBar> createState() => _NavBar();
