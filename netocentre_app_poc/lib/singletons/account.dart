@@ -1,7 +1,7 @@
 import 'package:logging/logging.dart';
 
 class Account {
-  final log = Logger('Session');
+  final log = Logger('Account');
 
   static final Account _instance = Account._internal();
 
