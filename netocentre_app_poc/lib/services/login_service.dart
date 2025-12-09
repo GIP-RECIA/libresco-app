@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/singletons/appConfig.dart';
+import 'package:netocentre_app_poc/singletons/app_config.dart';
 import 'package:netocentre_app_poc/singletons/session.dart';
 
 class LoginService {

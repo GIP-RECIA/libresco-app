@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/pages/homePage.dart';
-import 'package:netocentre_app_poc/pages/servicesPage.dart';
-import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
-import 'package:netocentre_app_poc/services/portalService.dart';
+import 'package:netocentre_app_poc/pages/home_page.dart';
+import 'package:netocentre_app_poc/pages/services_page.dart';
+import 'package:netocentre_app_poc/pages/unconnected_home_page.dart';
+import 'package:netocentre_app_poc/services/portal_service.dart';
 import 'package:netocentre_app_poc/singletons/account.dart';
-import 'package:netocentre_app_poc/singletons/appConfig.dart';
-import 'package:netocentre_app_poc/singletons/servicesList.dart';
+import 'package:netocentre_app_poc/singletons/app_config.dart';
+import 'package:netocentre_app_poc/singletons/services_list.dart';
 import 'package:netocentre_app_poc/singletons/session.dart';
-import 'package:netocentre_app_poc/singletons/userInfo.dart';
+import 'package:netocentre_app_poc/singletons/user_info.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({

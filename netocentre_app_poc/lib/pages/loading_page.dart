@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
-import 'package:netocentre_app_poc/services/loginService.dart';
-import 'package:netocentre_app_poc/services/portalService.dart';
+import 'package:netocentre_app_poc/pages/unconnected_home_page.dart';
+import 'package:netocentre_app_poc/services/login_service.dart';
+import 'package:netocentre_app_poc/services/portal_service.dart';
 import 'package:netocentre_app_poc/singletons/session.dart';
 
 class LoadingPage extends StatefulWidget {

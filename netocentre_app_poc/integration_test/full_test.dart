@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:netocentre_app_poc/pages/servicesPage.dart';
+import 'package:netocentre_app_poc/pages/services_page.dart';
 import 'package:patrol/patrol.dart';
 
 import 'package:netocentre_app_poc/main.dart' as app;
-import 'package:netocentre_app_poc/pages/homePage.dart';
-import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
+import 'package:netocentre_app_poc/pages/home_page.dart';
+import 'package:netocentre_app_poc/pages/unconnected_home_page.dart';
 
 void main() {
   patrolTest('Integration full test : login - service access - logout', ($) async {

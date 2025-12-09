@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
-import 'package:netocentre_app_poc/pages/components/navBar.dart';
-import 'package:netocentre_app_poc/pages/serviceWebviews/casServiceWebview.dart';
-import 'package:netocentre_app_poc/pages/serviceWebviews/uPortalServiceWebview.dart';
-import 'package:netocentre_app_poc/pages/unconnectedHomePage.dart';
-import 'package:netocentre_app_poc/services/loginService.dart';
-import 'package:netocentre_app_poc/singletons/servicesList.dart';
+import 'package:netocentre_app_poc/pages/components/nav_bar.dart';
+import 'package:netocentre_app_poc/pages/serviceWebviews/cas_service_web_view.dart';
+import 'package:netocentre_app_poc/pages/serviceWebviews/uportal_service_web_view.dart';
+import 'package:netocentre_app_poc/pages/unconnected_home_page.dart';
+import 'package:netocentre_app_poc/services/login_service.dart';
+import 'package:netocentre_app_poc/singletons/services_list.dart';
 import 'package:netocentre_app_poc/singletons/session.dart';
 
 // TODO: call from unconnected home page needs some modification

@@ -1,16 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:netocentre_app_poc/pages/components/accountCard.dart';
-import 'package:netocentre_app_poc/pages/homePage.dart';
-import 'package:netocentre_app_poc/pages/loadingPage.dart';
-import 'package:netocentre_app_poc/pojo/accountData.dart';
-import 'package:netocentre_app_poc/repositories/SessionRepository.dart';
-import 'package:netocentre_app_poc/services/loginService.dart';
+import 'package:netocentre_app_poc/pages/components/account_card.dart';
+import 'package:netocentre_app_poc/pages/home_page.dart';
+import 'package:netocentre_app_poc/pages/loading_page.dart';
+import 'package:netocentre_app_poc/pojo/account_data.dart';
+import 'package:netocentre_app_poc/repositories/session_repository.dart';
+import 'package:netocentre_app_poc/services/login_service.dart';
 import 'package:netocentre_app_poc/singletons/account.dart';
-import 'package:netocentre_app_poc/singletons/appConfig.dart';
+import 'package:netocentre_app_poc/singletons/app_config.dart';
 import 'package:netocentre_app_poc/singletons/session.dart';
-import 'package:netocentre_app_poc/utils/AuthenticationInAppBrowser.dart';
+import 'package:netocentre_app_poc/utils/authentication_in_app_browser.dart';
 
 class UnconnectedHomePage extends StatefulWidget {
   const UnconnectedHomePage({

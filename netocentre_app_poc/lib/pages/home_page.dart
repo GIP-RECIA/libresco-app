@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/pages/components/myAppBar.dart';
-import 'package:netocentre_app_poc/singletons/appConfig.dart';
+import 'package:netocentre_app_poc/pages/components/my_app_bar.dart';
+import 'package:netocentre_app_poc/singletons/app_config.dart';
 import 'package:netocentre_app_poc/singletons/session.dart';
-import 'package:netocentre_app_poc/singletons/userInfo.dart';
+import 'package:netocentre_app_poc/singletons/user_info.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
