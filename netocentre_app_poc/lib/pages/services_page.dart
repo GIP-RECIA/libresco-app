@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
-import 'package:netocentre_app_poc/pages/components/my_app_bar.dart';
+import 'package:netocentre_app_poc/pages/components/app_container.dart';
 import 'package:netocentre_app_poc/pages/components/services_card.dart';
 import 'package:netocentre_app_poc/services/portal_service.dart';
 import 'package:netocentre_app_poc/singletons/services_list.dart';
