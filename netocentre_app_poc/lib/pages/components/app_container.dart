@@ -78,7 +78,7 @@ class _AppContainer extends State<AppContainer> {
         showSearchBar: _showSearchBar,
         toggleSearchBar: _toggleSearchBar,
         onSearch: _filterSearchResults,
-        schoolTitle: "Lycée fictif",
+        schoolTitle: 'Lycée fictif',
         avatarUrl: AppConfig().uPortalBaseURL + UserInfo().picture,
         onNotification: () => _openNotifications(context),
         onAccount: () => _openMyAccount(context),

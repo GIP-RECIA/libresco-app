@@ -33,12 +33,12 @@ class _CASServiceWebview extends State<CASServiceWebview> {
     isInspectable: kDebugMode,
     mediaPlaybackRequiresUserGesture: false,
     allowsInlineMediaPlayback: true,
-    iframeAllow: "camera; microphone",
+    iframeAllow: 'camera; microphone',
     iframeAllowFullscreen: true,
   );
 
   PullToRefreshController? pullToRefreshController;
-  String url = "";
+  String url = '';
   double progress = 0;
   final urlController = TextEditingController();
 
@@ -50,14 +50,14 @@ class _CASServiceWebview extends State<CASServiceWebview> {
     manager.removeSessionCookies();
 
     manager.setCookie(
-      url: WebUri("${AppConfig().casBaseURL}/cas"),
-      name: "TGC",
+      url: WebUri('${AppConfig().casBaseURL}/cas'),
+      name: 'TGC',
       value: Session().TGC,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
       domain: AppConfig().casHost,
-      path: "/cas",
+      path: '/cas',
     );
 
     pullToRefreshController = kIsWeb
@@ -93,10 +93,10 @@ class _CASServiceWebview extends State<CASServiceWebview> {
                     key: webViewKey,
                     initialUrlRequest: URLRequest(
                       url: WebUri(
-                        "${AppConfig().uPortalBaseURL}"
-                        "/portail/api/ExternalURLStats"
-                        "?fname=${widget.fname}"
-                        "&service=${widget.uri}",
+                        '${AppConfig().uPortalBaseURL}'
+                        '/portail/api/ExternalURLStats'
+                        '?fname=${widget.fname}'
+                        '&service=${widget.uri}',
                       ),
                     ),
                     initialSettings: settings,
@@ -121,13 +121,13 @@ class _CASServiceWebview extends State<CASServiceWebview> {
                       var uri = navigationAction.request.url!;
 
                       if (![
-                        "http",
-                        "https",
-                        "file",
-                        "chrome",
-                        "data",
-                        "javascript",
-                        "about"
+                        'http',
+                        'https',
+                        'file',
+                        'chrome',
+                        'data',
+                        'javascript',
+                        'about'
                       ].contains(uri.scheme)) {
                         if (await canLaunchUrl(uri)) {
                           // Launch the App
@@ -190,8 +190,8 @@ class _CASServiceWebview extends State<CASServiceWebview> {
               alignment: MainAxisAlignment.center,
               children: <Widget>[
                 ElevatedButton(
-                  key: const Key("backFromWebviewButton"),
-                  child: Text("Quitter ${widget.text}"),
+                  key: const Key('backFromWebviewButton'),
+                  child: Text('Quitter ${widget.text}'),
                   onPressed: () {
                     manager.removeSessionCookies();
                     Navigator.of(context).pop();

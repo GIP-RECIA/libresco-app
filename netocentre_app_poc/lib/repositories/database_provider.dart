@@ -18,7 +18,7 @@ class DatabaseProvider {
   }
 
   Future<Database> _initDB() async {
-    final path = join(await getDatabasesPath(), "app.db");
+    final path = join(await getDatabasesPath(), 'app.db');
 
     return await openDatabase(
       path,

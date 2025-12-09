@@ -12,7 +12,7 @@ import 'package:netocentre_app_poc/singletons/session.dart';
 final log = Logger('main');
 
 Future<Widget> buildApp() async {
-  log.fine("Starting app...");
+  log.fine('Starting app...');
   bool connected = false;
   List<Map<String, Object?>> profiles =
       await SessionRepository.instance.getProfilesList();
@@ -21,7 +21,7 @@ Future<Widget> buildApp() async {
     await SessionRepository.instance.getCookiesInDB();
     connected = await LoginService.instance.hasCASSession();
     if (!connected) {
-      log.fine("User is not connected to CAS : database reset");
+      log.fine('User is not connected to CAS : database reset');
       Session().reset(flush: true);
     }
   }

@@ -20,7 +20,7 @@ class ServicesCard extends StatelessWidget {
     super.key,
     required this.onPressed,
   }) {
-    log.finer("construct ${service.text} card | isFav : ${service.isFavorite}");
+    log.finer('construct ${service.text} card | isFav : ${service.isFavorite}');
   }
 
   @override
@@ -114,7 +114,7 @@ class ServicesCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    "Type Service",
+                    'Type Service',
                     style: TextStyle(color: Colors.grey.shade500),
                   ),
                   Text(
@@ -132,9 +132,9 @@ class ServicesCard extends StatelessWidget {
               //   child: Container(
               //     padding: const EdgeInsets.only(bottom: 10),
               //     child: TextButton(
-              //       onPressed: () => log.finer("click on En savoir plus"),
+              //       onPressed: () => log.finer('click on En savoir plus'),
               //       child: const Text(
-              //         "En savoir plus",
+              //         'En savoir plus',
               //         style: TextStyle(
               //           fontWeight: FontWeight.w700,
               //           color: Colors.blue,
@@ -160,7 +160,7 @@ class LogoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log.finer("icon uri : ${service.iconUri}");
+    log.finer('icon uri : ${service.iconUri}');
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -174,7 +174,7 @@ class LogoRow extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(6)),
               ),
               child: const Text(
-                "Nouveau",
+                'Nouveau',
                 style: TextStyle(color: Colors.white, fontSize: 11),
               ),
             ),
@@ -182,7 +182,7 @@ class LogoRow extends StatelessWidget {
         Align(
           alignment: Alignment.center,
           child: SvgPicture.network(
-            "${AppConfig().uPortalBaseURL}${service.iconUri}",
+            '${AppConfig().uPortalBaseURL}${service.iconUri}',
             height: 50,
             width: 50,
           ),

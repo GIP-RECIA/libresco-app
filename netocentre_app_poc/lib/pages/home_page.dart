@@ -28,24 +28,24 @@ class _HomePage extends State<HomePage> {
     CookieManager manager = CookieManager.instance();
     manager.removeSessionCookies();
     manager.setCookie(
-      url: WebUri("${AppConfig().uPortalBaseURL}/"),
-      name: "JSESSIONID",
+      url: WebUri('${AppConfig().uPortalBaseURL}/'),
+      name: 'JSESSIONID',
       value: Session().JSESSIONID,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
       domain: AppConfig().uPortalHost,
-      path: "/",
+      path: '/',
     );
     manager.setCookie(
-      url: WebUri("${AppConfig().uPortalBaseURL}/"),
-      name: "clusterIDPortail",
+      url: WebUri('${AppConfig().uPortalBaseURL}/'),
+      name: 'clusterIDPortail',
       value: Session().idPortal,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
       domain: AppConfig().uPortalHost,
-      path: "/",
+      path: '/',
     );
   }
 
@@ -67,7 +67,7 @@ class _HomePage extends State<HomePage> {
         onLoadStop: (controller, url) async {
           await controller.evaluateJavascript(
             source:
-                'document.getElementById("displayname").innerText = \'${UserInfo().name}\';',
+                'document.getElementById(\'displayname\').innerText = \'${UserInfo().name}\';',
           );
         },
         shouldOverrideUrlLoading: (controller, navigationAction) async {

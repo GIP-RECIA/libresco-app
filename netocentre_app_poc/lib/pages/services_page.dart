@@ -17,7 +17,7 @@ class ServicesPage extends StatefulWidget {
 class _ServicesPage extends State<ServicesPage> {
   final log = Logger('_ServicesPage');
   List<Service> renderedServices = Services().servicesList;
-  String dropwdownValue = "";
+  String dropwdownValue = '';
 
   // void _sortAlphabetically() {
   //   setState(() {
@@ -76,7 +76,7 @@ class _ServicesPage extends State<ServicesPage> {
               child: Container(
                 margin: const EdgeInsets.only(left: 10, bottom: 10),
                 child: Text(
-                  "Tous les services",
+                  'Tous les services',
                   style: GoogleFonts.nunito(
                     fontSize: 24,
                     fontWeight: FontWeight.w800,
@@ -87,7 +87,7 @@ class _ServicesPage extends State<ServicesPage> {
 
             /// expansion tile classique  utiliser ici, adaptation du code generique trop complexeé
             // const MyExpansionTile(
-            //   "Filtres",
+            //   'Filtres',
             //   dataset: [],
             // ),
             // Container(
@@ -99,7 +99,7 @@ class _ServicesPage extends State<ServicesPage> {
             //       Container(
             //         margin: const EdgeInsets.only(right: 5),
             //         child: const Text(
-            //           "Trier par : ",
+            //           'Trier par : ',
             //           style: TextStyle(fontSize: 15),
             //         ),
             //       ),
@@ -114,7 +114,7 @@ class _ServicesPage extends State<ServicesPage> {
             //           color: Colors.black,
             //         ),
             //         onSelected: (value) {
-            //           log.info("Selected service $value");
+            //           log.info('Selected service $value');
             //           if (value != dropwdownValue && value != null) {
             //             dropwdownValue = value;
             //             switch (value) {
@@ -129,20 +129,20 @@ class _ServicesPage extends State<ServicesPage> {
             //         },
             //         dropdownMenuEntries: const <DropdownMenuEntry<String>>[
             //           DropdownMenuEntry(
-            //             label: "Popularité",
-            //             value: "popularite",
+            //             label: 'Popularité',
+            //             value: 'popularite',
             //           ),
             //           DropdownMenuEntry(
-            //             label: "Plus récents",
-            //             value: "plus_recents",
+            //             label: 'Plus récents',
+            //             value: 'plus_recents',
             //           ),
             //           DropdownMenuEntry(
-            //             label: "A-Z",
-            //             value: "a-z",
+            //             label: 'A-Z',
+            //             value: 'a-z',
             //           ),
             //           DropdownMenuEntry(
-            //             label: "Z-A",
-            //             value: "z-a",
+            //             label: 'Z-A',
+            //             value: 'z-a',
             //           ),
             //         ],
             //       ),

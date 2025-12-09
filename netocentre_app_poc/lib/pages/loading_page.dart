@@ -39,7 +39,7 @@ class _LoadingPage extends State<LoadingPage> {
             ),
             const SizedBox(height: 30),
             Text(
-              "Récupération des données en cours.\nVeuillez Patienter.",
+              'Récupération des données en cours.\nVeuillez Patienter.',
               textAlign: TextAlign.center,
               style: GoogleFonts.nunito(
                 fontSize: 16,
@@ -62,15 +62,15 @@ class LoadingPageUtils {
   LoadingPageUtils(this.context, this.callbackWidget);
 
   Future<void> loadDataFromAPI() async {
-    log.info("Loading data from portal API...");
+    log.info('Loading data from portal API...');
     // Try to login to portal once : if we get a user we're connected
     if (!await LoginService.instance.hasPortalSession()) {
       // If we get a guest user, try again (if the CAS session is still valid)
-      log.info("Portal session is invalid");
+      log.info('Portal session is invalid');
       await LoginService.instance.unstackedUPortalLogin();
       if (!await LoginService.instance.hasPortalSession()) {
         // If we get a guest user again, that means CAS session is not valid, and we need to redo the login phase
-        log.info("CAS session is invalid");
+        log.info('CAS session is invalid');
         Session().reset(flush: true);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.pushReplacement(
@@ -82,15 +82,15 @@ class LoadingPageUtils {
         });
         return;
       } else {
-        log.info("Restored portal session by creating a new one");
+        log.info('Restored portal session by creating a new one');
       }
     } else {
-      log.info("Portal session is valid");
+      log.info('Portal session is valid');
     }
 
     // Once we are sure to be connected, we can request the infos from the portal APIs
     await PortalService.instance.loadUserInfo();
-    log.info("Data was loaded successfully, now exiting loading page...");
+    log.info('Data was loaded successfully, now exiting loading page...');
     navigatorPush();
   }
 

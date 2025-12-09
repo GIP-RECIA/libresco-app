@@ -21,20 +21,20 @@ class PortalService {
   static PortalService get instance => _instance;
 
   Future<void> getAllPortlets() async {
-    log.fine("Getting portlets...");
+    log.fine('Getting portlets...');
 
     final client = IOClient(HttpClient());
 
     Uri request = Uri.https(
       AppConfig().uPortalHost,
-      "/portail/api/v4-3/dlm/portletRegistry.json",
+      '/portail/api/v4-3/dlm/portletRegistry.json',
       {
         'category': 'All categories',
       },
     );
 
-    log.finer("Getting portlet request : $request");
-    log.finer("JSESSIONID=${Session().JSESSIONID}");
+    log.finer('Getting portlet request : $request');
+    log.finer('JSESSIONID=${Session().JSESSIONID}');
 
     if (await LoginService.instance.isAuthorizedByUPortal()) {
       final http.Response res = await client.get(
@@ -49,86 +49,86 @@ class PortalService {
       if (res.statusCode == 200) {
         /// Parse json and get portlets fname
         final dynamic jsonSubcategories =
-            json.decode(res.body)["registry"]["categories"][0]["subcategories"];
+            json.decode(res.body)['registry']['categories'][0]['subcategories'];
 
         Set<String> portletsSet = {};
         List<Service> servicesList = [];
         List<Service> favoritesList = [];
 
         for (var subcategory in jsonSubcategories) {
-          for (var portlet in subcategory["portlets"]) {
-            if (!portletsSet.contains(portlet["fname"])) {
+          for (var portlet in subcategory['portlets']) {
+            if (!portletsSet.contains(portlet['fname'])) {
               log.finer(
-                "portlet ${portlet["title"]} favorite : ${portlet["favorite"]}",
+                'portlet ${portlet['title']} favorite : ${portlet['favorite']}',
               );
 
-              String portletIconUri = "";
+              String portletIconUri = '';
 
               // get icon  uri
-              if (portlet["parameters"].containsKey("mobileIconUrl")) {
+              if (portlet['parameters'].containsKey('mobileIconUrl')) {
                 portletIconUri =
-                    portlet["parameters"]["mobileIconUrl"]["value"];
+                    portlet['parameters']['mobileIconUrl']['value'];
                 log.finer(
-                  "portlet ${portlet["title"]} icon url : $portletIconUri",
+                  'portlet ${portlet['title']} icon url : $portletIconUri',
                 );
               }
 
               // if auth directly on CAS
-              if (portlet["parameters"]
-                  .containsKey("alternativeMaximizedLink")) {
+              if (portlet['parameters']
+                  .containsKey('alternativeMaximizedLink')) {
                 String? serviceUri = serviceUriParser(
-                    portlet["parameters"]["alternativeMaximizedLink"]["value"]);
+                    portlet['parameters']['alternativeMaximizedLink']['value']);
                 if (serviceUri != null) {
                   servicesList.add(
                     Service.CASBased(
-                      id: portlet["id"],
-                      text: portlet["title"],
+                      id: portlet['id'],
+                      text: portlet['title'],
                       serviceUri: serviceUri,
                       iconUri: portletIconUri,
-                      isFavorite: portlet["favorite"],
-                      fname: portlet["fname"],
+                      isFavorite: portlet['favorite'],
+                      fname: portlet['fname'],
                     ),
                   );
-                  if (portlet["favorite"]) {
+                  if (portlet['favorite']) {
                     favoritesList.add(
                       Service.CASBased(
-                        id: portlet["id"],
-                        text: portlet["title"],
+                        id: portlet['id'],
+                        text: portlet['title'],
                         serviceUri: serviceUri,
                         iconUri: portletIconUri,
-                        isFavorite: portlet["favorite"],
-                        fname: portlet["fname"],
+                        isFavorite: portlet['favorite'],
+                        fname: portlet['fname'],
                       ),
                     );
                   }
                 } else {
-                  log.warning('service uri is null for ${portlet["title"]}');
+                  log.warning('service uri is null for ${portlet['title']}');
                 }
               } else {
                 servicesList.add(
                   Service.UPortalBased(
-                    id: portlet["id"],
-                    text: portlet["title"],
-                    serviceUri: portlet["fname"],
+                    id: portlet['id'],
+                    text: portlet['title'],
+                    serviceUri: portlet['fname'],
                     iconUri: portletIconUri,
-                    isFavorite: portlet["favorite"],
+                    isFavorite: portlet['favorite'],
                   ),
                 );
-                if (portlet["favorite"]) {
+                if (portlet['favorite']) {
                   favoritesList.add(
                     Service.UPortalBased(
-                      id: portlet["id"],
-                      text: portlet["title"],
-                      serviceUri: portlet["fname"],
+                      id: portlet['id'],
+                      text: portlet['title'],
+                      serviceUri: portlet['fname'],
                       iconUri: portletIconUri,
-                      isFavorite: portlet["favorite"],
+                      isFavorite: portlet['favorite'],
                     ),
                   );
                 }
               }
               portletsSet = {
                 ...portletsSet,
-                portlet["fname"],
+                portlet['fname'],
               };
             }
           }
@@ -143,14 +143,14 @@ class PortalService {
         log.warning('Got an abnormal ${res.statusCode} response status code !');
       }
     } else {
-      log.warning("JSESSIONID Empty !");
+      log.warning('JSESSIONID Empty !');
     }
   }
 
   Future<bool> switchPortletIsFavoriteState(Service service) async {
     log.info('Switching portlet favorite state for ${service.fname}');
 
-    // Switch "is favorite" attribute state
+    // Switch 'is favorite' attribute state
     bool apiResponseResult = await requestSwitchPortletIsFavoriteState(service);
 
     if (apiResponseResult) {
@@ -188,15 +188,15 @@ class PortalService {
 
     Uri request = Uri.https(
       AppConfig().uPortalHost,
-      "/portail/api/layout",
+      '/portail/api/layout',
       {
         'action': service.isFavorite ? 'removeFavorite' : 'addFavorite',
         'channelId': service.id.toString()
       },
     );
 
-    log.finer("Getting portlet request : $request");
-    log.finer("JSESSIONID=${Session().JSESSIONID}");
+    log.finer('Getting portlet request : $request');
+    log.finer('JSESSIONID=${Session().JSESSIONID}');
 
     if (await LoginService.instance.isAuthorizedByUPortal()) {
       final http.Response res = await client.post(
@@ -219,21 +219,21 @@ class PortalService {
   }
 
   Future<Map<String, dynamic>> getUserInfo() async {
-    log.info("Getting user infos");
+    log.info('Getting user infos');
 
     final client = IOClient(HttpClient());
 
     Uri request = Uri.https(
       AppConfig().uPortalHost,
-      "/portail/api/v5-1/userinfo",
+      '/portail/api/v5-1/userinfo',
       {
         'claims': 'private,picture,name,ESCOSIRENCourant,ESCOSIREN',
         'groups': ''
       },
     );
 
-    log.finer("getting portlet request : $request");
-    log.finer("JSESSIONID=${Session().JSESSIONID}");
+    log.finer('getting portlet request : $request');
+    log.finer('JSESSIONID=${Session().JSESSIONID}');
 
     final http.Response res = await client.get(
       request,
@@ -249,9 +249,9 @@ class PortalService {
       log.finest('Body of response is ${res.body}');
 
       String base64url = res.body.split('.')[1];
-      base64url = base64url.replaceAll("-", "+").replaceAll("_", "/");
+      base64url = base64url.replaceAll('-', '+').replaceAll('_', '/');
       if (base64url.length % 4 != 0) {
-        base64url = base64url + ("=" * (4 - (base64url.length % 4)));
+        base64url = base64url + ('=' * (4 - (base64url.length % 4)));
       }
       log.finest('Extracted base64 $base64url');
 
@@ -266,10 +266,10 @@ class PortalService {
   }
 
   Future<void> loadUserInfo() async {
-    log.info("Loading user info");
+    log.info('Loading user info');
     dynamic rawUserInfo = await getUserInfo();
     log.fine('Loaded user info ${rawUserInfo.toString()}');
-    log.fine("Setting attributes in UserInfo() singleton");
+    log.fine('Setting attributes in UserInfo() singleton');
     UserInfo().setUid(rawUserInfo['sub']);
     UserInfo().setName(rawUserInfo['name']);
     UserInfo().setPicture(rawUserInfo['picture']);
@@ -278,6 +278,6 @@ class PortalService {
 
   /// uri parser for services who are based on cas auth
   String? serviceUriParser(String completeUri) {
-    return Uri.parse(completeUri).queryParameters["service"];
+    return Uri.parse(completeUri).queryParameters['service'];
   }
 }

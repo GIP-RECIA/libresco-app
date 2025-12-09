@@ -50,7 +50,7 @@ class SessionRepository {
   Future<void> flushTokens() async {
     log.fine('Flush in database for ${Session().toString()}');
 
-    if (Account().id != "") {
+    if (Account().id != '') {
       updateTokens();
     } else {
       insertTokens();
@@ -60,7 +60,7 @@ class SessionRepository {
   Future<void> deleteCookiesForCurrentProfile() async {
     log.fine('Delete in database');
     final db = await DatabaseProvider.instance.db;
-    await db.execute("DELETE FROM $tableName where id = ${Account().id}");
+    await db.execute('DELETE FROM $tableName where id = ${Account().id}');
   }
 
   Future<void> getCookiesInDB() async {
@@ -71,14 +71,14 @@ class SessionRepository {
     if (count! > 0) {
       List<Map<String, Object?>> res =
           await db.query(tableName, where: 'id = ${Account().id}');
-      Session().setTGC(res.first["TGC"].toString());
-      Session().setJSESSIONID(res.first["JSESSIONID"].toString());
-      Session().setIdPortal(res.first["idPortal"].toString());
+      Session().setTGC(res.first['TGC'].toString());
+      Session().setJSESSIONID(res.first['JSESSIONID'].toString());
+      Session().setIdPortal(res.first['idPortal'].toString());
       log.fine(
         'Session after getting values from database : ${Session().toString()}',
       );
     } else {
-      log.fine("Empty database");
+      log.fine('Empty database');
     }
   }
 

@@ -31,12 +31,12 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
     isInspectable: kDebugMode,
     mediaPlaybackRequiresUserGesture: false,
     allowsInlineMediaPlayback: true,
-    iframeAllow: "camera; microphone",
+    iframeAllow: 'camera; microphone',
     iframeAllowFullscreen: true,
   );
 
   PullToRefreshController? pullToRefreshController;
-  String url = "";
+  String url = '';
   double progress = 0;
   final urlController = TextEditingController();
 
@@ -48,25 +48,25 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
     manager.removeSessionCookies();
 
     manager.setCookie(
-      url: WebUri("${AppConfig().uPortalBaseURL}/"),
-      name: "JSESSIONID",
+      url: WebUri('${AppConfig().uPortalBaseURL}/'),
+      name: 'JSESSIONID',
       value: Session().JSESSIONID,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
       domain: AppConfig().uPortalHost,
-      path: "/",
+      path: '/',
     );
 
     manager.setCookie(
-      url: WebUri("${AppConfig().uPortalBaseURL}/"),
-      name: "clusterIDPortail",
+      url: WebUri('${AppConfig().uPortalBaseURL}/'),
+      name: 'clusterIDPortail',
       value: Session().idPortal,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
       domain: AppConfig().uPortalHost,
-      path: "/",
+      path: '/',
     );
 
     pullToRefreshController = kIsWeb
@@ -91,10 +91,10 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
 
   @override
   Widget build(BuildContext context) {
-    log.finer("on init ${widget.uri} : ${Session().JSESSIONID}");
-    log.finer("on init ${widget.uri} : ${AppConfig().uPortalBaseURL}/");
+    log.finer('on init ${widget.uri} : ${Session().JSESSIONID}');
+    log.finer('on init ${widget.uri} : ${AppConfig().uPortalBaseURL}/');
     log.finer(
-      "on init ${widget.uri} : ${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}",
+      'on init ${widget.uri} : ${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}',
     );
     return Scaffold(
       body: SafeArea(
@@ -107,7 +107,7 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
                     key: webViewKey,
                     initialUrlRequest: URLRequest(
                       url: WebUri(
-                        "${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}",
+                        '${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}',
                       ),
                     ),
                     initialSettings: settings,
@@ -132,13 +132,13 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
                       var uri = navigationAction.request.url!;
 
                       if (![
-                        "http",
-                        "https",
-                        "file",
-                        "chrome",
-                        "data",
-                        "javascript",
-                        "about"
+                        'http',
+                        'https',
+                        'file',
+                        'chrome',
+                        'data',
+                        'javascript',
+                        'about'
                       ].contains(uri.scheme)) {
                         if (await canLaunchUrl(uri)) {
                           // Launch the App
@@ -199,8 +199,8 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
               alignment: MainAxisAlignment.center,
               children: <Widget>[
                 ElevatedButton(
-                  key: const Key("backFromWebviewButton"),
-                  child: Text("Quitter ${widget.text}"),
+                  key: const Key('backFromWebviewButton'),
+                  child: Text('Quitter ${widget.text}'),
                   onPressed: () {
                     manager.removeSessionCookies();
                     Navigator.of(context).pop();

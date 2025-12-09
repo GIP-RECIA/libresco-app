@@ -46,7 +46,7 @@ class AccountCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        "Se déconnecter",
+                        'Se déconnecter',
                         style: TextStyle(color: Colors.red),
                       ),
                     ),
@@ -63,7 +63,7 @@ class AccountCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        "Supprimer",
+                        'Supprimer',
                         style: TextStyle(color: Colors.red),
                       ),
                     ),

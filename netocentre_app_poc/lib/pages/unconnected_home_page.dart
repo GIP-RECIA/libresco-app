@@ -95,7 +95,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
     Account().setId('');
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Déconnexion ${account.name}")),
+      SnackBar(content: Text('Déconnexion ${account.name}')),
     );
   }
 
@@ -110,7 +110,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
     await initAccounts();
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Supprimer ${account.name}")),
+      SnackBar(content: Text('Supprimer ${account.name}')),
     );
   }
 
@@ -157,7 +157,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
                     );
                   },
                   icon: const Icon(Icons.add),
-                  label: const Text("Ajouter un compte"),
+                  label: const Text('Ajouter un compte'),
                 ),
                 const SizedBox(height: 20),
               ],

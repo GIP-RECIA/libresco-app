@@ -22,18 +22,18 @@ class NavBar extends StatefulWidget {
 class _NavBar extends State<NavBar> {
   final log = Logger('_NavBar');
   final FocusNode _buttonFocusNode = FocusNode(debugLabel: 'Menu Button');
-  String pictureUri = "";
+  String pictureUri = '';
 
   @override
   void initState() {
     super.initState();
 
-    if (UserInfo().name == "") {
-      log.warning("User info should be loaded but is not !");
+    if (UserInfo().name == '') {
+      log.warning('User info should be loaded but is not !');
       PortalService.instance.loadUserInfo();
     }
     // TODO : pictureUri
-    pictureUri = "${AppConfig().uPortalBaseURL}${UserInfo().picture}";
+    pictureUri = '${AppConfig().uPortalBaseURL}${UserInfo().picture}';
   }
 
   @override
@@ -48,7 +48,7 @@ class _NavBar extends State<NavBar> {
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text("Changer d'établissement"),
+              Text('Changer d\'établissement'),
               Icon(Icons.swap_horiz_outlined),
             ],
           ),
@@ -58,18 +58,18 @@ class _NavBar extends State<NavBar> {
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text("Mon profil"),
+              Text('Mon profil'),
               Icon(Icons.settings),
             ],
           ),
           onPressed: () => {},
         ),
         MenuItemButton(
-          key: const Key("change-account"),
+          key: const Key('change-account'),
           child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text("Changer de compte"),
+              Text('Changer de compte'),
               Icon(Icons.swap_horiz),
             ],
           ),
@@ -97,7 +97,7 @@ class _NavBar extends State<NavBar> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                key: const Key("homeButton"),
+                key: const Key('homeButton'),
                 icon: const Icon(
                   Icons.home_outlined,
                   color: Colors.white,
@@ -112,7 +112,7 @@ class _NavBar extends State<NavBar> {
                 },
               ),
               IconButton(
-                key: const Key("serviceList"),
+                key: const Key('serviceList'),
                 icon: const Icon(
                   Icons.grid_view,
                   color: Colors.white,
@@ -127,7 +127,7 @@ class _NavBar extends State<NavBar> {
                 },
               ),
               IconButton(
-                key: const Key("profileInfo"),
+                key: const Key('profileInfo'),
                 icon: const Icon(
                   Icons.account_box,
                   color: Colors.white,

@@ -86,7 +86,7 @@ class _MyExpansionTile extends State<MyExpansionTile> {
                   ),
                   child: Center(
                     child: Text(
-                      "${widget.nbNotifications!}",
+                      '${widget.nbNotifications!}',
                       style: const TextStyle(color: Colors.white),
                     ),
                   ),

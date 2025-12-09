@@ -17,7 +17,7 @@ class LoginService {
   static LoginService get instance => _instance;
 
   Future<bool> isAuthorizedByUPortal() async {
-    log.fine("Checking JSESSIONID validity...");
+    log.fine('Checking JSESSIONID validity...');
     if (!await hasPortalSession()) {
       return await instance.unstackedUPortalLogin();
     }
@@ -26,19 +26,19 @@ class LoginService {
 
   Future<bool> hasPortalSession() async {
     // If user don't have any JSESSIONID it is not necessary to make a request, we know we don't have a session
-    if (Session().JSESSIONID == "") {
-      log.finer("No JSESSIONID in Session");
+    if (Session().JSESSIONID == '') {
+      log.finer('No JSESSIONID in Session');
       return false;
     }
 
     final client = IOClient(HttpClient());
     Uri request = Uri.https(
       AppConfig().uPortalHost,
-      "/portail/api/session.json",
+      '/portail/api/session.json',
     );
 
-    log.finer("Making a request to portal : $request");
-    log.finer("JSESSIONID=${Session().JSESSIONID}");
+    log.finer('Making a request to portal : $request');
+    log.finer('JSESSIONID=${Session().JSESSIONID}');
 
     final http.Response res = await client.get(
       request,
@@ -53,16 +53,16 @@ class LoginService {
     log.finest('Body : ${res.body}');
     // If we get a 200 we still need to check if the session is not a guest session
     if (res.statusCode == 200) {
-      if (json.decode(res.body)["person"]["sessionKey"] != null) {
-        log.fine("Portal session is valid !");
+      if (json.decode(res.body)['person']['sessionKey'] != null) {
+        log.fine('Portal session is valid !');
         return true;
       }
-      log.fine("Portal session is guest -> Invalid");
+      log.fine('Portal session is guest -> Invalid');
       return false;
     }
     // If we have an invalid session this API will return a 404
     else {
-      log.fine("Portal session is invalid");
+      log.fine('Portal session is invalid');
       return false;
     }
   }
@@ -70,35 +70,35 @@ class LoginService {
   /// Parser - JSESSIONID & idPortal
   ({String jsessionid, String idportal}) uPortalLoginParser(
       HttpClientResponse response) {
-    String jsessionidCookie = "";
-    String idPortalCookie = "";
+    String jsessionidCookie = '';
+    String idPortalCookie = '';
 
-    if (response.headers["set-cookie"]!.isNotEmpty) {
-      List<String> rawCookiesList = response.headers["set-cookie"]!;
+    if (response.headers['set-cookie']!.isNotEmpty) {
+      List<String> rawCookiesList = response.headers['set-cookie']!;
       List<String> cookiesList = [];
       for (var rawCookies in rawCookiesList) {
-        cookiesList.addAll(rawCookies.split(";"));
+        cookiesList.addAll(rawCookies.split(';'));
       }
 
       log.finer('List of cookies in portal response ${cookiesList.toString()}');
 
       Iterable<String> jsessionidParser =
-          cookiesList.where((str) => str.contains("JSESSIONID"));
+          cookiesList.where((str) => str.contains('JSESSIONID'));
       Iterable<String> idPortalParser =
-          cookiesList.where((str) => str.contains("clusterIDPortail"));
+          cookiesList.where((str) => str.contains('clusterIDPortail'));
       if (jsessionidParser.isNotEmpty) {
         jsessionidCookie = jsessionidParser.first
-            .substring(jsessionidParser.first.indexOf("=") + 1);
-        log.finer("JSESSIONID cookie exists : $jsessionidCookie");
+            .substring(jsessionidParser.first.indexOf('=') + 1);
+        log.finer('JSESSIONID cookie exists : $jsessionidCookie');
       } else {
-        log.finer("JSESSIONID cookie not found");
+        log.finer('JSESSIONID cookie not found');
       }
       if (idPortalParser.isNotEmpty) {
         idPortalCookie = idPortalParser.first
-            .substring(idPortalParser.first.indexOf("=") + 1);
-        log.finer("idPortal cookie exists : $idPortalCookie");
+            .substring(idPortalParser.first.indexOf('=') + 1);
+        log.finer('idPortal cookie exists : $idPortalCookie');
       } else {
-        log.finer("idPortal cookie not found");
+        log.finer('idPortal cookie not found');
       }
     }
 
@@ -107,33 +107,33 @@ class LoginService {
 
   /// Used to check if the user has a CAS Session
   Future<bool> hasCASSession() async {
-    log.fine("Checking if user is connected to CAS");
+    log.fine('Checking if user is connected to CAS');
     final client = HttpClient();
     client.userAgent = AppConfig().userAgent;
     var uri = Uri.https(
       AppConfig().casHost,
-      "/cas/login",
+      '/cas/login',
     );
     var request = await client.getUrl(uri);
     request.followRedirects = false;
     request.headers.add('Cookie', 'TGC=${Session().TGC}');
 
     log.finer('Making this request to CAS server : ${request.uri.toString()}');
-    log.finer("Request headers are : ${request.headers}");
+    log.finer('Request headers are : ${request.headers}');
 
     var response = await request.close();
     String body = await response.transform(utf8.decoder).join();
 
-    log.finer("Response status code from cas server : ${response.statusCode}");
-    log.finer("Response headers: ${response.headers}");
-    log.finest("Body: $body");
+    log.finer('Response status code from cas server : ${response.statusCode}');
+    log.finer('Response headers: ${response.headers}');
+    log.finest('Body: $body');
 
-    if (body.contains("view-genericsuccess-security")) {
-      log.fine("User is connected to CAS");
+    if (body.contains('view-genericsuccess-security')) {
+      log.fine('User is connected to CAS');
       return true;
     }
 
-    log.fine("User is not connected to CAS");
+    log.fine('User is not connected to CAS');
     return false;
   }
 
@@ -141,10 +141,10 @@ class LoginService {
     final client = HttpClient();
     client.userAgent = AppConfig().userAgent;
 
-    log.fine("Logging out the user from CAS");
-    Uri casURI = Uri.https(AppConfig().casHost, "/cas/logout");
-    log.finer("Making a request to CAS : $casURI");
-    log.finer("TGC=${Session().TGC}");
+    log.fine('Logging out the user from CAS');
+    Uri casURI = Uri.https(AppConfig().casHost, '/cas/logout');
+    log.finer('Making a request to CAS : $casURI');
+    log.finer('TGC=${Session().TGC}');
 
     var casRequest = await client.getUrl(casURI);
     casRequest.followRedirects = false;
@@ -154,16 +154,16 @@ class LoginService {
     String casBody = await casResponse.transform(utf8.decoder).join();
 
     log.finer(
-      "Response status code from cas server : ${casResponse.statusCode}",
+      'Response status code from cas server : ${casResponse.statusCode}',
     );
-    log.finer("Response headers: ${casResponse.headers}");
-    log.finest("Body: $casBody");
+    log.finer('Response headers: ${casResponse.headers}');
+    log.finest('Body: $casBody');
 
-    log.fine("Logging out the user from Portal");
-    Uri portalURI = Uri.https(AppConfig().uPortalHost, "/portail/Logout");
+    log.fine('Logging out the user from Portal');
+    Uri portalURI = Uri.https(AppConfig().uPortalHost, '/portail/Logout');
 
-    log.finer("Making a request to portal : $portalURI");
-    log.finer("JSESSIONID=${Session().JSESSIONID}");
+    log.finer('Making a request to portal : $portalURI');
+    log.finer('JSESSIONID=${Session().JSESSIONID}');
 
     var portalRequest = await client.getUrl(portalURI);
     portalRequest.followRedirects = false;
@@ -175,26 +175,26 @@ class LoginService {
 
     var portalResponse = await portalRequest.close();
     log.finer(
-      "Response status code from portal : ${portalResponse.statusCode}",
+      'Response status code from portal : ${portalResponse.statusCode}',
     );
-    log.finer("Response headers: ${portalResponse.headers}");
+    log.finer('Response headers: ${portalResponse.headers}');
   }
 
   /// Used to earn the JSESSIONID
   Future<bool> unstackedUPortalLogin() async {
     // init variables
     int requestCounter = 0;
-    String jsessionidCookie = "";
-    String idPortalCookie = "";
+    String jsessionidCookie = '';
+    String idPortalCookie = '';
 
-    log.fine("=== Start of unstacked uPortal login ===");
+    log.fine('=== Start of unstacked uPortal login ===');
 
     /// Request 0 - initial request
     final client = HttpClient();
     client.userAgent = AppConfig().userAgent;
     var uri = Uri.https(
       AppConfig().casHost,
-      "/cas/login",
+      '/cas/login',
       {
         'service': '${AppConfig().uPortalBaseURL}/portail/Login',
       },
@@ -203,9 +203,9 @@ class LoginService {
     request.followRedirects = false;
     request.headers.add('Cookie', 'TGC=${Session().TGC}');
 
-    log.finer("\nRequest $requestCounter :");
+    log.finer('\nRequest $requestCounter :');
     log.finer(request.uri.toString());
-    log.finer("request headers : ${request.headers}");
+    log.finer('request headers : ${request.headers}');
 
     // Get the first response
     var response = await request.close();
@@ -223,35 +223,35 @@ class LoginService {
 
         /// PARSE JSESSIONID & idPortal
 
-        log.finer("\nResponse $requestCounter :");
+        log.finer('\nResponse $requestCounter :');
         log.finer(response.statusCode);
-        log.finer("response headers : ${response.headers["set-cookie"]}");
-        log.finer("response location : $location");
+        log.finer('response headers : ${response.headers['set-cookie']}');
+        log.finer('response location : $location');
 
         ({String jsessionid, String idportal}) parsingResult =
             uPortalLoginParser(response);
-        if (parsingResult.jsessionid != "") {
+        if (parsingResult.jsessionid != '') {
           jsessionidCookie = parsingResult.jsessionid;
         }
-        if (parsingResult.idportal != "") {
+        if (parsingResult.idportal != '') {
           idPortalCookie = parsingResult.idportal;
         }
 
         request.followRedirects = false;
 
-        if (jsessionidCookie != "") {
-          request.cookies.add(Cookie("JSESSIONID", jsessionidCookie));
+        if (jsessionidCookie != '') {
+          request.cookies.add(Cookie('JSESSIONID', jsessionidCookie));
         }
-        if (idPortalCookie != "") {
-          request.cookies.add(Cookie("clusterIDPortail", idPortalCookie));
+        if (idPortalCookie != '') {
+          request.cookies.add(Cookie('clusterIDPortail', idPortalCookie));
         }
 
         log.finer(
-          "\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-",
+          '\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-',
         );
-        log.finer("\nRequest ${requestCounter + 1} :");
+        log.finer('\nRequest ${requestCounter + 1} :');
         log.finer(request.uri.toString());
-        log.finer("request headers : ${request.headers}");
+        log.finer('request headers : ${request.headers}');
 
         requestCounter++;
 
@@ -261,25 +261,25 @@ class LoginService {
 
     /// Last response
     /// Parse last JSESSIONID & idPortal
-    log.finer("\nResponse $requestCounter :");
+    log.finer('\nResponse $requestCounter :');
     log.finer(response.statusCode);
-    log.finer("response headers : ${response.headers["set-cookie"]}");
+    log.finer('response headers : ${response.headers['set-cookie']}');
 
     ({String jsessionid, String idportal}) parsingResult =
         uPortalLoginParser(response);
-    if (parsingResult.jsessionid != "") {
+    if (parsingResult.jsessionid != '') {
       jsessionidCookie = parsingResult.jsessionid;
     }
-    if (parsingResult.idportal != "") {
+    if (parsingResult.idportal != '') {
       idPortalCookie = parsingResult.idportal;
     }
 
-    log.fine("Final JSESSIONID : $jsessionidCookie");
-    log.fine("Final idPortal : $idPortalCookie");
+    log.fine('Final JSESSIONID : $jsessionidCookie');
+    log.fine('Final idPortal : $idPortalCookie');
 
-    log.fine("=== End of unstacked uPortal login ===");
+    log.fine('=== End of unstacked uPortal login ===');
 
-    if (idPortalCookie != "" && jsessionidCookie != "") {
+    if (idPortalCookie != '' && jsessionidCookie != '') {
       Session().setIdPortal(idPortalCookie, flush: true);
       Session().setJSESSIONID(jsessionidCookie, flush: true);
       if (await hasPortalSession()) {
