@@ -22,7 +22,7 @@ class Session {
     _CASSessionCookie = token;
 
     if (flush) {
-      SessionRepository.instance.flushTokens();
+      persist();
     }
   }
 
@@ -32,7 +32,7 @@ class Session {
     _PortalSessionCookie = token;
 
     if (flush) {
-      SessionRepository.instance.flushTokens();
+      persist();
     }
   }
 
@@ -42,17 +42,40 @@ class Session {
     _IDPortalCookie = value;
 
     if (flush) {
-      SessionRepository.instance.flushTokens();
+      persist();
     }
   }
 
   void reset({bool flush = false}) {
+    clear();
+    if (flush) {
+      persist();
+    }
+  }
+
+  Map<String, Object?> toMap() {
+    var map = <String, Object?>{
+      'CASSessionCookie': _CASSessionCookie,
+      'PortalSessionCookie': _PortalSessionCookie,
+      'IDPortalCookie': _IDPortalCookie,
+    };
+    return map;
+  }
+
+  void fromMap(Map<String, Object?> map) {
+    _CASSessionCookie = (map['CASSessionCookie'] ?? '') as String;
+    _PortalSessionCookie = (map['PortalSessionCookie'] ?? '') as String;
+    _IDPortalCookie = (map['IDPortalCookie'] ?? '') as String;
+  }
+
+  void persist() {
+    SessionRepository.instance.flush();
+  }
+
+  void clear() {
     _CASSessionCookie = '';
     _PortalSessionCookie = '';
     _IDPortalCookie = '';
-    if (flush) {
-      SessionRepository.instance.flushTokens();
-    }
   }
 
   @override

@@ -2,6 +2,7 @@ import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/repositories/database_provider.dart';
 import 'package:netocentre_app_poc/singletons/account.dart';
 import 'package:netocentre_app_poc/singletons/session.dart';
+import 'package:netocentre_app_poc/singletons/user_info.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SessionRepository {
@@ -16,71 +17,62 @@ class SessionRepository {
 
   final tableName = DatabaseProvider.tableName;
 
-  Future<void> insertTokens() async {
+  Future<void> insert() async {
     final db = await DatabaseProvider.instance.db;
-
     int id = await db.insert(
       tableName,
-      {
-        'CASSessionCookie': Session().CASSessionCookie,
-        'PortalSessionCookie': Session().PortalSessionCookie,
-        'IDPortalCookie': Session().IDPortalCookie
-      },
+      Session().toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
-    Account().setId(id.toString());
-    log.fine('Save in database for ${Session().toString()}');
+    Account().setId(id);
+    log.fine('Save in database : ${Session().toString()}');
   }
 
-  Future<void> updateTokens() async {
+  Future<void> update() async {
     final db = await DatabaseProvider.instance.db;
-
     await db.update(
       tableName,
-      {
-        'CASSessionCookie': Session().CASSessionCookie,
-        'PortalSessionCookie': Session().PortalSessionCookie,
-        'IDPortalCookie': Session().IDPortalCookie
-      },
+      Session().toMap(),
       where: 'id = ${Account().id}',
     );
-    log.fine('Update in database for ${Session().toString()}');
+    log.fine('Update in database : ${Session().toString()}');
   }
 
-  Future<void> flushTokens() async {
-    log.fine('Flush in database for ${Session().toString()}');
-
-    if (Account().id != '') {
-      updateTokens();
+  Future<void> flush() async {
+    if (Account().id != null) {
+      update();
     } else {
-      insertTokens();
+      insert();
     }
   }
 
-  Future<void> deleteCookiesForCurrentProfile() async {
-    log.fine('Delete in database');
+  Future<void> load({int? id}) async {
+    id ??= Account().id;
     final db = await DatabaseProvider.instance.db;
-    await db.execute('DELETE FROM $tableName where id = ${Account().id}');
-  }
-
-  Future<void> getCookiesInDB() async {
-    final db = await DatabaseProvider.instance.db;
-    log.fine('Get from database');
-    int? count = Sqflite.firstIntValue(
-        await db.rawQuery('SELECT COUNT(*) FROM $tableName'));
-    if (count! > 0) {
-      List<Map<String, Object?>> res =
-          await db.query(tableName, where: 'id = ${Account().id}');
-      Session().setCASSessionCookie(res.first['CASSessionCookie'].toString());
-      Session()
-          .setPortalSessionCookie(res.first['PortalSessionCookie'].toString());
-      Session().setIDportalCookie(res.first['IDPortalCookie'].toString());
+    List<Map<String, Object?>> response = await db.query(
+      tableName,
+      where: 'id = $id',
+    );
+    if (response.isNotEmpty) {
+      Session().fromMap(response.first);
       log.fine(
-        'Session after getting values from database : ${Session().toString()}',
+        'Get from database : ${Session().toString()}',
       );
     } else {
-      log.fine('Empty database');
+      log.fine('No results for id $id');
     }
+  }
+
+  Future<void> deleteAll({int? id}) async {
+    id ??= Account().id;
+    final db = await DatabaseProvider.instance.db;
+    await db.execute(
+      'DELETE FROM $tableName where id = $id',
+    );
+    Account().clear();
+    Session().clear();
+    UserInfo().clear();
+    log.fine('Row id \'$id\' successfully deleted');
   }
 
   Future<List<Map<String, Object?>>> getProfilesList() async {

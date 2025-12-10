@@ -278,13 +278,10 @@ class PortalService {
 
   Future<void> loadUserInfo() async {
     log.info('Loading user info');
-    dynamic rawUserInfo = await getUserInfo();
-    log.fine('Loaded user info ${rawUserInfo.toString()}');
-    log.fine('Setting attributes in UserInfo() singleton');
-    UserInfo().setUid(rawUserInfo['sub']);
-    UserInfo().setName(rawUserInfo['name']);
-    UserInfo().setPicture(rawUserInfo['picture']);
-    UserInfo().saveUserInfo();
+    var rawUserInfo = await getUserInfo();
+    UserInfo().fromMap(rawUserInfo);
+    UserInfo().setUid(rawUserInfo['sub'] ?? '');
+    UserInfo().update();
   }
 
   /// uri parser for services who are based on cas auth

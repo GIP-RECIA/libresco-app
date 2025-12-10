@@ -15,18 +15,13 @@ class UserInfoRepository {
 
   final tableName = DatabaseProvider.tableName;
 
-  Future<void> flushUserInfo() async {
+  Future<void> update() async {
     final db = await DatabaseProvider.instance.db;
-
     await db.update(
       tableName,
-      {
-        'uid': UserInfo().uid,
-        'name': UserInfo().name,
-        'picture': UserInfo().picture
-      },
+      UserInfo().toMap(),
       where: 'id = ${Account().id}',
     );
-    log.fine('Update in database for ${UserInfo().toString()}');
+    log.fine('Update in database : ${UserInfo().toString()}');
   }
 }

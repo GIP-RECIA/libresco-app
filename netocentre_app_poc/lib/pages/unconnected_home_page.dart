@@ -51,8 +51,8 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
         .map(
           (p) => AccountData(
             id: p['id'] as int,
-            name: p['name'] as String,
-            avatarUrl: AppConfig().uPortalBaseURL + (p['picture'] as String),
+            name: (p['name'] ?? '') as String,
+            avatarUrl: AppConfig().uPortalBaseURL + ((p['picture'] ?? '') as String),
           ),
         )
         .toList();
@@ -64,8 +64,8 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
 
   Future<void> _openAccount(BuildContext context, AccountData account) async {
     bool connected = false;
-    Account().setId(account.id.toString());
-    await SessionRepository.instance.getCookiesInDB();
+    Account().setId(account.id);
+    await SessionRepository.instance.load();
     connected = await LoginService.instance.hasCASSession();
     if (!connected) {
       Session().reset(flush: true);
@@ -88,11 +88,9 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   }
 
   Future<void> _logoutAccount(BuildContext context, AccountData account) async {
-    Account().setId(account.id.toString());
-    await SessionRepository.instance.getCookiesInDB();
+    await SessionRepository.instance.load(id: account.id);
     await LoginService.instance.logout();
-    Session().reset();
-    Account().setId('');
+    Session().clear();
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Déconnexion ${account.name}')),
@@ -100,12 +98,10 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   }
 
   Future<void> _deleteAccount(BuildContext context, AccountData account) async {
-    Account().setId(account.id.toString());
-    await SessionRepository.instance.getCookiesInDB();
+    var id = account.id;
+    await SessionRepository.instance.load(id: id);
     await LoginService.instance.logout();
-    await SessionRepository.instance.deleteCookiesForCurrentProfile();
-    Session().reset();
-    Account().setId('');
+    await SessionRepository.instance.deleteAll(id: id);
 
     await initAccounts();
 

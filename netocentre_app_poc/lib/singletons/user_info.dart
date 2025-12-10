@@ -34,8 +34,29 @@ class UserInfo {
     _picture = value;
   }
 
-  void saveUserInfo() {
-    UserInfoRepository.instance.flushUserInfo();
+  Map<String, Object?> toMap() {
+    var map = <String, Object?>{
+      'uid': _uid,
+      'name': _name,
+      'picture': _picture,
+    };
+    return map;
+  }
+
+  void fromMap(Map<String, Object?> map) {
+    _uid = (map['uid'] ?? '') as String;
+    _name = (map['name'] ?? '') as String;
+    _picture = (map['picture'] ?? '') as String;
+  }
+
+  void update() {
+    UserInfoRepository.instance.update();
+  }
+
+  void clear() {
+    _uid = '';
+    _name = '';
+    _picture = '';
   }
 
   @override

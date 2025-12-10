@@ -17,8 +17,8 @@ Future<Widget> buildApp() async {
   List<Map<String, Object?>> profiles =
       await SessionRepository.instance.getProfilesList();
   if (profiles.length == 1) {
-    Account().setId(profiles[0]['id'].toString());
-    await SessionRepository.instance.getCookiesInDB();
+    Account().setId(profiles[0]['id'] as int);
+    await SessionRepository.instance.load();
     connected = await LoginService.instance.hasCASSession();
     if (!connected) {
       log.fine('User is not connected to CAS : database reset');

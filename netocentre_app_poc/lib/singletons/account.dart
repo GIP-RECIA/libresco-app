@@ -5,7 +5,7 @@ class Account {
 
   static final Account _instance = Account._internal();
 
-  String _id = '';
+  int? _id;
 
   factory Account() {
     return _instance;
@@ -13,10 +13,14 @@ class Account {
 
   Account._internal();
 
-  String get id => _id;
+  int? get id => _id;
 
-  void setId(String id) {
+  void setId(int id) {
     _id = id;
+  }
+
+  void clear() {
+    _id = null;
   }
 
   @override

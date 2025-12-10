@@ -59,8 +59,8 @@ class _AppContainer extends State<AppContainer> {
   void _openChangeEtab(BuildContext context) {}
 
   void _changeAccount(BuildContext context) {
-    Session().reset();
-    Account().setId('');
+    Session().clear();
+    Account().clear();
     Services().setServicesList([]);
     if (context.mounted) {
       Navigator.pushReplacement(
