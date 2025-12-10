@@ -13,9 +13,9 @@ class AppConfig {
   String? _casBaseURL;
   String? _serviceURL;
   String _idpIdQueryParam = 'idpId';
-  String _portalCookieName = "SESSION";
-  String _portalIDCookieName = "clusterIDPortail";
-  String _casCookieName = "TGC";
+  String _portalCookieName = 'SESSION';
+  String _portalIDCookieName = 'clusterIDPortail';
+  String _casCookieName = 'TGC';
   String? _uPortalBaseURL;
   String? _staticsBaseURL;
   bool _cache = true;
