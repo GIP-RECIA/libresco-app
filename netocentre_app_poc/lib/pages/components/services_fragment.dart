@@ -16,8 +16,9 @@ class ServicesFragment extends StatefulWidget {
 class _ServicesFragment extends State<ServicesFragment> {
   final log = Logger('_ServicesFragment');
   List<Service> renderedServices = Services().servicesList;
+
   // String dropwdownValue = '';
-  // 
+  //
   // void _sortAlphabetically() {
   //   setState(() {
   //     renderedServices.sort(

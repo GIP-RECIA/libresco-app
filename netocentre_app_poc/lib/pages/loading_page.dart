@@ -69,7 +69,8 @@ class LoadingPageUtils {
       log.info('Portal session is invalid');
       await LoginService.instance.unstackedUPortalLogin();
       if (!await LoginService.instance.hasPortalSession()) {
-        // If we get a guest user again, that means CAS session is not valid, and we need to redo the login phase
+        // If we get a guest user again, that means CAS session is not valid,
+        // and we need to redo the login phase
         log.info('CAS session is invalid');
         Session().reset(flush: true);
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -88,7 +89,8 @@ class LoadingPageUtils {
       log.info('Portal session is valid');
     }
 
-    // Once we are sure to be connected, we can request the infos from the portal APIs
+    // Once we are sure to be connected, we can request the infos from the
+    // portal APIs
     await PortalService.instance.loadUserInfo();
     log.info('Data was loaded successfully, now exiting loading page...');
     navigatorPush();

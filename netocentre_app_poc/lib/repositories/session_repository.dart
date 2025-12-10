@@ -72,7 +72,8 @@ class SessionRepository {
       List<Map<String, Object?>> res =
           await db.query(tableName, where: 'id = ${Account().id}');
       Session().setCASSessionCookie(res.first['CASSessionCookie'].toString());
-      Session().setPortalSessionCookie(res.first['PortalSessionCookie'].toString());
+      Session()
+          .setPortalSessionCookie(res.first['PortalSessionCookie'].toString());
       Session().setIDportalCookie(res.first['IDPortalCookie'].toString());
       log.fine(
         'Session after getting values from database : ${Session().toString()}',

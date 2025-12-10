@@ -25,7 +25,8 @@ class LoginService {
   }
 
   Future<bool> hasPortalSession() async {
-    // If user don't have any PortalSessionCookie it is not necessary to make a request, we know we don't have a session
+    // If user don't have any PortalSessionCookie it is not necessary to make a
+    // request, we know we don't have a session
     if (Session().PortalSessionCookie == '') {
       log.finer('No ${AppConfig().portalCookieName} in Session');
       return false;
@@ -38,20 +39,23 @@ class LoginService {
     );
 
     log.finer('Making a request to portal : $request');
-    log.finer('${AppConfig().portalCookieName}=${Session().PortalSessionCookie}');
+    log.finer(
+        '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}');
 
     final http.Response res = await client.get(
       request,
       headers: <String, String>{
         'Cookie':
-            '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; ${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
+            '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
+                '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
         'Host': AppConfig().uPortalHost
       },
     );
 
     log.finest('Status code : ${res.statusCode}');
     log.finest('Body : ${res.body}');
-    // If we get a 200 we still need to check if the session is not a guest session
+    // If we get a 200 we still need to check if the session is not a guest
+    // session
     if (res.statusCode == 200) {
       if (json.decode(res.body)['person']['sessionKey'] != null) {
         log.fine('Portal session is valid !');
@@ -82,14 +86,19 @@ class LoginService {
 
       log.finer('List of cookies in portal response ${cookiesList.toString()}');
 
-      Iterable<String> portalSessionCookieParser =
-          cookiesList.where((str) => str.startsWith(AppConfig().portalCookieName));
-      Iterable<String> idPortalCookieParser =
-          cookiesList.where((str) => str.startsWith(AppConfig().portalIDCookieName));
+      Iterable<String> portalSessionCookieParser = cookiesList.where(
+        (str) => str.startsWith(AppConfig().portalCookieName),
+      );
+      Iterable<String> idPortalCookieParser = cookiesList.where(
+        (str) => str.startsWith(AppConfig().portalIDCookieName),
+      );
       if (portalSessionCookieParser.isNotEmpty) {
         portalSessionCookie = portalSessionCookieParser.first
             .substring(portalSessionCookieParser.first.indexOf('=') + 1);
-        log.finer('${AppConfig().portalCookieName} cookie exists : $portalSessionCookie');
+        log.finer(
+          '${AppConfig().portalCookieName} cookie exists : '
+          '$portalSessionCookie',
+        );
       } else {
         log.finer('${AppConfig().portalCookieName} cookie not found');
       }
@@ -116,7 +125,10 @@ class LoginService {
     );
     var request = await client.getUrl(uri);
     request.followRedirects = false;
-    request.headers.add('Cookie', '${AppConfig().casCookieName}=${Session().CASSessionCookie}');
+    request.headers.add(
+      'Cookie',
+      '${AppConfig().casCookieName}=${Session().CASSessionCookie}',
+    );
 
     log.finer('Making this request to CAS server : ${request.uri.toString()}');
     log.finer('Request headers are : ${request.headers}');
@@ -148,7 +160,10 @@ class LoginService {
 
     var casRequest = await client.getUrl(casURI);
     casRequest.followRedirects = false;
-    casRequest.headers.add('Cookie', '${AppConfig().casCookieName}=${Session().CASSessionCookie}');
+    casRequest.headers.add(
+      'Cookie',
+      '${AppConfig().casCookieName}=${Session().CASSessionCookie}',
+    );
 
     var casResponse = await casRequest.close();
     String casBody = await casResponse.transform(utf8.decoder).join();
@@ -163,13 +178,16 @@ class LoginService {
     Uri portalURI = Uri.https(AppConfig().uPortalHost, '/portail/Logout');
 
     log.finer('Making a request to portal : $portalURI');
-    log.finer('${AppConfig().portalCookieName}=${Session().PortalSessionCookie}');
+    log.finer(
+      '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}',
+    );
 
     var portalRequest = await client.getUrl(portalURI);
     portalRequest.followRedirects = false;
     portalRequest.headers.add(
       'Cookie',
-      '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; ${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
+      '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
+          '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
     );
     portalRequest.headers.add('Host', AppConfig().uPortalHost);
 
@@ -201,7 +219,10 @@ class LoginService {
     );
     var request = await client.getUrl(uri);
     request.followRedirects = false;
-    request.headers.add('Cookie', '${AppConfig().casCookieName}=${Session().CASSessionCookie}');
+    request.headers.add(
+      'Cookie',
+      '${AppConfig().casCookieName}=${Session().CASSessionCookie}',
+    );
 
     log.finer('\nRequest $requestCounter :');
     log.finer(request.uri.toString());
@@ -240,14 +261,21 @@ class LoginService {
         request.followRedirects = false;
 
         if (portalSessionCookie != '') {
-          request.cookies.add(Cookie(AppConfig().portalCookieName, portalSessionCookie));
+          request.cookies.add(Cookie(
+            AppConfig().portalCookieName,
+            portalSessionCookie,
+          ));
         }
         if (idPortalCookie != '') {
-          request.cookies.add(Cookie(AppConfig().portalIDCookieName, idPortalCookie));
+          request.cookies.add(Cookie(
+            AppConfig().portalIDCookieName,
+            idPortalCookie,
+          ));
         }
 
         log.finer(
-          '\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-',
+          '\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
+          '=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-',
         );
         log.finer('\nRequest ${requestCounter + 1} :');
         log.finer(request.uri.toString());

@@ -34,14 +34,17 @@ class PortalService {
     );
 
     log.finer('Getting portlet request : $request');
-    log.finer('${AppConfig().portalCookieName}=${Session().PortalSessionCookie}');
+    log.finer(
+      '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}',
+    );
 
     if (await LoginService.instance.isAuthorizedByUPortal()) {
       final http.Response res = await client.get(
         request,
         headers: <String, String>{
           'Cookie':
-              '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; ${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
+              '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
+                  '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
           'Host': AppConfig().uPortalHost
         },
       );
@@ -77,7 +80,8 @@ class PortalService {
               if (portlet['parameters']
                   .containsKey('alternativeMaximizedLink')) {
                 String? serviceUri = serviceUriParser(
-                    portlet['parameters']['alternativeMaximizedLink']['value']);
+                  portlet['parameters']['alternativeMaximizedLink']['value'],
+                );
                 if (serviceUri != null) {
                   servicesList.add(
                     Service.CASBased(
@@ -156,15 +160,17 @@ class PortalService {
     if (apiResponseResult) {
       List<Service> currentServicesList = Services().servicesList;
       List<Service> currentFavoritesList = Services().favoritesList;
-      currentServicesList
-          .removeWhere((indexedService) => indexedService.id == service.id);
+      currentServicesList.removeWhere(
+        (indexedService) => indexedService.id == service.id,
+      );
       service.isFavorite = !(service.isFavorite);
 
       // if it was in favorites list
       if (!(service.isFavorite)) {
         // remove from favorites list
-        currentFavoritesList
-            .removeWhere((indexedService) => indexedService.id == service.id);
+        currentFavoritesList.removeWhere(
+          (indexedService) => indexedService.id == service.id,
+        );
       } else {
         // add to favorites list
         currentFavoritesList.add(service);
@@ -196,14 +202,16 @@ class PortalService {
     );
 
     log.finer('Getting portlet request : $request');
-    log.finer('${AppConfig().portalCookieName}=${Session().PortalSessionCookie}');
+    log.finer(
+        '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}');
 
     if (await LoginService.instance.isAuthorizedByUPortal()) {
       final http.Response res = await client.post(
         request,
         headers: <String, String>{
           'Cookie':
-              '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; ${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
+              '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
+                  '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
           'Host': AppConfig().uPortalHost
         },
       );
@@ -233,13 +241,16 @@ class PortalService {
     );
 
     log.finer('getting portlet request : $request');
-    log.finer('${AppConfig().portalCookieName}=${Session().PortalSessionCookie}');
+    log.finer(
+      '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}',
+    );
 
     final http.Response res = await client.get(
       request,
       headers: <String, String>{
         'Cookie':
-            '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; ${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
+            '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
+                '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
         'Host': AppConfig().uPortalHost
       },
     );

@@ -83,8 +83,7 @@ class AppConfig {
   String get portalIDCookieName =>
       getAttribute('_portalIDCookieName', _portalIDCookieName);
 
-  String get casCookieName =>
-      getAttribute('_casCookieName', _casCookieName);
+  String get casCookieName => getAttribute('_casCookieName', _casCookieName);
 
   String get uPortalBaseURL => getAttribute('_uPortalBaseURL', _uPortalBaseURL);
 

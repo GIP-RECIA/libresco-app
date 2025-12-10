@@ -30,7 +30,8 @@ class AuthenticationInAppBrowser extends InAppBrowser {
   // This method is called when the browser loads a new url (~= new request)
   @override
   Future onLoadStart(url) async {
-    // We get the cookies and try to detect if there is the CASSessionCookie when we see the login answer from CAS
+    // We get the cookies and try to detect if there is the CASSessionCookie
+    // when we see the login answer from CAS
     log.fine('Started $url');
     if (url != null) {
       if (url.toString().contains('${AppConfig().serviceURL}?ticket=')) {
@@ -42,27 +43,37 @@ class AuthenticationInAppBrowser extends InAppBrowser {
         for (var current in cookies) {
           log.finest('Checking cookie $current.name');
           if (current.name == AppConfig().casCookieName) {
-            log.fine('${AppConfig().casCookieName} Cookie found with value : $current');
+            log.fine(
+              '${AppConfig().casCookieName} Cookie found with value : $current',
+            );
             Session().setCASSessionCookie(current.value, flush: true);
           }
         }
-        // If we have found a CASSessionCookie, then we can navigate to home page
+        // If we have found a CASSessionCookie, then we can navigate to home
+        // page
         if (Session().CASSessionCookie != '') {
-          log.fine('$url was intercepted to get the ${AppConfig().casCookieName}. Closing browser...');
+          log.fine(
+            '$url was intercepted to get the ${AppConfig().casCookieName}. '
+            'Closing browser...',
+          );
           close(); // close the navigator
           navigateToHomePage();
         }
-        // If no CASSessionCookie is found, it means there is certainly a problem with the cookies
+        // If no CASSessionCookie is found, it means there is certainly a
+        // problem with the cookies
         else {
           log.warning(
-            '${AppConfig().casCookieName} cookie wasn\'t found. There may be a problem with cookies',
+            '${AppConfig().casCookieName} cookie wasn\'t found. '
+            'There may be a problem with cookies',
           );
           close();
           if (context.mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text(
-                  'Erreur lors de l\'authentification : essayez de mettre à jour votre navigateur dans sa dernière version.',
+                  'Erreur lors de l\'authentification : '
+                  'essayez de mettre à jour votre navigateur dans '
+                  'sa dernière version.',
                 ),
                 duration: Duration(seconds: 10),
               ),
