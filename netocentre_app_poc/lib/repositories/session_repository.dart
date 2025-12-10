@@ -22,7 +22,7 @@ class SessionRepository {
     int id = await db.insert(
       tableName,
       {
-        'TGC': Session().TGC,
+        'CASSessionCookie': Session().CASSessionCookie,
         'PortalSessionCookie': Session().PortalSessionCookie,
         'idPortal': Session().idPortal
       },
@@ -38,7 +38,7 @@ class SessionRepository {
     await db.update(
       tableName,
       {
-        'TGC': Session().TGC,
+        'CASSessionCookie': Session().CASSessionCookie,
         'PortalSessionCookie': Session().PortalSessionCookie,
         'idPortal': Session().idPortal
       },
@@ -71,7 +71,7 @@ class SessionRepository {
     if (count! > 0) {
       List<Map<String, Object?>> res =
           await db.query(tableName, where: 'id = ${Account().id}');
-      Session().setTGC(res.first['TGC'].toString());
+      Session().setCASSessionCookie(res.first['CASSessionCookie'].toString());
       Session().setPortalSessionCookie(res.first['PortalSessionCookie'].toString());
       Session().setIdPortal(res.first['idPortal'].toString());
       log.fine(

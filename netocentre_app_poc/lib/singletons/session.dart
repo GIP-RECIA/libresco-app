@@ -6,7 +6,7 @@ class Session {
 
   static final Session _instance = Session._internal();
 
-  String _TGC = '';
+  String _CASSessionCookie = '';
   String _PortalSessionCookie = '';
   String _idPortal = '';
 
@@ -16,10 +16,10 @@ class Session {
 
   Session._internal();
 
-  String get TGC => _TGC;
+  String get CASSessionCookie => _CASSessionCookie;
 
-  void setTGC(String token, {bool flush = false}) {
-    _TGC = token;
+  void setCASSessionCookie(String token, {bool flush = false}) {
+    _CASSessionCookie = token;
 
     if (flush) {
       SessionRepository.instance.flushTokens();
@@ -47,7 +47,7 @@ class Session {
   }
 
   void reset({bool flush = false}) {
-    _TGC = '';
+    _CASSessionCookie = '';
     _PortalSessionCookie = '';
     _idPortal = '';
     if (flush) {
@@ -58,7 +58,7 @@ class Session {
   @override
   String toString() {
     return 'Session{'
-        '_TGC: $_TGC, '
+        '_CASSessionCookie: $_CASSessionCookie, '
         '_PortalSessionCookie: $_PortalSessionCookie, '
         '_idPortal: $_idPortal, '
         '}';

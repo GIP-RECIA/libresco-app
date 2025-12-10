@@ -116,7 +116,7 @@ class LoginService {
     );
     var request = await client.getUrl(uri);
     request.followRedirects = false;
-    request.headers.add('Cookie', 'TGC=${Session().TGC}');
+    request.headers.add('Cookie', '${AppConfig().casCookieName}=${Session().CASSessionCookie}');
 
     log.finer('Making this request to CAS server : ${request.uri.toString()}');
     log.finer('Request headers are : ${request.headers}');
@@ -144,11 +144,11 @@ class LoginService {
     log.fine('Logging out the user from CAS');
     Uri casURI = Uri.https(AppConfig().casHost, '/cas/logout');
     log.finer('Making a request to CAS : $casURI');
-    log.finer('TGC=${Session().TGC}');
+    log.finer('${AppConfig().casCookieName}=${Session().CASSessionCookie}');
 
     var casRequest = await client.getUrl(casURI);
     casRequest.followRedirects = false;
-    casRequest.headers.add('Cookie', 'TGC=${Session().TGC}');
+    casRequest.headers.add('Cookie', '${AppConfig().casCookieName}=${Session().CASSessionCookie}');
 
     var casResponse = await casRequest.close();
     String casBody = await casResponse.transform(utf8.decoder).join();
@@ -201,7 +201,7 @@ class LoginService {
     );
     var request = await client.getUrl(uri);
     request.followRedirects = false;
-    request.headers.add('Cookie', 'TGC=${Session().TGC}');
+    request.headers.add('Cookie', '${AppConfig().casCookieName}=${Session().CASSessionCookie}');
 
     log.finer('\nRequest $requestCounter :');
     log.finer(request.uri.toString());
