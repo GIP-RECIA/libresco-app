@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:netocentre_app_poc/pages/services_page.dart';
+import 'package:netocentre_app_poc/pages/components/services_fragment.dart';
 import 'package:patrol/patrol.dart';
 
 import 'package:netocentre_app_poc/main.dart' as app;
@@ -34,7 +34,7 @@ void main() {
     // Click on icon to obtain service list
     await $(#serviceList).tap();
     await $.pumpAndSettle();
-    expect($(ServicesPage), findsOneWidget);
+    expect($(ServicesFragment), findsOneWidget);
 
     // Click on CAS service (MCE)
     await $.scrollUntilVisible(finder: find.byKey(const Key("Mon compte ENT")), delta: 150, maxScrolls: 30);
@@ -45,7 +45,7 @@ void main() {
     // Back to service list
     await $(#backFromWebviewButton).tap();
     await $.pumpAndSettle();
-    expect($(ServicesPage), findsOneWidget);
+    expect($(ServicesFragment), findsOneWidget);
 
     // Click on a portal service (protection by soffit)
     await $.scrollUntilVisible(finder: find.byKey(const Key("Actualités")), scrollDirection: AxisDirection.up,
@@ -57,7 +57,7 @@ void main() {
     // Back to service list
     await $(#backFromWebviewButton).tap();
     await $.pumpAndSettle();
-    expect($(ServicesPage), findsOneWidget);
+    expect($(ServicesFragment), findsOneWidget);
 
     // Click on profile info then logout
     await $(#profileInfo).tap();

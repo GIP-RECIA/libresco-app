@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/pages/home_page.dart';
-import 'package:netocentre_app_poc/pages/services_page.dart';
-import 'package:netocentre_app_poc/pages/unconnected_home_page.dart';
-import 'package:netocentre_app_poc/services/portal_service.dart';
-import 'package:netocentre_app_poc/singletons/account.dart';
-import 'package:netocentre_app_poc/singletons/app_config.dart';
-import 'package:netocentre_app_poc/singletons/services_list.dart';
-import 'package:netocentre_app_poc/singletons/session.dart';
-import 'package:netocentre_app_poc/singletons/user_info.dart';
 
 class NavBar extends StatefulWidget {
+  final ValueChanged<int> onItemTapped;
+
   const NavBar({
     super.key,
+    required this.onItemTapped,
   });
 
   @override
@@ -21,129 +15,36 @@ class NavBar extends StatefulWidget {
 
 class _NavBar extends State<NavBar> {
   final log = Logger('_NavBar');
-  final FocusNode _buttonFocusNode = FocusNode(debugLabel: 'Menu Button');
-  String pictureUri = '';
+
+  int _selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
+  }
 
-    if (UserInfo().name == '') {
-      log.warning('User info should be loaded but is not !');
-      PortalService.instance.loadUserInfo();
-    }
-    // TODO : pictureUri
-    pictureUri = '${AppConfig().uPortalBaseURL}${UserInfo().picture}';
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    widget.onItemTapped(index);
   }
 
   @override
   Widget build(BuildContext context) {
-    return MenuAnchor(
-      childFocusNode: _buttonFocusNode,
-      style: MenuStyle(
-        backgroundColor: WidgetStatePropertyAll<Color>(Colors.white),
-      ),
-      menuChildren: <Widget>[
-        MenuItemButton(
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text('Changer d\'établissement'),
-              Icon(Icons.swap_horiz_outlined),
-            ],
-          ),
-          onPressed: () => {},
+    return NavigationBar(
+      destinations: const <Widget>[
+        NavigationDestination(
+          icon: Icon(Icons.home),
+          label: 'Home',
         ),
-        MenuItemButton(
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text('Mon profil'),
-              Icon(Icons.settings),
-            ],
-          ),
-          onPressed: () => {},
-        ),
-        MenuItemButton(
-          key: const Key('change-account'),
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text('Changer de compte'),
-              Icon(Icons.swap_horiz),
-            ],
-          ),
-          onPressed: () async {
-            Services().setServicesList([]);
-            Session().reset();
-            Account().setId('');
-            if (context.mounted) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const UnconnectedHomePage(),
-                ),
-              );
-            }
-          },
+        NavigationDestination(
+          icon: Icon(Icons.grid_view),
+          label: 'Services',
         ),
       ],
-      builder:
-          (BuildContext context, MenuController controller, Widget? child) {
-        return BottomAppBar(
-          height: MediaQuery.of(context).size.height * 0.07,
-          color: const Color(0xFF2c2c2c),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                key: const Key('homeButton'),
-                icon: const Icon(
-                  Icons.home_outlined,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomePage(),
-                    ),
-                  );
-                },
-              ),
-              IconButton(
-                key: const Key('serviceList'),
-                icon: const Icon(
-                  Icons.grid_view,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ServicesPage(),
-                    ),
-                  );
-                },
-              ),
-              IconButton(
-                key: const Key('profileInfo'),
-                icon: const Icon(
-                  Icons.account_box,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  if (controller.isOpen) {
-                    controller.close();
-                  } else {
-                    controller.open();
-                  }
-                },
-              ),
-            ],
-          ),
-        );
-      },
+      selectedIndex: _selectedIndex,
+      onDestinationSelected: _onItemTapped,
     );
   }
 }

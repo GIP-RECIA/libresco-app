@@ -13,11 +13,13 @@ import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:netocentre_app_poc/singletons/user_info.dart';
 
 class AppContainer extends StatefulWidget {
-  final Widget child;
+  final Widget body;
+  final ValueChanged<int>? onItemTapped;
 
   const AppContainer({
     super.key,
-    required this.child,
+    required this.body,
+    this.onItemTapped,
   });
 
   @override
@@ -88,7 +90,7 @@ class _AppContainer extends State<AppContainer> {
       ),
       body: Stack(
         children: [
-          widget.child,
+          widget.body,
           if (_showSearchBar && _filteredItems.isNotEmpty)
             Positioned(
               top: 0,
@@ -106,7 +108,9 @@ class _AppContainer extends State<AppContainer> {
             ),
         ],
       ),
-      bottomNavigationBar: const NavBar(),
+      bottomNavigationBar: NavBar(
+        onItemTapped: (index) => widget.onItemTapped?.call(index),
+      ),
     );
   }
 
