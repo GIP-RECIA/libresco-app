@@ -8,7 +8,7 @@ class Session {
 
   String _CASSessionCookie = '';
   String _PortalSessionCookie = '';
-  String _idPortal = '';
+  String _IDPortalCookie = '';
 
   factory Session() {
     return _instance;
@@ -36,10 +36,10 @@ class Session {
     }
   }
 
-  String get idPortal => _idPortal;
+  String get IDPortalCookie => _IDPortalCookie;
 
-  void setIdPortal(String value, {bool flush = false}) {
-    _idPortal = value;
+  void setIDportalCookie(String value, {bool flush = false}) {
+    _IDPortalCookie = value;
 
     if (flush) {
       SessionRepository.instance.flushTokens();
@@ -49,7 +49,7 @@ class Session {
   void reset({bool flush = false}) {
     _CASSessionCookie = '';
     _PortalSessionCookie = '';
-    _idPortal = '';
+    _IDPortalCookie = '';
     if (flush) {
       SessionRepository.instance.flushTokens();
     }
@@ -60,7 +60,7 @@ class Session {
     return 'Session{'
         '_CASSessionCookie: $_CASSessionCookie, '
         '_PortalSessionCookie: $_PortalSessionCookie, '
-        '_idPortal: $_idPortal, '
+        '_IDPortalCookie: $_IDPortalCookie, '
         '}';
   }
 }

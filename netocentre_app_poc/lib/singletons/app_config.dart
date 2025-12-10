@@ -14,6 +14,7 @@ class AppConfig {
   String? _serviceURL;
   String _idpIdQueryParam = 'idpId';
   String _portalCookieName = "SESSION";
+  String _portalIDCookieName = "clusterIDPortail";
   String _casCookieName = "TGC";
   String? _uPortalBaseURL;
   String? _staticsBaseURL;
@@ -79,6 +80,9 @@ class AppConfig {
   String get portalCookieName =>
       getAttribute('_portalCookieName', _portalCookieName);
 
+  String get portalIDCookieName =>
+      getAttribute('_portalIDCookieName', _portalIDCookieName);
+
   String get casCookieName =>
       getAttribute('_casCookieName', _casCookieName);
 
@@ -99,6 +103,7 @@ class AppConfig {
         '_serviceURL: $_serviceURL, '
         '_idpIdQueryParam: $_idpIdQueryParam, '
         '_portalCookieName: $_portalCookieName, '
+        '_portalIDCookieName: $_portalIDCookieName, '
         '_casCookieName: $_casCookieName, '
         '_uPortalBaseURL: $_uPortalBaseURL, '
         '_staticsBaseURL: $_staticsBaseURL, '

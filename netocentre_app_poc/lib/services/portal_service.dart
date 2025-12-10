@@ -41,7 +41,7 @@ class PortalService {
         request,
         headers: <String, String>{
           'Cookie':
-              '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; clusterIDPortail=${Session().idPortal}',
+              '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; ${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
           'Host': AppConfig().uPortalHost
         },
       );
@@ -203,7 +203,7 @@ class PortalService {
         request,
         headers: <String, String>{
           'Cookie':
-              '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; clusterIDPortail=${Session().idPortal}',
+              '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; ${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
           'Host': AppConfig().uPortalHost
         },
       );
@@ -239,7 +239,7 @@ class PortalService {
       request,
       headers: <String, String>{
         'Cookie':
-            '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; clusterIDPortail=${Session().idPortal}',
+            '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; ${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
         'Host': AppConfig().uPortalHost
       },
     );

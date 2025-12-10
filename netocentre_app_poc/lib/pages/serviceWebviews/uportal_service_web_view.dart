@@ -60,8 +60,8 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
 
     manager.setCookie(
       url: WebUri('${AppConfig().uPortalBaseURL}/'),
-      name: 'clusterIDPortail',
-      value: Session().idPortal,
+      name: AppConfig().portalIDCookieName,
+      value: Session().IDPortalCookie,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,

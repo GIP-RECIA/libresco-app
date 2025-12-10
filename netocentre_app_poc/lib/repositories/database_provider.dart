@@ -29,7 +29,7 @@ class DatabaseProvider {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             CASSessionCookie VARCHAR(255),
             PortalSessionCookie VARCHAR(255),
-            idPortal VARCHAR(255),
+            IDPortalCookie VARCHAR(255),
             uid VARCHAR(255),
             name VARCHAR(255),
             picture VARCHAR(255)

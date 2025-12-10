@@ -44,7 +44,7 @@ class LoginService {
       request,
       headers: <String, String>{
         'Cookie':
-            '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; clusterIDPortail=${Session().idPortal}',
+            '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; ${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
         'Host': AppConfig().uPortalHost
       },
     );
@@ -67,7 +67,7 @@ class LoginService {
     }
   }
 
-  /// Parser - portalSessionCookie & idPortal
+  /// Parser - portalSessionCookie & IDPortalCookie
   ({String session, String idportal}) uPortalLoginParser(
       HttpClientResponse response) {
     String portalSessionCookie = '';
@@ -84,8 +84,8 @@ class LoginService {
 
       Iterable<String> portalSessionCookieParser =
           cookiesList.where((str) => str.startsWith(AppConfig().portalCookieName));
-      Iterable<String> idPortalParser =
-          cookiesList.where((str) => str.contains('clusterIDPortail'));
+      Iterable<String> idPortalCookieParser =
+          cookiesList.where((str) => str.startsWith(AppConfig().portalIDCookieName));
       if (portalSessionCookieParser.isNotEmpty) {
         portalSessionCookie = portalSessionCookieParser.first
             .substring(portalSessionCookieParser.first.indexOf('=') + 1);
@@ -93,9 +93,9 @@ class LoginService {
       } else {
         log.finer('${AppConfig().portalCookieName} cookie not found');
       }
-      if (idPortalParser.isNotEmpty) {
-        idPortalCookie = idPortalParser.first
-            .substring(idPortalParser.first.indexOf('=') + 1);
+      if (idPortalCookieParser.isNotEmpty) {
+        idPortalCookie = idPortalCookieParser.first
+            .substring(idPortalCookieParser.first.indexOf('=') + 1);
         log.finer('idPortal cookie exists : $idPortalCookie');
       } else {
         log.finer('idPortal cookie not found');
@@ -169,7 +169,7 @@ class LoginService {
     portalRequest.followRedirects = false;
     portalRequest.headers.add(
       'Cookie',
-      '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; clusterIDPortail=${Session().idPortal}',
+      '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; ${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
     );
     portalRequest.headers.add('Host', AppConfig().uPortalHost);
 
@@ -243,7 +243,7 @@ class LoginService {
           request.cookies.add(Cookie(AppConfig().portalCookieName, portalSessionCookie));
         }
         if (idPortalCookie != '') {
-          request.cookies.add(Cookie('clusterIDPortail', idPortalCookie));
+          request.cookies.add(Cookie(AppConfig().portalIDCookieName, idPortalCookie));
         }
 
         log.finer(
@@ -260,7 +260,7 @@ class LoginService {
     }
 
     /// Last response
-    /// Parse last portalSessionCookie & idPortal
+    /// Parse last portalSessionCookie & idPortalCookie
     log.finer('\nResponse $requestCounter :');
     log.finer(response.statusCode);
     log.finer('response headers : ${response.headers['set-cookie']}');
@@ -280,7 +280,7 @@ class LoginService {
     log.fine('=== End of unstacked uPortal login ===');
 
     if (idPortalCookie != '' && portalSessionCookie != '') {
-      Session().setIdPortal(idPortalCookie, flush: true);
+      Session().setIDportalCookie(idPortalCookie, flush: true);
       Session().setPortalSessionCookie(portalSessionCookie, flush: true);
       if (await hasPortalSession()) {
         return true;

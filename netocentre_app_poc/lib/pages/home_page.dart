@@ -39,8 +39,8 @@ class _HomePage extends State<HomePage> {
     );
     manager.setCookie(
       url: WebUri('${AppConfig().uPortalBaseURL}/'),
-      name: 'clusterIDPortail',
-      value: Session().idPortal,
+      name: AppConfig().portalIDCookieName,
+      value: Session().IDPortalCookie,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
