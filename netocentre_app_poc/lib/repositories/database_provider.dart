@@ -28,7 +28,7 @@ class DatabaseProvider {
           CREATE TABLE $tableName(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             TGC VARCHAR(255),
-            JSESSIONID VARCHAR(255),
+            PortalSessionCookie VARCHAR(255),
             idPortal VARCHAR(255),
             uid VARCHAR(255),
             name VARCHAR(255),

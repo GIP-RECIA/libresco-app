@@ -49,8 +49,8 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
 
     manager.setCookie(
       url: WebUri('${AppConfig().uPortalBaseURL}/'),
-      name: 'JSESSIONID',
-      value: Session().JSESSIONID,
+      name: AppConfig().portalCookieName,
+      value: Session().PortalSessionCookie,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
@@ -91,7 +91,7 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
 
   @override
   Widget build(BuildContext context) {
-    log.finer('on init ${widget.uri} : ${Session().JSESSIONID}');
+    log.finer('on init ${widget.uri} : ${Session().PortalSessionCookie}');
     log.finer('on init ${widget.uri} : ${AppConfig().uPortalBaseURL}/');
     log.finer(
       'on init ${widget.uri} : ${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}',

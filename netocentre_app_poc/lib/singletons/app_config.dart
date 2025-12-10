@@ -13,6 +13,7 @@ class AppConfig {
   String? _casBaseURL;
   String? _serviceURL;
   String _idpIdQueryParam = 'idpId';
+  String _portalCookieName = "SESSION";
   String? _uPortalBaseURL;
   String? _staticsBaseURL;
   bool _cache = true;
@@ -74,6 +75,9 @@ class AppConfig {
   String get idpIdQueryParam =>
       getAttribute('_idpIdQueryParam', _idpIdQueryParam);
 
+  String get portalCookieName =>
+      getAttribute('_portalCookieName', _portalCookieName);
+
   String get uPortalBaseURL => getAttribute('_uPortalBaseURL', _uPortalBaseURL);
 
   String get uPortalHost =>
@@ -90,6 +94,7 @@ class AppConfig {
         '_casBaseURL: $_casBaseURL, '
         '_serviceURL: $_serviceURL, '
         '_idpIdQueryParam: $_idpIdQueryParam, '
+        '_portalCookieName: $_portalCookieName, '
         '_uPortalBaseURL: $_uPortalBaseURL, '
         '_staticsBaseURL: $_staticsBaseURL, '
         '_cache: $_cache'

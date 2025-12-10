@@ -23,7 +23,7 @@ class SessionRepository {
       tableName,
       {
         'TGC': Session().TGC,
-        'JSESSIONID': Session().JSESSIONID,
+        'PortalSessionCookie': Session().PortalSessionCookie,
         'idPortal': Session().idPortal
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -39,7 +39,7 @@ class SessionRepository {
       tableName,
       {
         'TGC': Session().TGC,
-        'JSESSIONID': Session().JSESSIONID,
+        'PortalSessionCookie': Session().PortalSessionCookie,
         'idPortal': Session().idPortal
       },
       where: 'id = ${Account().id}',
@@ -72,7 +72,7 @@ class SessionRepository {
       List<Map<String, Object?>> res =
           await db.query(tableName, where: 'id = ${Account().id}');
       Session().setTGC(res.first['TGC'].toString());
-      Session().setJSESSIONID(res.first['JSESSIONID'].toString());
+      Session().setPortalSessionCookie(res.first['PortalSessionCookie'].toString());
       Session().setIdPortal(res.first['idPortal'].toString());
       log.fine(
         'Session after getting values from database : ${Session().toString()}',

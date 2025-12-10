@@ -34,14 +34,14 @@ class PortalService {
     );
 
     log.finer('Getting portlet request : $request');
-    log.finer('JSESSIONID=${Session().JSESSIONID}');
+    log.finer('${AppConfig().portalCookieName}=${Session().PortalSessionCookie}');
 
     if (await LoginService.instance.isAuthorizedByUPortal()) {
       final http.Response res = await client.get(
         request,
         headers: <String, String>{
           'Cookie':
-              'JSESSIONID=${Session().JSESSIONID}; clusterIDPortail=${Session().idPortal}',
+              '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; clusterIDPortail=${Session().idPortal}',
           'Host': AppConfig().uPortalHost
         },
       );
@@ -143,7 +143,7 @@ class PortalService {
         log.warning('Got an abnormal ${res.statusCode} response status code !');
       }
     } else {
-      log.warning('JSESSIONID Empty !');
+      log.warning('${AppConfig().portalCookieName} Empty !');
     }
   }
 
@@ -196,14 +196,14 @@ class PortalService {
     );
 
     log.finer('Getting portlet request : $request');
-    log.finer('JSESSIONID=${Session().JSESSIONID}');
+    log.finer('${AppConfig().portalCookieName}=${Session().PortalSessionCookie}');
 
     if (await LoginService.instance.isAuthorizedByUPortal()) {
       final http.Response res = await client.post(
         request,
         headers: <String, String>{
           'Cookie':
-              'JSESSIONID=${Session().JSESSIONID}; clusterIDPortail=${Session().idPortal}',
+              '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; clusterIDPortail=${Session().idPortal}',
           'Host': AppConfig().uPortalHost
         },
       );
@@ -233,13 +233,13 @@ class PortalService {
     );
 
     log.finer('getting portlet request : $request');
-    log.finer('JSESSIONID=${Session().JSESSIONID}');
+    log.finer('${AppConfig().portalCookieName}=${Session().PortalSessionCookie}');
 
     final http.Response res = await client.get(
       request,
       headers: <String, String>{
         'Cookie':
-            'JSESSIONID=${Session().JSESSIONID}; clusterIDPortail=${Session().idPortal}',
+            '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; clusterIDPortail=${Session().idPortal}',
         'Host': AppConfig().uPortalHost
       },
     );

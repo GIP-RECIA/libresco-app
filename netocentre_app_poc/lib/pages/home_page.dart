@@ -29,8 +29,8 @@ class _HomePage extends State<HomePage> {
     manager.removeSessionCookies();
     manager.setCookie(
       url: WebUri('${AppConfig().uPortalBaseURL}/'),
-      name: 'JSESSIONID',
-      value: Session().JSESSIONID,
+      name: AppConfig().portalCookieName,
+      value: Session().PortalSessionCookie,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,

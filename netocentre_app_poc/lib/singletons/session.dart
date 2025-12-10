@@ -7,7 +7,7 @@ class Session {
   static final Session _instance = Session._internal();
 
   String _TGC = '';
-  String _JSESSIONID = '';
+  String _PortalSessionCookie = '';
   String _idPortal = '';
 
   factory Session() {
@@ -26,10 +26,10 @@ class Session {
     }
   }
 
-  String get JSESSIONID => _JSESSIONID;
+  String get PortalSessionCookie => _PortalSessionCookie;
 
-  void setJSESSIONID(String token, {bool flush = false}) {
-    _JSESSIONID = token;
+  void setPortalSessionCookie(String token, {bool flush = false}) {
+    _PortalSessionCookie = token;
 
     if (flush) {
       SessionRepository.instance.flushTokens();
@@ -48,7 +48,7 @@ class Session {
 
   void reset({bool flush = false}) {
     _TGC = '';
-    _JSESSIONID = '';
+    _PortalSessionCookie = '';
     _idPortal = '';
     if (flush) {
       SessionRepository.instance.flushTokens();
@@ -59,7 +59,7 @@ class Session {
   String toString() {
     return 'Session{'
         '_TGC: $_TGC, '
-        '_JSESSIONID: $_JSESSIONID, '
+        '_PortalSessionCookie: $_PortalSessionCookie, '
         '_idPortal: $_idPortal, '
         '}';
   }
