@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:netocentre_app_poc/singletons/app_config.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final bool showSearchBar;
-  final VoidCallback toggleSearchBar;
-  final Function(String) onSearch;
+  final bool back;
+  final VoidCallback onBack;
   final String title;
   final String avatarUrl;
   final VoidCallback onNotification;
@@ -14,9 +15,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   const CustomAppBar({
     super.key,
-    required this.showSearchBar,
-    required this.toggleSearchBar,
-    required this.onSearch,
+    required this.back,
+    required this.onBack,
     required this.title,
     required this.avatarUrl,
     required this.onNotification,
@@ -32,36 +32,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
-      leading: !showSearchBar
-          ? Builder(
-              builder: (BuildContext context) {
-                return IconButton(
-                  icon: const Icon(Icons.motion_photos_on_outlined),
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Clicked on App Logo Button'),
-                      ),
-                    );
-                  },
-                );
-              },
+      leading: back
+          ? IconButton(
+              onPressed: onBack,
+              icon: Icon(Icons.arrow_back),
             )
-          : null,
-      title: showSearchBar
-          ? TextField(
-              decoration: const InputDecoration(
-                hintText: 'Recherche...',
+          : Container(
+              padding: EdgeInsets.all(8),
+              child: SvgPicture.network(
+                '${AppConfig().uPortalBaseURL}/images/partners/netocentre-simple.svg',
               ),
-              onChanged: onSearch,
-            )
-          : Text(title),
+            ),
+      title: Text(title),
       actions: [
-        // IconButton(
-        //   icon: Icon(showSearchBar ? Icons.close : Icons.search),
-        //   onPressed: toggleSearchBar,
-        // ),
         PopupMenuButton<String>(
           position: PopupMenuPosition.under,
           color: Colors.white,
