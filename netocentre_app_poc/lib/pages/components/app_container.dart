@@ -62,11 +62,10 @@ class _AppContainer extends State<AppContainer> {
     Account().clear();
     Services().setServicesList([]);
     if (context.mounted) {
-      Navigator.pushReplacement(
+      Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(
-          builder: (context) => const UnconnectedHomePage(),
-        ),
+        MaterialPageRoute(builder: (_) => const UnconnectedHomePage()),
+        (Route<dynamic> route) => false,
       );
     }
   }
