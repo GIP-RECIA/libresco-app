@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/entities/service.dart';
-import 'package:netocentre_app_poc/pages/serviceWebviews/cas_service_web_view.dart';
-import 'package:netocentre_app_poc/pages/serviceWebviews/uportal_service_web_view.dart';
+import 'package:netocentre_app_poc/pages/service_web_view.dart';
 import 'package:netocentre_app_poc/pages/unconnected_home_page.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
 import 'package:netocentre_app_poc/singletons/app_config.dart';
@@ -40,54 +39,30 @@ class ServicesCard extends StatelessWidget {
       ),
       child: GestureDetector(
         onTapUp: (_) async {
-          if (service.isAuthByUPortal) {
-            if (await LoginService.instance.isAuthorizedByUPortal()) {
-              if (context.mounted) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UPortalServiceWebview(
-                      text: service.text,
-                      uri: service.serviceUri,
-                    ),
-                  ),
-                );
-              }
-            } else {
-              Session().reset(flush: true);
-              if (context.mounted) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const UnconnectedHomePage(),
-                  ),
-                );
-              }
+          if (await LoginService.instance.hasCASSession() && await LoginService.instance.isAuthorizedByUPortal()) {
+            if (context.mounted) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ServiceWebview(
+                        text: service.text,
+                        uri: service.serviceUri,
+                        fname: service.fname!,
+                        inPortal: service.isAuthByUPortal,
+                      ),
+                ),
+              );
             }
           } else {
-            if (await LoginService.instance.hasCASSession()) {
-              if (context.mounted) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CASServiceWebview(
-                      text: service.text,
-                      uri: service.serviceUri,
-                      fname: service.fname!,
-                    ),
-                  ),
-                );
-              }
-            } else {
-              Session().reset(flush: true);
-              if (context.mounted) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const UnconnectedHomePage(),
-                  ),
-                );
-              }
+            Session().reset(flush: true);
+            if (context.mounted) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UnconnectedHomePage(),
+                ),
+              );
             }
           }
         },

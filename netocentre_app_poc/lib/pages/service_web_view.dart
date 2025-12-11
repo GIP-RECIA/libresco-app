@@ -6,22 +6,26 @@ import 'package:netocentre_app_poc/singletons/app_config.dart';
 import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class UPortalServiceWebview extends StatefulWidget {
+class ServiceWebview extends StatefulWidget {
   final String uri;
   final String text;
+  final String fname;
+  final bool inPortal;
 
-  const UPortalServiceWebview({
+  const ServiceWebview({
     super.key,
     required this.uri,
     required this.text,
+    required this.fname,
+    required this.inPortal,
   });
 
   @override
-  State<UPortalServiceWebview> createState() => _UPortalServiceWebview();
+  State<ServiceWebview> createState() => _ServiceWebview();
 }
 
-class _UPortalServiceWebview extends State<UPortalServiceWebview> {
-  final log = Logger('_UPortalServiceWebview');
+class _ServiceWebview extends State<ServiceWebview> {
+  final log = Logger('_ServiceWebview');
   final GlobalKey webViewKey = GlobalKey();
   late CookieManager manager;
 
@@ -47,6 +51,21 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
     manager = CookieManager.instance();
     manager.removeSessionCookies();
 
+    // Set cookies
+
+    // CAS cookie
+    manager.setCookie(
+      url: WebUri('${AppConfig().casBaseURL}/cas'),
+      name: AppConfig().casCookieName,
+      value: Session().CASSessionCookie,
+      isHttpOnly: true,
+      isSecure: true,
+      sameSite: HTTPCookieSameSitePolicy.NONE,
+      domain: AppConfig().casHost,
+      path: '/cas',
+    );
+
+    // Portal cookie
     manager.setCookie(
       url: WebUri('${AppConfig().uPortalBaseURL}/'),
       name: AppConfig().portalCookieName,
@@ -57,6 +76,8 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
       domain: AppConfig().uPortalHost,
       path: '/',
     );
+
+    // PortalID cookie
     if(Session().IDPortalCookie != ""){
       manager.setCookie(
         url: WebUri('${AppConfig().uPortalBaseURL}/'),
@@ -97,6 +118,12 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
     log.finer(
       'on init ${widget.uri} : ${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}',
     );
+
+    String uri = '${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}';
+    if(!widget.inPortal){
+      uri = '${AppConfig().uPortalBaseURL}/portail/api/ExternalURLStats?fname=${widget.fname}&service=${widget.uri}';
+    }
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -108,7 +135,7 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
                     key: webViewKey,
                     initialUrlRequest: URLRequest(
                       url: WebUri(
-                        '${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}',
+                          uri
                       ),
                     ),
                     initialSettings: settings,

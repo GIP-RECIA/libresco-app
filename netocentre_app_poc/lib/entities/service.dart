@@ -14,6 +14,7 @@ class Service {
     required this.serviceUri,
     required this.iconUri,
     required this.isFavorite,
+    required this.fname,
   }) {
     isAuthByUPortal = true;
   }

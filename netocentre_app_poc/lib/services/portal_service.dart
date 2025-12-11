@@ -116,6 +116,7 @@ class PortalService {
                     serviceUri: portlet['fname'],
                     iconUri: portletIconUri,
                     isFavorite: portlet['favorite'],
+                    fname: portlet['fname'],
                   ),
                 );
                 if (portlet['favorite']) {
@@ -126,6 +127,7 @@ class PortalService {
                       serviceUri: portlet['fname'],
                       iconUri: portletIconUri,
                       isFavorite: portlet['favorite'],
+                      fname: portlet['fname'],
                     ),
                   );
                 }
