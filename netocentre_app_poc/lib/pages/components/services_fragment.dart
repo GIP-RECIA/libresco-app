@@ -70,85 +70,7 @@ class _ServicesFragment extends State<ServicesFragment> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const SizedBox(height: 30),
-          Align(
-            alignment: Alignment.center,
-            child: Container(
-              margin: const EdgeInsets.only(left: 10, bottom: 10),
-              child: Text(
-                'Tous les services',
-                style: GoogleFonts.nunito(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ),
-          ),
-
-          /// expansion tile classique  utiliser ici, adaptation du code generique trop complexeé
-          // const MyExpansionTile(
-          //   'Filtres',
-          //   dataset: [],
-          // ),
-          // Container(
-          //   margin: const EdgeInsets.all(18),
-          //   width: MediaQuery.of(context).size.width - 10,
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.end,
-          //     children: [
-          //       Container(
-          //         margin: const EdgeInsets.only(right: 5),
-          //         child: const Text(
-          //           'Trier par : ',
-          //           style: TextStyle(fontSize: 15),
-          //         ),
-          //       ),
-          //       DropdownMenu<String>(
-          //         trailingIcon: const Icon(Icons.keyboard_arrow_down),
-          //         selectedTrailingIcon: const Icon(Icons.keyboard_arrow_up),
-          //         menuStyle: const MenuStyle(
-          //           backgroundColor:
-          //               WidgetStatePropertyAll<Color>(Colors.white),
-          //         ),
-          //         textStyle: const TextStyle(
-          //           color: Colors.black,
-          //         ),
-          //         onSelected: (value) {
-          //           log.info('Selected service $value');
-          //           if (value != dropwdownValue && value != null) {
-          //             dropwdownValue = value;
-          //             switch (value) {
-          //               case 'a-z':
-          //                 _sortAlphabetically();
-          //               case 'z-a':
-          //                 _sortUnalphabetically();
-          //               default:
-          //                 {}
-          //             }
-          //           }
-          //         },
-          //         dropdownMenuEntries: const <DropdownMenuEntry<String>>[
-          //           DropdownMenuEntry(
-          //             label: 'Popularité',
-          //             value: 'popularite',
-          //           ),
-          //           DropdownMenuEntry(
-          //             label: 'Plus récents',
-          //             value: 'plus_recents',
-          //           ),
-          //           DropdownMenuEntry(
-          //             label: 'A-Z',
-          //             value: 'a-z',
-          //           ),
-          //           DropdownMenuEntry(
-          //             label: 'Z-A',
-          //             value: 'z-a',
-          //           ),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
+          const SizedBox(height: 15),
           Container(
             margin: const EdgeInsets.only(left: 15.0, right: 15.0),
             child: GridView.builder(
@@ -168,7 +90,7 @@ class _ServicesFragment extends State<ServicesFragment> {
               },
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
         ],
       ),
     );
