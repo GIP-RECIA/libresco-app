@@ -9,6 +9,7 @@ class UserInfo {
   String _uid = '';
   String _name = '';
   String _picture = '';
+  String _currentEtabName = '';
 
   factory UserInfo() {
     return _instance;
@@ -34,11 +35,18 @@ class UserInfo {
     _picture = value;
   }
 
+  String get currentEtabName => _currentEtabName;
+
+  void setCurrentEtabName(String value) {
+    _currentEtabName = value;
+  }
+
   Map<String, Object?> toMap() {
     var map = <String, Object?>{
       'uid': _uid,
       'name': _name,
       'picture': _picture,
+      'currentEtabName': _currentEtabName,
     };
     return map;
   }
@@ -47,6 +55,7 @@ class UserInfo {
     _uid = (map['uid'] ?? '') as String;
     _name = (map['name'] ?? '') as String;
     _picture = (map['picture'] ?? '') as String;
+    _currentEtabName = (map['currentEtabName'] ?? '') as String;
   }
 
   void update() {
@@ -57,6 +66,7 @@ class UserInfo {
     _uid = '';
     _name = '';
     _picture = '';
+    _currentEtabName = '';
   }
 
   @override
@@ -65,6 +75,7 @@ class UserInfo {
         '_uid: $_uid, '
         '_name: $_name, '
         '_picture: $_picture'
+        '_currentEtabName: $_currentEtabName'
         '}';
   }
 }

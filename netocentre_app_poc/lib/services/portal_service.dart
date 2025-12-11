@@ -278,9 +278,28 @@ class PortalService {
     }
   }
 
+  Future<String> getEtabNameFromSiren(String siren) async {
+    log.info('Getting etab name from change-etablissement');
+    log.info(siren.runtimeType);
+    final client = IOClient(HttpClient());
+    Uri request = Uri.https(
+        AppConfig().uPortalHost,
+        '${AppConfig().paramEtabContextPath}/rest/v2/structures/structs/',
+        {
+          'ids': siren,
+        },
+    );
+    log.finer('Making a request to etab API : $request');
+    final http.Response res = await client.get(request);
+    var rawEtabData = json.decode(res.body);
+    return rawEtabData[siren]["displayName"];
+  }
+
   Future<void> loadUserInfo() async {
     log.info('Loading user info');
     var rawUserInfo = await getUserInfo();
+    // Add the current etab name which does not come from the same API
+    rawUserInfo['currentEtabName'] = await getEtabNameFromSiren(rawUserInfo['ESCOSIRENCourant'][0]);
     UserInfo().fromMap(rawUserInfo);
     UserInfo().setUid(rawUserInfo['sub'] ?? '');
     UserInfo().update();

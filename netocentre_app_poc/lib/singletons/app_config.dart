@@ -13,11 +13,12 @@ class AppConfig {
   String? _casBaseURL;
   String? _serviceURL;
   String _idpIdQueryParam = 'idpId';
-  String _portalCookieName = 'SESSION';
+  String _portalCookieName = 'JSESSIONID';
   String _portalIDCookieName = 'clusterIDPortail';
   String _casCookieName = 'TGC';
   String? _uPortalBaseURL;
   String? _staticsBaseURL;
+  String _paramEtabContextPath = "/paramuseretab";
   bool _cache = true;
 
   factory AppConfig() {
@@ -89,6 +90,8 @@ class AppConfig {
 
   String get uPortalHost =>
       uPortalBaseURL.replaceFirst(RegExp(r'^https?://'), '');
+
+  String get paramEtabContextPath => getAttribute('_paramEtabContextPath', _paramEtabContextPath);
 
   String get staticsBaseURL => getAttribute('_staticsBaseURL', _staticsBaseURL);
 
