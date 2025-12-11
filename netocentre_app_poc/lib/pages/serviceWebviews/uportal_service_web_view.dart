@@ -57,17 +57,18 @@ class _UPortalServiceWebview extends State<UPortalServiceWebview> {
       domain: AppConfig().uPortalHost,
       path: '/',
     );
-
-    manager.setCookie(
-      url: WebUri('${AppConfig().uPortalBaseURL}/'),
-      name: AppConfig().portalIDCookieName,
-      value: Session().IDPortalCookie,
-      isHttpOnly: true,
-      isSecure: true,
-      sameSite: HTTPCookieSameSitePolicy.NONE,
-      domain: AppConfig().uPortalHost,
-      path: '/',
-    );
+    if(Session().IDPortalCookie != ""){
+      manager.setCookie(
+        url: WebUri('${AppConfig().uPortalBaseURL}/'),
+        name: AppConfig().portalIDCookieName,
+        value: Session().IDPortalCookie,
+        isHttpOnly: true,
+        isSecure: true,
+        sameSite: HTTPCookieSameSitePolicy.NONE,
+        domain: AppConfig().uPortalHost,
+        path: '/',
+      );
+    }
 
     pullToRefreshController = kIsWeb
         ? null
