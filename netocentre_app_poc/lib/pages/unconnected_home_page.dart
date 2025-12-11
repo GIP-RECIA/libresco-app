@@ -52,6 +52,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
           (p) => AccountData(
             id: p['id'] as int,
             name: (p['name'] ?? '') as String,
+            currentEtabName: (p['currentEtabName'] ?? '') as String,
             avatarUrl: AppConfig().uPortalBaseURL + ((p['picture'] ?? '') as String),
           ),
         )
@@ -130,7 +131,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
                       final account = accounts[index];
                       return AccountCard(
                         title: account.name,
-                        subtitle: null,
+                        subtitle: account.currentEtabName,
                         avatarUrl: account.avatarUrl,
                         onTap: () => _openAccount(context, account),
                         onDelete: () => _deleteAccount(context, account),
