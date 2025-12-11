@@ -4,7 +4,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showSearchBar;
   final VoidCallback toggleSearchBar;
   final Function(String) onSearch;
-  final String schoolTitle;
+  final String title;
   final String avatarUrl;
   final VoidCallback onNotification;
   final VoidCallback onAccount;
@@ -17,7 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.showSearchBar,
     required this.toggleSearchBar,
     required this.onSearch,
-    required this.schoolTitle,
+    required this.title,
     required this.avatarUrl,
     required this.onNotification,
     required this.onAccount,
@@ -56,7 +56,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               onChanged: onSearch,
             )
-          : Text(schoolTitle),
+          : Text(title),
       actions: [
         // IconButton(
         //   icon: Icon(showSearchBar ? Icons.close : Icons.search),

@@ -12,12 +12,16 @@ import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:netocentre_app_poc/singletons/user_info.dart';
 
 class AppContainer extends StatefulWidget {
+  final String? appBarTitle;
   final Widget body;
+  final bool? bottomNavigation;
   final ValueChanged<int>? onItemTapped;
 
   const AppContainer({
     super.key,
+    this.appBarTitle,
     required this.body,
+    this.bottomNavigation,
     this.onItemTapped,
   });
 
@@ -78,7 +82,7 @@ class _AppContainer extends State<AppContainer> {
         showSearchBar: _showSearchBar,
         toggleSearchBar: _toggleSearchBar,
         onSearch: _filterSearchResults,
-        schoolTitle: 'Lycée fictif',
+        title: widget.appBarTitle ?? UserInfo().currentEtabName,
         avatarUrl: AppConfig().uPortalBaseURL + UserInfo().picture,
         onNotification: () => _openNotifications(context),
         onAccount: () => _openMyAccount(context),
@@ -106,9 +110,11 @@ class _AppContainer extends State<AppContainer> {
             ),
         ],
       ),
-      bottomNavigationBar: NavBar(
-        onItemTapped: (index) => widget.onItemTapped?.call(index),
-      ),
+      bottomNavigationBar: widget.bottomNavigation ?? true
+          ? NavBar(
+              onItemTapped: (index) => widget.onItemTapped?.call(index),
+            )
+          : null,
     );
   }
 
@@ -127,7 +133,8 @@ class _AppContainer extends State<AppContainer> {
           child: ListTile(
             title: Text(_filteredItems[index].text),
             onTap: () async {
-              if (await LoginService.instance.hasCASSession() && await LoginService.instance.isAuthorizedByUPortal()) {
+              if (await LoginService.instance.hasCASSession() &&
+                  await LoginService.instance.isAuthorizedByUPortal()) {
                 if (context.mounted) {
                   Navigator.push(
                     context,
