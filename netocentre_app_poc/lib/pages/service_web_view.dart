@@ -4,6 +4,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/singletons/app_config.dart';
 import 'package:netocentre_app_poc/singletons/session.dart';
+import 'package:netocentre_app_poc/utils/custom_cookies_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ServiceWebview extends StatefulWidget {
@@ -47,68 +48,36 @@ class _ServiceWebview extends State<ServiceWebview> {
   @override
   void initState() {
     super.initState();
+    _initCookies();
+    _definePullToRefreshController();
+  }
 
+  void _initCookies() {
     manager = CookieManager.instance();
     manager.removeSessionCookies();
+    CustomCookiesManager.defineCASCookies(manager);
+    CustomCookiesManager.defineUPortalCookies(manager);
+  }
 
-    // Set cookies
-
-    // CAS cookie
-    manager.setCookie(
-      url: WebUri('${AppConfig().casBaseURL}/cas'),
-      name: AppConfig().casCookieName,
-      value: Session().CASSessionCookie,
-      isHttpOnly: true,
-      isSecure: true,
-      sameSite: HTTPCookieSameSitePolicy.NONE,
-      domain: AppConfig().casHost,
-      path: '/cas',
-    );
-
-    // Portal cookie
-    manager.setCookie(
-      url: WebUri('${AppConfig().uPortalBaseURL}/'),
-      name: AppConfig().portalCookieName,
-      value: Session().PortalSessionCookie,
-      isHttpOnly: true,
-      isSecure: true,
-      sameSite: HTTPCookieSameSitePolicy.NONE,
-      domain: AppConfig().uPortalHost,
-      path: '/',
-    );
-
-    // PortalID cookie
-    if(Session().IDPortalCookie != ""){
-      manager.setCookie(
-        url: WebUri('${AppConfig().uPortalBaseURL}/'),
-        name: AppConfig().portalIDCookieName,
-        value: Session().IDPortalCookie,
-        isHttpOnly: true,
-        isSecure: true,
-        sameSite: HTTPCookieSameSitePolicy.NONE,
-        domain: AppConfig().uPortalHost,
-        path: '/',
-      );
-    }
-
+  void _definePullToRefreshController() {
     pullToRefreshController = kIsWeb
         ? null
         : PullToRefreshController(
-            settings: PullToRefreshSettings(
-              color: Colors.blue,
+      settings: PullToRefreshSettings(
+        color: Colors.blue,
+      ),
+      onRefresh: () async {
+        if (defaultTargetPlatform == TargetPlatform.android) {
+          webViewController?.reload();
+        } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+          webViewController?.loadUrl(
+            urlRequest: URLRequest(
+              url: await webViewController?.getUrl(),
             ),
-            onRefresh: () async {
-              if (defaultTargetPlatform == TargetPlatform.android) {
-                webViewController?.reload();
-              } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-                webViewController?.loadUrl(
-                  urlRequest: URLRequest(
-                    url: await webViewController?.getUrl(),
-                  ),
-                );
-              }
-            },
           );
+        }
+      },
+    );
   }
 
   @override

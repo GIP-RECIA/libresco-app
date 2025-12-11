@@ -4,6 +4,7 @@ import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/singletons/app_config.dart';
 import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:netocentre_app_poc/singletons/user_info.dart';
+import 'package:netocentre_app_poc/utils/custom_cookies_manager.dart';
 
 class HomeFragment extends StatefulWidget {
   const HomeFragment({
@@ -20,34 +21,13 @@ class _HomeFragment extends State<HomeFragment> {
   @override
   void initState() {
     super.initState();
-    _defineUPortalCookies();
+    _initCookies();
   }
 
-  void _defineUPortalCookies() {
+  void _initCookies() {
     CookieManager manager = CookieManager.instance();
     manager.removeSessionCookies();
-    manager.setCookie(
-      url: WebUri('${AppConfig().uPortalBaseURL}/'),
-      name: AppConfig().portalCookieName,
-      value: Session().PortalSessionCookie,
-      isHttpOnly: true,
-      isSecure: true,
-      sameSite: HTTPCookieSameSitePolicy.NONE,
-      domain: AppConfig().uPortalHost,
-      path: '/',
-    );
-    if(Session().IDPortalCookie != ""){
-      manager.setCookie(
-        url: WebUri('${AppConfig().uPortalBaseURL}/'),
-        name: AppConfig().portalIDCookieName,
-        value: Session().IDPortalCookie,
-        isHttpOnly: true,
-        isSecure: true,
-        sameSite: HTTPCookieSameSitePolicy.NONE,
-        domain: AppConfig().uPortalHost,
-        path: '/',
-      );
-    }
+    CustomCookiesManager.defineUPortalCookies(manager);
   }
 
   @override
