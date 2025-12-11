@@ -15,7 +15,6 @@ class NavBar extends StatefulWidget {
 
 class _NavBar extends State<NavBar> {
   final log = Logger('_NavBar');
-
   int _selectedIndex = 0;
 
   @override

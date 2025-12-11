@@ -15,7 +15,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> {
   final log = Logger('_HomePage');
-
   int _currentPage = 0;
 
   @override
