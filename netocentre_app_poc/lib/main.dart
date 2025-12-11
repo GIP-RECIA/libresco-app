@@ -22,7 +22,7 @@ Future<Widget> buildApp() async {
     connected = await LoginService.instance.hasCASSession();
     if (!connected) {
       log.fine('User is not connected to CAS : database reset');
-      Session().reset(flush: true);
+      Session().clear(persist: true);
     }
   }
 

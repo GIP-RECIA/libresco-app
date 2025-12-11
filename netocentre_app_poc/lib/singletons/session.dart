@@ -18,39 +18,20 @@ class Session {
 
   String get CASSessionCookie => _CASSessionCookie;
 
-  void setCASSessionCookie(String token, {bool flush = false}) {
+  void setCASSessionCookie(String token) {
     _CASSessionCookie = token;
-
-    if (flush) {
-      persist();
-    }
   }
 
   String get PortalSessionCookie => _PortalSessionCookie;
 
-  void setPortalSessionCookie(String token, {bool flush = false}) {
+  void setPortalSessionCookie(String token) {
     _PortalSessionCookie = token;
-
-    if (flush) {
-      persist();
-    }
   }
 
   String get IDPortalCookie => _IDPortalCookie;
 
-  void setIDportalCookie(String value, {bool flush = false}) {
+  void setIDportalCookie(String value) {
     _IDPortalCookie = value;
-
-    if (flush) {
-      persist();
-    }
-  }
-
-  void reset({bool flush = false}) {
-    clear();
-    if (flush) {
-      persist();
-    }
   }
 
   Map<String, Object?> toMap() {
@@ -72,10 +53,13 @@ class Session {
     SessionRepository.instance.flush();
   }
 
-  void clear() {
+  void clear({bool persist = false}) {
     _CASSessionCookie = '';
     _PortalSessionCookie = '';
     _IDPortalCookie = '';
+    if (persist) {
+      this.persist();
+    }
   }
 
   @override

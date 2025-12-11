@@ -55,7 +55,7 @@ class ServicesCard extends StatelessWidget {
               );
             }
           } else {
-            Session().reset(flush: true);
+            Session().clear(persist: true);
             if (context.mounted) {
               Navigator.pushReplacement(
                 context,

@@ -46,7 +46,8 @@ class AuthenticationInAppBrowser extends InAppBrowser {
             log.fine(
               '${AppConfig().casCookieName} Cookie found with value : $current',
             );
-            Session().setCASSessionCookie(current.value, flush: true);
+            Session().setCASSessionCookie(current.value);
+            Session().persist();
           }
         }
         // If we have found a CASSessionCookie, then we can navigate to home

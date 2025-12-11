@@ -308,8 +308,9 @@ class LoginService {
     log.fine('=== End of unstacked uPortal login ===');
 
     if (portalSessionCookie != '') {
-      Session().setIDportalCookie(idPortalCookie, flush: true);
-      Session().setPortalSessionCookie(portalSessionCookie, flush: true);
+      Session().setIDportalCookie(idPortalCookie);
+      Session().setPortalSessionCookie(portalSessionCookie);
+      Session().persist();
       if (await hasPortalSession()) {
         return true;
       }

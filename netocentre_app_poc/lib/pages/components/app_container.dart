@@ -143,7 +143,7 @@ class _AppContainer extends State<AppContainer> {
                   );
                 }
               } else {
-                Session().reset(flush: true);
+                Session().clear(persist: true);
                 if (context.mounted) {
                   Navigator.pushReplacement(
                     context,

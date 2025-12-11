@@ -68,7 +68,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
     await SessionRepository.instance.load();
     connected = await LoginService.instance.hasCASSession();
     if (!connected) {
-      Session().reset(flush: true);
+      Session().clear(persist: true);
       browser.openUrlRequest(
           urlRequest: URLRequest(
             url: WebUri(

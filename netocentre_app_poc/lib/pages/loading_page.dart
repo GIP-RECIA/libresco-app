@@ -72,7 +72,7 @@ class LoadingPageUtils {
         // If we get a guest user again, that means CAS session is not valid,
         // and we need to redo the login phase
         log.info('CAS session is invalid');
-        Session().reset(flush: true);
+        Session().clear(persist: true);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.pushReplacement(
             context,
