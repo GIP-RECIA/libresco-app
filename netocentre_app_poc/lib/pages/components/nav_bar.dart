@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 class NavBar extends StatefulWidget {
-  final ValueChanged<int> onItemTapped;
+  final ValueChanged<int> onDestinationSelected;
 
   const NavBar({
     super.key,
-    required this.onItemTapped,
+    required this.onDestinationSelected,
   });
 
   @override
@@ -22,11 +22,11 @@ class _NavBar extends State<NavBar> {
     super.initState();
   }
 
-  void _onItemTapped(int index) {
+  void _onDestinationSelected(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    widget.onItemTapped(index);
+    widget.onDestinationSelected(index);
   }
 
   @override
@@ -43,7 +43,7 @@ class _NavBar extends State<NavBar> {
         ),
       ],
       selectedIndex: _selectedIndex,
-      onDestinationSelected: _onItemTapped,
+      onDestinationSelected: _onDestinationSelected,
     );
   }
 }

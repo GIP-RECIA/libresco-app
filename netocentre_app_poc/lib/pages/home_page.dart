@@ -15,16 +15,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> {
   final log = Logger('_HomePage');
-  int _currentPage = 0;
+  int _currentFragment = 0;
 
   @override
   void initState() {
     super.initState();
   }
 
-  void _setCurrentPage(int index) {
+  void _setCurrentFragment(int index) {
     setState(() {
-      _currentPage = index;
+      _currentFragment = index;
     });
   }
 
@@ -34,8 +34,8 @@ class _HomePage extends State<HomePage> {
       body: <Widget>[
         const HomeFragment(),
         const ServicesFragment(),
-      ][_currentPage],
-      onItemTapped: _setCurrentPage,
+      ][_currentFragment],
+      onDestinationSelected: _setCurrentFragment,
     );
   }
 }

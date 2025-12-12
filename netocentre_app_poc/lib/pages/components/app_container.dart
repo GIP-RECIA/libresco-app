@@ -15,7 +15,7 @@ class AppContainer extends StatefulWidget {
   final String? appBarTitle;
   final Widget body;
   final bool? bottomNavigation;
-  final ValueChanged<int>? onItemTapped;
+  final ValueChanged<int>? onDestinationSelected;
 
   const AppContainer({
     super.key,
@@ -24,7 +24,7 @@ class AppContainer extends StatefulWidget {
     this.appBarTitle,
     required this.body,
     this.bottomNavigation,
-    this.onItemTapped,
+    this.onDestinationSelected,
   });
 
   @override
@@ -80,7 +80,8 @@ class _AppContainer extends State<AppContainer> {
       body: widget.body,
       bottomNavigationBar: widget.bottomNavigation ?? true
           ? NavBar(
-              onItemTapped: (index) => widget.onItemTapped?.call(index),
+              onDestinationSelected: (index) =>
+                  widget.onDestinationSelected?.call(index),
             )
           : null,
     );
