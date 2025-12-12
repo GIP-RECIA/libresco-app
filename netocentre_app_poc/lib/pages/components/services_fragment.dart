@@ -16,24 +16,6 @@ class _ServicesFragment extends State<ServicesFragment> {
   final log = Logger('_ServicesFragment');
   List<Service> renderedServices = Services().servicesList;
 
-  // String dropwdownValue = '';
-  //
-  // void _sortAlphabetically() {
-  //   setState(() {
-  //     renderedServices.sort(
-  //       (a, b) => slugify(a.text).compareTo(slugify(b.text)),
-  //     );
-  //   });
-  // }
-  //
-  // void _sortUnalphabetically() {
-  //   setState(() {
-  //     renderedServices.sort(
-  //       (b, a) => slugify(a.text).compareTo(slugify(b.text)),
-  //     );
-  //   });
-  // }
-
   void _switchPortletIsFavoriteState(int index) async {
     bool isTaskValidated = await PortalService.instance
         .switchPortletIsFavoriteState(renderedServices[index]);
