@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:netocentre_app_poc/enums/user_menu_item.dart';
+import 'package:netocentre_app_poc/objects/enums/user_menu_item.dart';
+import 'package:netocentre_app_poc/objects/singletons/account.dart';
+import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
+import 'package:netocentre_app_poc/objects/singletons/services_list.dart';
+import 'package:netocentre_app_poc/objects/singletons/session.dart';
+import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
 import 'package:netocentre_app_poc/pages/components/app_bar.dart';
 import 'package:netocentre_app_poc/pages/components/nav_bar.dart';
 import 'package:netocentre_app_poc/pages/unconnected_home_page.dart';
-import 'package:netocentre_app_poc/singletons/account.dart';
-import 'package:netocentre_app_poc/singletons/app_config.dart';
-import 'package:netocentre_app_poc/singletons/services_list.dart';
-import 'package:netocentre_app_poc/singletons/session.dart';
-import 'package:netocentre_app_poc/singletons/user_info.dart';
 
 class AppContainer extends StatefulWidget {
   final bool? appBarBack;

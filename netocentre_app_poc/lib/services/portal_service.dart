@@ -4,12 +4,12 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/entities/service.dart';
+import 'package:netocentre_app_poc/objects/service.dart';
+import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
+import 'package:netocentre_app_poc/objects/singletons/services_list.dart';
+import 'package:netocentre_app_poc/objects/singletons/session.dart';
+import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
-import 'package:netocentre_app_poc/singletons/app_config.dart';
-import 'package:netocentre_app_poc/singletons/services_list.dart';
-import 'package:netocentre_app_poc/singletons/session.dart';
-import 'package:netocentre_app_poc/singletons/user_info.dart';
 
 class PortalService {
   final log = Logger('PortalService');

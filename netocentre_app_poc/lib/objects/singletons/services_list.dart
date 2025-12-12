@@ -1,4 +1,4 @@
-import 'package:netocentre_app_poc/entities/service.dart';
+import 'package:netocentre_app_poc/objects/service.dart';
 import 'package:slugify/slugify.dart';
 
 class Services {

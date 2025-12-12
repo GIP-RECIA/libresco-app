@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
+import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
+import 'package:netocentre_app_poc/objects/singletons/session.dart';
 import 'package:netocentre_app_poc/pages/components/app_container.dart';
-import 'package:netocentre_app_poc/singletons/app_config.dart';
-import 'package:netocentre_app_poc/singletons/session.dart';
 import 'package:netocentre_app_poc/utils/custom_cookies_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 

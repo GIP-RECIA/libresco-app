@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:netocentre_app_poc/enums/user_menu_item.dart';
-import 'package:netocentre_app_poc/singletons/app_config.dart';
+import 'package:netocentre_app_poc/objects/enums/user_menu_item.dart';
+import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool back;

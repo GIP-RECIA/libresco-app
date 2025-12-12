@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/entities/service.dart';
+import 'package:netocentre_app_poc/objects/service.dart';
+import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
+import 'package:netocentre_app_poc/objects/singletons/session.dart';
 import 'package:netocentre_app_poc/pages/service_web_view.dart';
 import 'package:netocentre_app_poc/pages/unconnected_home_page.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
-import 'package:netocentre_app_poc/singletons/app_config.dart';
-import 'package:netocentre_app_poc/singletons/session.dart';
 
 class ServicesCard extends StatelessWidget {
   final log = Logger('ServicesCard');

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/entities/service.dart';
+import 'package:netocentre_app_poc/objects/service.dart';
+import 'package:netocentre_app_poc/objects/singletons/services_list.dart';
 import 'package:netocentre_app_poc/pages/components/services_card.dart';
 import 'package:netocentre_app_poc/services/portal_service.dart';
-import 'package:netocentre_app_poc/singletons/services_list.dart';
 
 class ServicesFragment extends StatefulWidget {
   const ServicesFragment({super.key});

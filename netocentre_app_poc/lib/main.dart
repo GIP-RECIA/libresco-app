@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
+import 'package:netocentre_app_poc/objects/singletons/account.dart';
+import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
+import 'package:netocentre_app_poc/objects/singletons/session.dart';
 import 'package:netocentre_app_poc/pages/home_page.dart';
 import 'package:netocentre_app_poc/pages/loading_page.dart';
 import 'package:netocentre_app_poc/pages/unconnected_home_page.dart';
 import 'package:netocentre_app_poc/repositories/session_repository.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
-import 'package:netocentre_app_poc/singletons/account.dart';
-import 'package:netocentre_app_poc/singletons/app_config.dart';
-import 'package:netocentre_app_poc/singletons/session.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 final log = Logger('main');
 

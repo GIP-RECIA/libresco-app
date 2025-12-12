@@ -1,6 +1,6 @@
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:netocentre_app_poc/singletons/app_config.dart';
-import 'package:netocentre_app_poc/singletons/session.dart';
+import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
+import 'package:netocentre_app_poc/objects/singletons/session.dart';
 
 class CustomCookiesManager {
   static void defineCASCookies(CookieManager manager) {
