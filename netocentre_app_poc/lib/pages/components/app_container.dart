@@ -77,7 +77,7 @@ class _AppContainer extends State<AppContainer> {
         avatarUrl: AppConfig().uPortalBaseURL + UserInfo().picture,
         onUserMenu: (value) => _onUserMenu(context, value),
       ),
-      body: widget.body,
+      body: SafeArea(child: widget.body),
       bottomNavigationBar: widget.bottomNavigation ?? true
           ? NavBar(
               onDestinationSelected: (index) =>
