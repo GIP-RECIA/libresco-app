@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:netocentre_app_poc/enums/user_menu_item.dart';
 import 'package:netocentre_app_poc/pages/components/app_bar.dart';
 import 'package:netocentre_app_poc/pages/components/nav_bar.dart';
 import 'package:netocentre_app_poc/pages/unconnected_home_page.dart';
@@ -31,6 +32,19 @@ class AppContainer extends StatefulWidget {
 }
 
 class _AppContainer extends State<AppContainer> {
+  late final Map<UserMenuItem, void Function(BuildContext)> _actions = {
+    UserMenuItem.notification: (ctx) => _openNotifications(ctx),
+    UserMenuItem.account: (ctx) => _openMyAccount(ctx),
+    UserMenuItem.infoEtab: (ctx) => _openInfoEtab(ctx),
+    UserMenuItem.changeEtab: (ctx) => _openChangeEtab(ctx),
+    UserMenuItem.changeAccount: (ctx) => _changeAccount(ctx),
+  };
+
+  void _onUserMenu(BuildContext context, UserMenuItem value) {
+    final action = _actions[value];
+    if (action != null) action(context);
+  }
+
   void _openNotifications(BuildContext context) {}
 
   void _openMyAccount(BuildContext context) {}
@@ -61,11 +75,7 @@ class _AppContainer extends State<AppContainer> {
         onBack: () => widget.onBack?.call(),
         title: widget.appBarTitle ?? UserInfo().currentEtabName,
         avatarUrl: AppConfig().uPortalBaseURL + UserInfo().picture,
-        onNotification: () => _openNotifications(context),
-        onAccount: () => _openMyAccount(context),
-        onInfoEtab: () => _openInfoEtab(context),
-        onChangeEtab: () => _openChangeEtab(context),
-        onChangeAccount: () => _changeAccount(context),
+        onUserMenu: (value) => _onUserMenu(context, value),
       ),
       body: widget.body,
       bottomNavigationBar: widget.bottomNavigation ?? true

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:netocentre_app_poc/enums/user_menu_item.dart';
 import 'package:netocentre_app_poc/singletons/app_config.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -7,11 +8,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback onBack;
   final String title;
   final String avatarUrl;
-  final VoidCallback onNotification;
-  final VoidCallback onAccount;
-  final VoidCallback onInfoEtab;
-  final VoidCallback onChangeEtab;
-  final VoidCallback onChangeAccount;
+  final ValueChanged<UserMenuItem> onUserMenu;
 
   const CustomAppBar({
     super.key,
@@ -19,11 +16,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.onBack,
     required this.title,
     required this.avatarUrl,
-    required this.onNotification,
-    required this.onAccount,
-    required this.onInfoEtab,
-    required this.onChangeEtab,
-    required this.onChangeAccount,
+    required this.onUserMenu,
   });
 
   @override
@@ -45,22 +38,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
       title: Text(title),
       actions: [
-        PopupMenuButton<String>(
+        PopupMenuButton<UserMenuItem>(
           position: PopupMenuPosition.under,
           color: Colors.white,
           icon: CircleAvatar(
             backgroundImage: NetworkImage(avatarUrl),
           ),
-          onSelected: (value) {
-            if (value == 'notification') onNotification();
-            if (value == 'account') onAccount();
-            if (value == 'info-etab') onInfoEtab();
-            if (value == 'change-etab') onChangeEtab();
-            if (value == 'change-account') onChangeAccount();
-          },
+          onSelected: (value) => onUserMenu(value),
           itemBuilder: (context) => [
             const PopupMenuItem(
-              value: 'notification',
+              value: UserMenuItem.notification,
               child: Row(
                 children: [
                   Expanded(
@@ -70,7 +57,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             const PopupMenuItem(
-              value: 'account',
+              value: UserMenuItem.account,
               child: Row(
                 children: [
                   Expanded(
@@ -81,7 +68,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             const PopupMenuItem(
-              value: 'info-etab',
+              value: UserMenuItem.infoEtab,
               child: Row(
                 children: [
                   Expanded(
@@ -92,7 +79,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             const PopupMenuItem(
-              value: 'change-etab',
+              value: UserMenuItem.changeEtab,
               child: Row(
                 children: [
                   Expanded(
@@ -103,7 +90,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ),
             const PopupMenuItem(
-              value: 'change-account',
+              value: UserMenuItem.changeAccount,
               child: Row(
                 children: [
                   Expanded(
