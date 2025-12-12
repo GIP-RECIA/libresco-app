@@ -53,7 +53,8 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
             id: p['id'] as int,
             name: (p['name'] ?? '') as String,
             currentEtabName: (p['currentEtabName'] ?? '') as String,
-            avatarUrl: AppConfig().uPortalBaseURL + ((p['picture'] ?? '') as String),
+            avatarUrl:
+                AppConfig().uPortalBaseURL + ((p['picture'] ?? '') as String),
           ),
         )
         .toList();

@@ -59,7 +59,10 @@ class LoadingPageUtils {
   BuildContext context;
   Widget callbackWidget;
 
-  LoadingPageUtils(this.context, this.callbackWidget);
+  LoadingPageUtils(
+    this.context,
+    this.callbackWidget,
+  );
 
   Future<void> loadDataFromAPI() async {
     log.info('Loading data from portal API...');

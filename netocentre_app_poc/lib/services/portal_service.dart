@@ -283,11 +283,11 @@ class PortalService {
     log.info(siren.runtimeType);
     final client = IOClient(HttpClient());
     Uri request = Uri.https(
-        AppConfig().uPortalHost,
-        '${AppConfig().paramEtabContextPath}/rest/v2/structures/structs/',
-        {
-          'ids': siren,
-        },
+      AppConfig().uPortalHost,
+      '${AppConfig().paramEtabContextPath}/rest/v2/structures/structs/',
+      {
+        'ids': siren,
+      },
     );
     log.finer('Making a request to etab API : $request');
     final http.Response res = await client.get(request);
@@ -299,7 +299,8 @@ class PortalService {
     log.info('Loading user info');
     var rawUserInfo = await getUserInfo();
     // Add the current etab name which does not come from the same API
-    rawUserInfo['currentEtabName'] = await getEtabNameFromSiren(rawUserInfo['ESCOSIRENCourant'][0]);
+    rawUserInfo['currentEtabName'] =
+        await getEtabNameFromSiren(rawUserInfo['ESCOSIRENCourant'][0]);
     UserInfo().fromMap(rawUserInfo);
     UserInfo().setUid(rawUserInfo['sub'] ?? '');
     UserInfo().update();

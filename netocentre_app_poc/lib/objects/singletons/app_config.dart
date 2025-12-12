@@ -91,7 +91,8 @@ class AppConfig {
   String get uPortalHost =>
       uPortalBaseURL.replaceFirst(RegExp(r'^https?://'), '');
 
-  String get paramEtabContextPath => getAttribute('_paramEtabContextPath', _paramEtabContextPath);
+  String get paramEtabContextPath =>
+      getAttribute('_paramEtabContextPath', _paramEtabContextPath);
 
   String get staticsBaseURL => getAttribute('_staticsBaseURL', _staticsBaseURL);
 

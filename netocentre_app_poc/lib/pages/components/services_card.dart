@@ -39,18 +39,18 @@ class ServicesCard extends StatelessWidget {
       ),
       child: GestureDetector(
         onTapUp: (_) async {
-          if (await LoginService.instance.hasCASSession() && await LoginService.instance.isAuthorizedByUPortal()) {
+          if (await LoginService.instance.hasCASSession() &&
+              await LoginService.instance.isAuthorizedByUPortal()) {
             if (context.mounted) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      ServiceWebview(
-                        text: service.text,
-                        uri: service.serviceUri,
-                        fname: service.fname!,
-                        inPortal: service.isAuthByUPortal,
-                      ),
+                  builder: (context) => ServiceWebview(
+                    text: service.text,
+                    uri: service.serviceUri,
+                    fname: service.fname!,
+                    inPortal: service.isAuthByUPortal,
+                  ),
                 ),
               );
             }
