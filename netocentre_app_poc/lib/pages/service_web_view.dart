@@ -33,13 +33,11 @@ class _ServiceWebview extends State<ServiceWebview> {
   late String uri;
 
   InAppWebViewController? webViewController;
-  InAppWebViewSettings settings = InAppWebViewSettings(
-    userAgent: AppConfig().userAgent,
+  final InAppWebViewSettings _webViewSettings = InAppWebViewSettings(
     isInspectable: kDebugMode,
-    mediaPlaybackRequiresUserGesture: false,
-    allowsInlineMediaPlayback: true,
-    iframeAllow: 'camera; microphone',
-    iframeAllowFullscreen: true,
+    userAgent: AppConfig().userAgent,
+    supportZoom: false,
+    cacheEnabled: AppConfig().cache,
   );
 
   PullToRefreshController? pullToRefreshController;
@@ -112,7 +110,7 @@ class _ServiceWebview extends State<ServiceWebview> {
           InAppWebView(
             key: webViewKey,
             initialUrlRequest: URLRequest(url: WebUri(uri)),
-            initialSettings: settings,
+            initialSettings: _webViewSettings,
             pullToRefreshController: pullToRefreshController,
             onWebViewCreated: (controller) async {
               webViewController = controller;

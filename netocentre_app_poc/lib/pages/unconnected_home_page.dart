@@ -25,15 +25,15 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   List<AccountData> accounts = List.empty(growable: true);
   late InAppBrowser browser;
 
-  final settings = InAppBrowserClassSettings(
-    browserSettings: InAppBrowserSettings(hideToolbarTop: true),
-    webViewSettings: InAppWebViewSettings(
-      javaScriptEnabled: true,
-      isInspectable: kDebugMode,
-      useShouldInterceptRequest: true,
-      userAgent: AppConfig().userAgent,
-      supportZoom: false,
-    ),
+  final InAppBrowserSettings _browserSettings = InAppBrowserSettings(
+    hideToolbarTop: true,
+  );
+  final InAppWebViewSettings _webViewSettings = InAppWebViewSettings(
+    isInspectable: kDebugMode,
+    userAgent: AppConfig().userAgent,
+    supportZoom: false,
+    cacheEnabled: AppConfig().cache,
+    useShouldInterceptRequest: true,
   );
 
   @override
@@ -64,6 +64,21 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
     });
   }
 
+  void _openCasBrowser() {
+    browser.openUrlRequest(
+      urlRequest: URLRequest(
+        url: WebUri(
+          '${AppConfig().casBaseURL}/cas/login'
+              '?service=${AppConfig().serviceURL}',
+        ),
+      ),
+      settings: InAppBrowserClassSettings(
+        browserSettings: _browserSettings,
+        webViewSettings: _webViewSettings,
+      ),
+    );
+  }
+
   Future<void> _openAccount(BuildContext context, AccountData account) async {
     bool connected = false;
     Account().setId(account.id);
@@ -71,14 +86,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
     connected = await LoginService.instance.hasCASSession();
     if (!connected) {
       Session().clear(persist: true);
-      browser.openUrlRequest(
-          urlRequest: URLRequest(
-            url: WebUri(
-              '${AppConfig().casBaseURL}/cas/login'
-              '?service=${AppConfig().serviceURL}',
-            ),
-          ),
-          settings: settings);
+      _openCasBrowser();
     } else {
       Navigator.pushReplacement(
         context,
@@ -112,6 +120,10 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
     );
   }
 
+  void _addAccount() {
+    _openCasBrowser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,17 +155,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
                 ),
                 const SizedBox(height: 20),
                 FilledButton.icon(
-                  onPressed: () {
-                    browser.openUrlRequest(
-                      urlRequest: URLRequest(
-                        url: WebUri(
-                          '${AppConfig().casBaseURL}/cas/login'
-                          '?service=${AppConfig().serviceURL}',
-                        ),
-                      ),
-                      settings: settings,
-                    );
-                  },
+                  onPressed: _addAccount,
                   icon: const Icon(Icons.add),
                   label: const Text('Ajouter un compte'),
                 ),

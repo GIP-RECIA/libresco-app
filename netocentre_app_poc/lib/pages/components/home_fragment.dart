@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
@@ -18,6 +19,13 @@ class HomeFragment extends StatefulWidget {
 
 class _HomeFragment extends State<HomeFragment> {
   final log = Logger('_HomeFragment');
+
+  final InAppWebViewSettings _webViewSettings = InAppWebViewSettings(
+    isInspectable: kDebugMode,
+    userAgent: AppConfig().userAgent,
+    supportZoom: false,
+    cacheEnabled: AppConfig().cache,
+  );
 
   @override
   void initState() {
@@ -40,12 +48,7 @@ class _HomeFragment extends State<HomeFragment> {
           '${AppConfig().staticsBaseURL}/logged.html',
         ),
       ),
-      initialSettings: InAppWebViewSettings(
-        javaScriptEnabled: true,
-        userAgent: AppConfig().userAgent,
-        supportZoom: false,
-        cacheEnabled: AppConfig().cache,
-      ),
+      initialSettings: _webViewSettings,
       onLoadStop: (controller, url) async {
         await controller.evaluateJavascript(
           source:
