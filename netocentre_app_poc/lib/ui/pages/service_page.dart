@@ -95,6 +95,103 @@ class _ServicePage extends State<ServicePage> {
     );
   }
 
+  void _onWebViewCreated(InAppWebViewController controller) {
+    webViewController = controller;
+  }
+
+  void _onLoadStart(InAppWebViewController controller, WebUri? url) {
+    _updateUrl(url);
+  }
+
+  void _onLoadStop(InAppWebViewController controller, WebUri? url) async {
+    await controller.evaluateJavascript(
+      source: 'document.querySelectorAll(\''
+          'r-header, '
+          'r-footer, '
+          'extended-uportal-header, '
+          'extended-uportal-footer'
+          '\').forEach(node => node.remove());',
+    );
+    pullToRefreshController?.endRefreshing();
+    _updateUrl(url);
+  }
+
+  void _onProgressChanged(InAppWebViewController controller, int progress) {
+    if (progress == 100) {
+      pullToRefreshController?.endRefreshing();
+    }
+    setState(() {
+      this.progress = progress / 100;
+    });
+  }
+
+  Future<PermissionResponse> _onPermissionRequest(
+    InAppWebViewController controller,
+    PermissionRequest request,
+  ) async {
+    return PermissionResponse(
+      resources: request.resources,
+      action: PermissionResponseAction.GRANT,
+    );
+  }
+
+  Future<NavigationActionPolicy> _shouldOverrideUrlLoading(
+    InAppWebViewController controller,
+    NavigationAction navigationAction,
+  ) async {
+    var uri = navigationAction.request.url!;
+
+    if (!['http', 'https', 'file', 'chrome', 'data', 'javascript', 'about']
+        .contains(uri.scheme)) {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri);
+        return NavigationActionPolicy.CANCEL;
+      }
+    }
+    return NavigationActionPolicy.ALLOW;
+  }
+
+  void _onReceivedError(
+    InAppWebViewController controller,
+    WebResourceRequest request,
+    WebResourceError error,
+  ) {
+    pullToRefreshController?.endRefreshing();
+  }
+
+  void _onUpdateVisitedHistory(
+    InAppWebViewController controller,
+    WebUri? url,
+    bool? androidIsReload,
+  ) {
+    _updateUrl(url);
+  }
+
+  void _onConsoleMessage(
+    InAppWebViewController controller,
+    ConsoleMessage consoleMessage,
+  ) {
+    if (kDebugMode) {
+      log.finer('Console message ${consoleMessage.toString()}');
+    }
+  }
+
+  Future<ServerTrustAuthResponse> _onReceivedServerTrustAuthRequest(
+    InAppWebViewController controller,
+    URLAuthenticationChallenge challenge,
+  ) async {
+    return ServerTrustAuthResponse(
+      action: ServerTrustAuthResponseAction.PROCEED,
+    );
+  }
+
+  void _updateUrl(WebUri? url) {
+    setState(() {
+      this.url = url.toString();
+      urlController.text = this.url;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppContainer(
@@ -112,85 +209,16 @@ class _ServicePage extends State<ServicePage> {
             initialUrlRequest: URLRequest(url: WebUri(uri)),
             initialSettings: _webViewSettings,
             pullToRefreshController: pullToRefreshController,
-            onWebViewCreated: (controller) async {
-              webViewController = controller;
-            },
-            onLoadStart: (controller, url) async {
-              setState(() {
-                this.url = url.toString();
-                urlController.text = this.url;
-              });
-            },
-            onPermissionRequest: (controller, request) async {
-              return PermissionResponse(
-                resources: request.resources,
-                action: PermissionResponseAction.GRANT,
-              );
-            },
-            shouldOverrideUrlLoading: (controller, navigationAction) async {
-              var uri = navigationAction.request.url!;
-
-              if (![
-                'http',
-                'https',
-                'file',
-                'chrome',
-                'data',
-                'javascript',
-                'about'
-              ].contains(uri.scheme)) {
-                if (await canLaunchUrl(uri)) {
-                  // Launch the App
-                  await launchUrl(
-                    uri,
-                  );
-                  // and cancel the request
-                  return NavigationActionPolicy.CANCEL;
-                }
-              }
-              return NavigationActionPolicy.ALLOW;
-            },
-            onLoadStop: (controller, url) async {
-              await controller.evaluateJavascript(
-                source:
-                    'document.querySelectorAll(\'r-header, r-footer, extended-uportal-header, extended-uportal-footer\').forEach(node => node.remove());',
-              );
-              pullToRefreshController?.endRefreshing();
-              setState(() {
-                this.url = url.toString();
-                urlController.text = this.url;
-              });
-            },
-            onReceivedError: (controller, request, error) {
-              pullToRefreshController?.endRefreshing();
-            },
-            onProgressChanged: (controller, progress) async {
-              if (progress == 100) {
-                pullToRefreshController?.endRefreshing();
-              }
-              setState(() {
-                this.progress = progress / 100;
-                urlController.text = url;
-              });
-            },
-            onUpdateVisitedHistory: (controller, url, androidIsReload) {
-              setState(() {
-                this.url = url.toString();
-                urlController.text = this.url;
-              });
-            },
-            onConsoleMessage: (controller, consoleMessage) {
-              if (kDebugMode) {
-                log.finer(
-                  'Console message ${consoleMessage.toString()}',
-                );
-              }
-            },
-            onReceivedServerTrustAuthRequest: (controller, challenge) async {
-              return ServerTrustAuthResponse(
-                action: ServerTrustAuthResponseAction.PROCEED,
-              );
-            },
+            onWebViewCreated: _onWebViewCreated,
+            onLoadStart: _onLoadStart,
+            onLoadStop: _onLoadStop,
+            onProgressChanged: _onProgressChanged,
+            onPermissionRequest: _onPermissionRequest,
+            shouldOverrideUrlLoading: _shouldOverrideUrlLoading,
+            onReceivedError: _onReceivedError,
+            onUpdateVisitedHistory: _onUpdateVisitedHistory,
+            onConsoleMessage: _onConsoleMessage,
+            onReceivedServerTrustAuthRequest: _onReceivedServerTrustAuthRequest,
           ),
         ],
       ),
