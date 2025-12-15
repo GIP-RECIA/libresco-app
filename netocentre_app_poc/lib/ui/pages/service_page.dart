@@ -8,13 +8,13 @@ import 'package:netocentre_app_poc/ui/components/app_container.dart';
 import 'package:netocentre_app_poc/utils/custom_cookies_manager.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ServiceWebview extends StatefulWidget {
+class ServicePage extends StatefulWidget {
   final String uri;
   final String text;
   final String fname;
   final bool inPortal;
 
-  const ServiceWebview({
+  const ServicePage({
     super.key,
     required this.uri,
     required this.text,
@@ -23,11 +23,11 @@ class ServiceWebview extends StatefulWidget {
   });
 
   @override
-  State<ServiceWebview> createState() => _ServiceWebview();
+  State<ServicePage> createState() => _ServicePage();
 }
 
-class _ServiceWebview extends State<ServiceWebview> {
-  final log = Logger('_ServiceWebview');
+class _ServicePage extends State<ServicePage> {
+  final log = Logger('_ServicePage');
   final GlobalKey webViewKey = GlobalKey();
   late CookieManager manager;
   late String uri;
