@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/pages/components/app_container.dart';
-import 'package:netocentre_app_poc/pages/components/home_fragment.dart';
-import 'package:netocentre_app_poc/pages/components/services_fragment.dart';
+import 'package:netocentre_app_poc/ui/components/app_container.dart';
+import 'package:netocentre_app_poc/ui/components/home_fragment.dart';
+import 'package:netocentre_app_poc/ui/components/services_fragment.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({

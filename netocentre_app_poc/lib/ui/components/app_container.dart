@@ -5,9 +5,9 @@ import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/services_list.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
 import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
-import 'package:netocentre_app_poc/pages/components/app_bar.dart';
-import 'package:netocentre_app_poc/pages/components/nav_bar.dart';
-import 'package:netocentre_app_poc/pages/unconnected_home_page.dart';
+import 'package:netocentre_app_poc/ui/components/app_bar.dart';
+import 'package:netocentre_app_poc/ui/components/nav_bar.dart';
+import 'package:netocentre_app_poc/ui/pages/unconnected_home_page.dart';
 
 class AppContainer extends StatefulWidget {
   final bool? appBarBack;

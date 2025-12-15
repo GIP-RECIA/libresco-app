@@ -5,11 +5,11 @@ import 'package:netocentre_app_poc/objects/pojo/account_data.dart';
 import 'package:netocentre_app_poc/objects/singletons/account.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
-import 'package:netocentre_app_poc/pages/components/account_card.dart';
-import 'package:netocentre_app_poc/pages/home_page.dart';
-import 'package:netocentre_app_poc/pages/loading_page.dart';
 import 'package:netocentre_app_poc/repositories/session_repository.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
+import 'package:netocentre_app_poc/ui/components/account_card.dart';
+import 'package:netocentre_app_poc/ui/pages/home_page.dart';
+import 'package:netocentre_app_poc/ui/pages/loading_page.dart';
 import 'package:netocentre_app_poc/utils/authentication_in_app_browser.dart';
 
 class UnconnectedHomePage extends StatefulWidget {
@@ -69,7 +69,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
       urlRequest: URLRequest(
         url: WebUri(
           '${AppConfig().casBaseURL}/cas/login'
-              '?service=${AppConfig().serviceURL}',
+          '?service=${AppConfig().serviceURL}',
         ),
       ),
       settings: InAppBrowserClassSettings(
