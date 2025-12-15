@@ -6,11 +6,11 @@ import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
 import 'package:netocentre_app_poc/utils/custom_cookies_manager.dart';
 
-final homeKeepAlive = InAppWebViewKeepAlive();
-
 class HomeFragment extends StatefulWidget {
+  final InAppWebViewKeepAlive keepAlive;
+
   const HomeFragment({
-    super.key,
+    super.key, required this.keepAlive,
   });
 
   @override
@@ -42,7 +42,7 @@ class _HomeFragment extends State<HomeFragment> {
   @override
   Widget build(BuildContext context) {
     return InAppWebView(
-      keepAlive: homeKeepAlive,
+      keepAlive: widget.keepAlive,
       initialUrlRequest: URLRequest(
         url: WebUri(
           '${AppConfig().staticsBaseURL}/logged.html',
