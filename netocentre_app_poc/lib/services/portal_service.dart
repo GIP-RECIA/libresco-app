@@ -228,11 +228,10 @@ class PortalService {
     return false;
   }
 
-  Future<Map<String, dynamic>> getUserInfo() async {
+  Future<Map<String, dynamic>?> getUserInfo() async {
     log.info('Getting user infos');
 
     final client = IOClient(HttpClient());
-
     Uri request = Uri.https(
       AppConfig().uPortalHost,
       '/portail/api/v5-1/userinfo',
@@ -274,13 +273,14 @@ class PortalService {
       return json.decode(decodedBase64);
     } else {
       log.warning('Got an abnormal ${res.statusCode} response status code !');
-      return {};
+      return null;
     }
   }
 
-  Future<String> getEtabNameFromSiren(String siren) async {
+  Future<Map<String, dynamic>?> getInfoEtab(String siren) async {
     log.info('Getting etab name from change-etablissement');
     log.info(siren.runtimeType);
+
     final client = IOClient(HttpClient());
     Uri request = Uri.https(
       AppConfig().uPortalHost,
@@ -291,19 +291,25 @@ class PortalService {
     );
     log.finer('Making a request to etab API : $request');
     final http.Response res = await client.get(request);
-    var rawEtabData = json.decode(res.body);
-    return rawEtabData[siren]["displayName"];
+    if (res.statusCode == 200) {
+      var rawEtabData = json.decode(res.body);
+      return rawEtabData[siren];
+    } else {
+      return null;
+    }
   }
 
-  Future<void> loadUserInfo() async {
+  Future<bool> loadUserInfo() async {
     log.info('Loading user info');
     var rawUserInfo = await getUserInfo();
-    // Add the current etab name which does not come from the same API
-    rawUserInfo['currentEtabName'] =
-        await getEtabNameFromSiren(rawUserInfo['ESCOSIRENCourant'][0]);
+    if (rawUserInfo == null) return false;
+    var rowEtabInfo = await getInfoEtab(rawUserInfo['ESCOSIRENCourant'][0]);
+    if (rowEtabInfo == null) return false;
+    rawUserInfo['currentEtabName'] = rowEtabInfo["displayName"];
     UserInfo().fromMap(rawUserInfo);
     UserInfo().setUid(rawUserInfo['sub'] ?? '');
     UserInfo().update();
+    return true;
   }
 
   /// uri parser for services who are based on cas auth

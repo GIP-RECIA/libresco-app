@@ -94,9 +94,27 @@ class LoadingPageUtils {
 
     // Once we are sure to be connected, we can request the infos from the
     // portal APIs
-    await PortalService.instance.loadUserInfo();
-    log.info('Data was loaded successfully, now exiting loading page...');
-    navigatorPush();
+    if (await PortalService.instance.loadUserInfo()) {
+      log.info('Data was loaded successfully, now exiting loading page...');
+      navigatorPush();
+    } else {
+      log.shout('Error during loading');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const UnconnectedHomePage(),
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Une erreur est survenue lors de la récupération des données du compte.'
+            '\n Veuillez réessayer ultérieurement.',
+          ),
+          duration: Duration(seconds: 10),
+        ),
+      );
+    }
   }
 
   void navigatorPush() {
