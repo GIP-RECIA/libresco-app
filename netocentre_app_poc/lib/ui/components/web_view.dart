@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
+import 'package:netocentre_app_poc/utils/web_view_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class WebView extends StatefulWidget {
@@ -61,15 +62,27 @@ class _WebView extends State<WebView> {
     InAppWebViewController controller,
     NavigationAction action,
   ) async {
-    final uri = action.request.url!;
-    if (!['http', 'https', 'file', 'chrome', 'data', 'javascript', 'about']
-        .contains(uri.scheme)) {
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri);
-        return NavigationActionPolicy.CANCEL;
-      }
+    final uri = action.request.url;
+    if (uri != null) {
+      log.fine('==> $uri | ${uri.host}');
     }
-    return NavigationActionPolicy.ALLOW;
+
+    if (uri == null || !action.isForMainFrame) {
+      return NavigationActionPolicy.ALLOW;
+    }
+
+    if (WebViewUtils.isInsideNavigation(uri.host)) {
+      return NavigationActionPolicy.ALLOW;
+    }
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        mode: LaunchMode.inAppBrowserView,
+      );
+    }
+
+    return NavigationActionPolicy.CANCEL;
   }
 
   Future<PermissionResponse> _onPermissionRequest(

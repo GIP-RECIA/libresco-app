@@ -4,7 +4,10 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
+import 'package:netocentre_app_poc/ui/pages/web_view_page.dart';
 import 'package:netocentre_app_poc/utils/custom_cookies_manager.dart';
+import 'package:netocentre_app_poc/utils/web_view_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeFragment extends StatefulWidget {
   final InAppWebViewKeepAlive keepAlive;
@@ -56,11 +59,34 @@ class _HomeFragment extends State<HomeFragment> {
     NavigationAction action,
   ) async {
     final uri = action.request.url;
-    if (uri != null && action.isForMainFrame) {
-      // Open web view in new activity
+    if (uri != null) {
+      log.fine('==> $uri | ${uri.host}');
+    }
+
+    if (uri == null || !action.isForMainFrame) {
+      return NavigationActionPolicy.ALLOW;
+    }
+
+    if (WebViewUtils.isInsideNavigation(uri.host)) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => WebViewPage(
+            appBarTitle: '',
+            uri: uri.toString(),
+          ),
+        ),
+      );
       return NavigationActionPolicy.CANCEL;
     }
-    return NavigationActionPolicy.ALLOW;
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(
+        uri,
+        mode: LaunchMode.inAppBrowserView,
+      );
+    }
+
+    return NavigationActionPolicy.CANCEL;
   }
 
   @override
@@ -68,9 +94,7 @@ class _HomeFragment extends State<HomeFragment> {
     return InAppWebView(
       keepAlive: widget.keepAlive,
       initialUrlRequest: URLRequest(
-        url: WebUri(
-          '${AppConfig().staticsBaseURL}/logged.html',
-        ),
+        url: WebUri('${AppConfig().staticsBaseURL}/logged.html'),
       ),
       initialSettings: _webViewSettings,
       onLoadStop: _onLoadStop,
