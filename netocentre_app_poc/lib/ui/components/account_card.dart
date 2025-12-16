@@ -34,6 +34,7 @@ class AccountCard extends StatelessWidget {
           trailing: PopupMenuButton<String>(
             position: PopupMenuPosition.under,
             color: Colors.white,
+            tooltip: 'Menu actions sur le compte',
             menuPadding: EdgeInsetsGeometry.all(0),
             onSelected: (value) {
               if (value == 'delete') onDelete();

@@ -29,6 +29,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ? IconButton(
               onPressed: onClose,
               icon: Icon(Icons.close),
+              tooltip: 'Fermer',
             )
           : Container(
               padding: EdgeInsets.all(8),
@@ -44,6 +45,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: CircleAvatar(
             backgroundImage: NetworkImage(avatarUrl),
           ),
+          tooltip: 'Menu utilisateur',
           onSelected: (value) => onUserMenu(value),
           itemBuilder: (context) => [
             const PopupMenuItem(
