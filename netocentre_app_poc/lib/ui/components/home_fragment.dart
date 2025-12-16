@@ -10,7 +10,8 @@ class HomeFragment extends StatefulWidget {
   final InAppWebViewKeepAlive keepAlive;
 
   const HomeFragment({
-    super.key, required this.keepAlive,
+    super.key,
+    required this.keepAlive,
   });
 
   @override
@@ -39,6 +40,28 @@ class _HomeFragment extends State<HomeFragment> {
     CustomCookiesManager.defineUPortalCookies(manager);
   }
 
+  Future<void> _onLoadStop(
+    InAppWebViewController controller,
+    WebUri? url,
+  ) async {
+    await controller.evaluateJavascript(
+      source: 'document.getElementById(\'displayname\')'
+          '.innerText = \'${UserInfo().name}\';',
+    );
+  }
+
+  Future<NavigationActionPolicy> _overrideUrlLoading(
+    InAppWebViewController controller,
+    NavigationAction action,
+  ) async {
+    final uri = action.request.url;
+    if (uri != null && action.isForMainFrame) {
+      // Open web view in new activity
+      return NavigationActionPolicy.CANCEL;
+    }
+    return NavigationActionPolicy.ALLOW;
+  }
+
   @override
   Widget build(BuildContext context) {
     return InAppWebView(
@@ -49,20 +72,8 @@ class _HomeFragment extends State<HomeFragment> {
         ),
       ),
       initialSettings: _webViewSettings,
-      onLoadStop: (controller, url) async {
-        await controller.evaluateJavascript(
-          source:
-              'document.getElementById(\'displayname\').innerText = \'${UserInfo().name}\';',
-        );
-      },
-      shouldOverrideUrlLoading: (controller, navigationAction) async {
-        final uri = navigationAction.request.url;
-        if (uri != null && navigationAction.isForMainFrame) {
-          // Open web view in new activity
-          return NavigationActionPolicy.CANCEL;
-        }
-        return NavigationActionPolicy.ALLOW;
-      },
+      onLoadStop: _onLoadStop,
+      shouldOverrideUrlLoading: _overrideUrlLoading,
     );
   }
 }
