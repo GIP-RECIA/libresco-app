@@ -10,8 +10,8 @@ import 'package:netocentre_app_poc/ui/components/nav_bar.dart';
 import 'package:netocentre_app_poc/ui/pages/unconnected_home_page.dart';
 
 class AppContainer extends StatefulWidget {
-  final bool? appBarBack;
-  final VoidCallback? onBack;
+  final bool? appBarClose;
+  final VoidCallback? onClose;
   final String? appBarTitle;
   final Widget body;
   final bool? bottomNavigation;
@@ -19,8 +19,8 @@ class AppContainer extends StatefulWidget {
 
   const AppContainer({
     super.key,
-    this.appBarBack,
-    this.onBack,
+    this.appBarClose,
+    this.onClose,
     this.appBarTitle,
     required this.body,
     this.bottomNavigation,
@@ -71,8 +71,8 @@ class _AppContainer extends State<AppContainer> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: CustomAppBar(
-        back: widget.appBarBack ?? false,
-        onBack: () => widget.onBack?.call(),
+        close: widget.appBarClose ?? false,
+        onClose: () => widget.onClose?.call(),
         title: widget.appBarTitle ?? UserInfo().currentEtabName,
         avatarUrl: AppConfig().uPortalBaseURL + UserInfo().picture,
         onUserMenu: (value) => _onUserMenu(context, value),

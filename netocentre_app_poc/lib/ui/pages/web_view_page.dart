@@ -67,8 +67,8 @@ class _WebViewPage extends State<WebViewPage> {
   @override
   Widget build(BuildContext context) {
     return AppContainer(
-      appBarBack: true,
-      onBack: () {
+      appBarClose: true,
+      onClose: () {
         manager.removeSessionCookies();
         Navigator.pop(context);
       },

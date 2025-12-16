@@ -4,16 +4,16 @@ import 'package:netocentre_app_poc/objects/enums/user_menu_item.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final bool back;
-  final VoidCallback onBack;
+  final bool close;
+  final VoidCallback onClose;
   final String title;
   final String avatarUrl;
   final ValueChanged<UserMenuItem> onUserMenu;
 
   const CustomAppBar({
     super.key,
-    required this.back,
-    required this.onBack,
+    required this.close,
+    required this.onClose,
     required this.title,
     required this.avatarUrl,
     required this.onUserMenu,
@@ -25,10 +25,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: back
+      leading: close
           ? IconButton(
-              onPressed: onBack,
-              icon: Icon(Icons.arrow_back),
+              onPressed: onClose,
+              icon: Icon(Icons.close),
             )
           : Container(
               padding: EdgeInsets.all(8),
