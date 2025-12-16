@@ -110,6 +110,13 @@ class _WebView extends State<WebView> {
     widget.pullToRefreshController?.endRefreshing();
   }
 
+  Future<void> _onDownloadStartRequest(
+    InAppWebViewController controller,
+    DownloadStartRequest request,
+  ) async {
+    log.fine('Download ${request.url}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return InAppWebView(
@@ -124,6 +131,7 @@ class _WebView extends State<WebView> {
       onConsoleMessage: _onConsoleMessage,
       onReceivedServerTrustAuthRequest: _onServerTrust,
       onReceivedError: _onError,
+      onDownloadStartRequest: _onDownloadStartRequest,
     );
   }
 }
