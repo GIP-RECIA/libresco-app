@@ -5,12 +5,12 @@ import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ServiceWebView extends StatefulWidget {
+class WebView extends StatefulWidget {
   final String uri;
   final PullToRefreshController? pullToRefreshController;
   final ValueChanged<double>? onProgress;
 
-  const ServiceWebView({
+  const WebView({
     super.key,
     required this.uri,
     required this.pullToRefreshController,
@@ -18,11 +18,11 @@ class ServiceWebView extends StatefulWidget {
   });
 
   @override
-  State<ServiceWebView> createState() => _ServiceWebViewState();
+  State<WebView> createState() => _WebView();
 }
 
-class _ServiceWebViewState extends State<ServiceWebView> {
-  final log = Logger('_ServiceWebViewState');
+class _WebView extends State<WebView> {
+  final log = Logger('_WebView');
   InAppWebViewController? controller;
 
   final InAppWebViewSettings _webViewSettings = InAppWebViewSettings(

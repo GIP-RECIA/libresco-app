@@ -5,7 +5,7 @@ import 'package:netocentre_app_poc/objects/service.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
-import 'package:netocentre_app_poc/ui/pages/service_page.dart';
+import 'package:netocentre_app_poc/ui/pages/web_view_page.dart';
 import 'package:netocentre_app_poc/ui/pages/unconnected_home_page.dart';
 
 class ServicesCard extends StatelessWidget {
@@ -42,14 +42,22 @@ class ServicesCard extends StatelessWidget {
           if (await LoginService.instance.hasCASSession() &&
               await LoginService.instance.isAuthorizedByUPortal()) {
             if (context.mounted) {
+              String uri =
+                  '${AppConfig().uPortalBaseURL}/portail/p/${service.serviceUri}';
+              if (!service.isAuthByUPortal) {
+                uri = '${AppConfig().uPortalBaseURL}'
+                    '/portail/api/ExternalURLStats'
+                    '?fname=${service.fname}'
+                    '&service=${service.serviceUri}';
+              }
+              log.finer('define url from uri \'${service.serviceUri}\' : $uri');
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ServicePage(
-                    text: service.text,
-                    uri: service.serviceUri,
-                    fname: service.fname!,
-                    inPortal: service.isAuthByUPortal,
+                  builder: (context) => WebViewPage(
+                    appBarTitle: service.text,
+                    uri: uri,
                   ),
                 ),
               );

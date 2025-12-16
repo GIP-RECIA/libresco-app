@@ -4,31 +4,26 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/ui/components/app_container.dart';
-import 'package:netocentre_app_poc/ui/components/service_web_view.dart';
+import 'package:netocentre_app_poc/ui/components/web_view.dart';
 import 'package:netocentre_app_poc/utils/custom_cookies_manager.dart';
 
-class ServicePage extends StatefulWidget {
+class WebViewPage extends StatefulWidget {
+  final String appBarTitle;
   final String uri;
-  final String text;
-  final String fname;
-  final bool inPortal;
 
-  const ServicePage({
+  const WebViewPage({
     super.key,
+    required this.appBarTitle,
     required this.uri,
-    required this.text,
-    required this.fname,
-    required this.inPortal,
   });
 
   @override
-  State<ServicePage> createState() => _ServicePage();
+  State<WebViewPage> createState() => _WebViewPage();
 }
 
-class _ServicePage extends State<ServicePage> {
-  final log = Logger('_ServicePage');
+class _WebViewPage extends State<WebViewPage> {
+  final log = Logger('_WebViewPage');
   late CookieManager manager;
-  late String uri;
 
   late InAppWebViewController webViewController;
   PullToRefreshController? pullToRefreshController;
@@ -39,7 +34,6 @@ class _ServicePage extends State<ServicePage> {
     super.initState();
     _initCookies();
     _definePullToRefreshController();
-    _defineUri();
   }
 
   void _initCookies() {
@@ -70,17 +64,6 @@ class _ServicePage extends State<ServicePage> {
           );
   }
 
-  void _defineUri() {
-    uri = '${AppConfig().uPortalBaseURL}/portail/p/${widget.uri}';
-    if (!widget.inPortal) {
-      uri = '${AppConfig().uPortalBaseURL}'
-          '/portail/api/ExternalURLStats'
-          '?fname=${widget.fname}'
-          '&service=${widget.uri}';
-    }
-    log.finer('define url from uri \'${widget.uri}\' : $uri');
-  }
-
   @override
   Widget build(BuildContext context) {
     return AppContainer(
@@ -89,12 +72,12 @@ class _ServicePage extends State<ServicePage> {
         manager.removeSessionCookies();
         Navigator.pop(context);
       },
-      appBarTitle: widget.text,
+      appBarTitle: widget.appBarTitle,
       body: Stack(
         children: [
           if (progress < 1.0) LinearProgressIndicator(value: progress),
-          ServiceWebView(
-            uri: uri,
+          WebView(
+            uri: widget.uri,
             pullToRefreshController: pullToRefreshController,
             onProgress: (value) {
               setState(() {
