@@ -24,6 +24,7 @@ class AuthenticationInAppBrowser extends InAppBrowser {
 
   @override
   Future onBrowserCreated() async {
+    cookieManager.removeSessionCookies();
     log.fine('Browser Created!');
   }
 
