@@ -103,7 +103,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
     Session().clear();
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Déconnexion ${account.name}')),
+      SnackBar(content: Text('Déconnexion du compte ${account.name}')),
     );
   }
 
@@ -116,7 +116,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
     await initAccounts();
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Supprimer ${account.name}')),
+      SnackBar(content: Text('Suppression du compte ${account.name}')),
     );
   }
 
