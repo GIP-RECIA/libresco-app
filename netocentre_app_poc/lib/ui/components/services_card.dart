@@ -126,11 +126,11 @@ class ServicesCard extends StatelessWidget {
                     service,
                     onPressed: onPressed,
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    'Type Service',
-                    style: TextStyle(color: Colors.grey.shade500),
-                  ),
+                  const SizedBox(height: 10),
+                  // Text(
+                  //   'Type Service',
+                  //   style: TextStyle(color: Colors.grey.shade500),
+                  //),
                   Text(
                     service.text,
                     textAlign: TextAlign.center,

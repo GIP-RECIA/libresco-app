@@ -35,7 +35,7 @@ class _NavBar extends State<NavBar> {
       destinations: const <Widget>[
         NavigationDestination(
           icon: Icon(Icons.home),
-          label: 'Home',
+          label: 'Accueil',
         ),
         NavigationDestination(
           icon: Icon(Icons.grid_view),
