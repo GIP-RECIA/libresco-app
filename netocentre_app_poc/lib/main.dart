@@ -42,9 +42,9 @@ Future<void> main({
 }) async {
   WidgetsFlutterBinding.ensureInitialized();
   Logger.root.level = Level.ALL;
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
   Logger.root.onRecord.listen((record) {
-    print(
-        '${record.time} ${record.level.name} [${record.loggerName}] - ${record.message}');
+    print('[${packageInfo.appName}][${record.loggerName}] - ${record.message}');
   });
   await AppConfig().loadConfig();
   final app = await buildApp();
