@@ -19,6 +19,7 @@ class AppConfig {
   String? _uPortalBaseURL;
   String? _staticsBaseURL;
   String _paramEtabContextPath = "/paramuseretab";
+  Map<String,String> _externalServices = {'PRONOTE' : 'pronote://', 'Nextcloud' : 'nextcloud://'};
   bool _cache = true;
 
   factory AppConfig() {
@@ -75,6 +76,8 @@ class AppConfig {
 
   String get serviceURL => getAttribute('_serviceURL', _serviceURL);
 
+  Map<String,String> get externalServices => getAttribute('_externalServices', _externalServices);
+
   String get idpIdQueryParam =>
       getAttribute('_idpIdQueryParam', _idpIdQueryParam);
 
@@ -104,6 +107,7 @@ class AppConfig {
         '_userAgent: $_userAgent, '
         '_casBaseURL: $_casBaseURL, '
         '_serviceURL: $_serviceURL, '
+        '_externalServices: $_externalServices, '
         '_idpIdQueryParam: $_idpIdQueryParam, '
         '_portalCookieName: $_portalCookieName, '
         '_portalIDCookieName: $_portalIDCookieName, '

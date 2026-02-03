@@ -7,6 +7,7 @@ import 'package:netocentre_app_poc/objects/singletons/session.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
 import 'package:netocentre_app_poc/ui/pages/web_view_page.dart';
 import 'package:netocentre_app_poc/ui/pages/unconnected_home_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ServicesCard extends StatelessWidget {
   final log = Logger('ServicesCard');
@@ -39,38 +40,68 @@ class ServicesCard extends StatelessWidget {
       ),
       child: GestureDetector(
         onTapUp: (_) async {
-          if (await LoginService.instance.hasCASSession() &&
-              await LoginService.instance.isAuthorizedByUPortal()) {
-            if (context.mounted) {
-              String uri =
-                  '${AppConfig().uPortalBaseURL}/portail/p/${service.serviceUri}';
-              if (!service.isAuthByUPortal) {
-                uri = '${AppConfig().uPortalBaseURL}'
-                    '/portail/api/ExternalURLStats'
-                    '?fname=${service.fname}'
-                    '&service=${service.serviceUri}';
-              }
-              log.finer('define url from uri \'${service.serviceUri}\' : $uri');
 
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => WebViewPage(
-                    appBarTitle: service.text,
-                    uri: uri,
-                  ),
-                ),
+          bool launchWeb = false;
+          if (AppConfig().externalServices.containsKey(service.fname)) {
+            log.fine("External service detected : ${service.fname}");
+            String url = AppConfig().externalServices[service.fname]!;
+            try {
+              await launchUrl(
+                Uri.parse(url),
+                mode: LaunchMode.externalApplication,
               );
+            } catch (e) {
+              log.warning('Unable to open app $url with error $e');
+              launchWeb = true;
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text(
+                        'Impossible d\'ouvrir l\'application externe : est-elle installée sur votre téléphone ?'
+                    ),
+                    duration: Duration(seconds: 5),
+                  ),
+                );
+              }
             }
           } else {
-            Session().clear(persist: true);
-            if (context.mounted) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const UnconnectedHomePage(),
-                ),
-              );
+            launchWeb = true;
+          }
+
+          if(launchWeb){
+            if (await LoginService.instance.hasCASSession() &&
+                await LoginService.instance.isAuthorizedByUPortal()) {
+              if (context.mounted) {
+                String uri =
+                    '${AppConfig().uPortalBaseURL}/portail/p/${service.serviceUri}';
+                if (!service.isAuthByUPortal) {
+                  uri = '${AppConfig().uPortalBaseURL}'
+                      '/portail/api/ExternalURLStats'
+                      '?fname=${service.fname}'
+                      '&service=${service.serviceUri}';
+                }
+                log.finer('define url from uri \'${service.serviceUri}\' : $uri');
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WebViewPage(
+                      appBarTitle: service.text,
+                      uri: uri,
+                    ),
+                  ),
+                );
+              }
+            } else {
+              Session().clear(persist: true);
+              if (context.mounted) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const UnconnectedHomePage(),
+                  ),
+                );
+              }
             }
           }
         },
