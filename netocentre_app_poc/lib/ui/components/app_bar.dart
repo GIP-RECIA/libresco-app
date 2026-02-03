@@ -50,6 +50,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           itemBuilder: (context) => [
             const PopupMenuItem(
               value: UserMenuItem.notification,
+              enabled: false,
               child: Row(
                 children: [
                   Expanded(
@@ -60,6 +61,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             const PopupMenuItem(
               value: UserMenuItem.account,
+              enabled: false,
               child: Row(
                 children: [
                   Expanded(
@@ -71,6 +73,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             const PopupMenuItem(
               value: UserMenuItem.infoEtab,
+              enabled: false,
               child: Row(
                 children: [
                   Expanded(
@@ -82,6 +85,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             const PopupMenuItem(
               value: UserMenuItem.changeEtab,
+              enabled: false,
               child: Row(
                 children: [
                   Expanded(
