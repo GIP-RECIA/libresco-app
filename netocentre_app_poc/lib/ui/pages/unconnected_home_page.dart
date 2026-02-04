@@ -137,8 +137,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
             child: Column(
               children: [
                 const SizedBox(height: 40),
-                const FlutterLogo(size: 80),
-                const SizedBox(height: 30),
+                Image.asset('assets/logo.png', width: 150, height: 150, fit: BoxFit.cover,),
                 Expanded(
                   child: ListView.builder(
                     itemCount: accounts.length,
