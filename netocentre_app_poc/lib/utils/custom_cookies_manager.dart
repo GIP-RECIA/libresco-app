@@ -1,4 +1,5 @@
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:netocentre_app_poc/objects/singletons/account.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
 import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
@@ -19,24 +20,24 @@ class CustomCookiesManager {
 
   static void defineUPortalCookies(CookieManager manager) {
     manager.setCookie(
-      url: WebUri('${UserInfo().getBaseUrl()}/'),
+      url: WebUri('${Account().getBaseUrl()}/'),
       name: AppConfig().portalCookieName,
       value: Session().PortalSessionCookie,
       isHttpOnly: true,
       isSecure: true,
       sameSite: HTTPCookieSameSitePolicy.NONE,
-      domain: AppConfig().uPortalHost,
+      domain: Account().domain,
       path: '/',
     );
     if (Session().IDPortalCookie != "") {
       manager.setCookie(
-        url: WebUri('${UserInfo().getBaseUrl()}/'),
+        url: WebUri('${Account().getBaseUrl()}/'),
         name: AppConfig().portalIDCookieName,
         value: Session().IDPortalCookie,
         isHttpOnly: true,
         isSecure: true,
         sameSite: HTTPCookieSameSitePolicy.NONE,
-        domain: AppConfig().uPortalHost,
+        domain: Account().domain,
         path: '/',
       );
     }

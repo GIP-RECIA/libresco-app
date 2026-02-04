@@ -43,24 +43,6 @@ class UserInfo {
     _currentEtabName = value;
   }
 
-  String get domain {
-    if (_domain == '') {
-      return AppConfig().uPortalHost;
-    }
-    return _domain;
-  }
-
-  void setDomain(String value) {
-    _domain = value;
-  }
-
-  String getBaseUrl(){
-    if (_domain == '') {
-      return AppConfig().uPortalBaseURL;
-    }
-    return 'https://$_domain';
-  }
-
   Map<String, Object?> toMap() {
     var map = <String, Object?>{
       'uid': _uid,

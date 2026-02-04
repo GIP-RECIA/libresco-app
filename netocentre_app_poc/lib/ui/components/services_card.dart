@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/objects/service.dart';
+import 'package:netocentre_app_poc/objects/singletons/account.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
@@ -70,7 +71,7 @@ class ServicesCard extends StatelessWidget {
             launchWeb = true;
           }
 
-          final String baseUrl = UserInfo().getBaseUrl();
+          final String baseUrl = Account().getBaseUrl();
           log.finer('Base url for user is $baseUrl');
 
           if(launchWeb){
@@ -201,7 +202,7 @@ class LogoRow extends StatelessWidget {
         Align(
           alignment: Alignment.center,
           child: SvgPicture.network(
-            '${UserInfo().getBaseUrl()}${service.iconUri}',
+            '${Account().getBaseUrl()}${service.iconUri}',
             height: 50,
             width: 50,
           ),

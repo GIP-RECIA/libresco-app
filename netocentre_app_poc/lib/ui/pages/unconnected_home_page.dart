@@ -56,7 +56,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
             currentEtabName: (p['currentEtabName'] ?? '') as String,
             domain: (p['domain'] ?? '') as String,
             avatarUrl:
-                UserInfo().getBaseUrl() + ((p['picture'] ?? '') as String),
+                Account().getBaseUrl() + ((p['picture'] ?? '') as String),
           ),
         )
         .toList();
@@ -84,6 +84,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   Future<void> _openAccount(BuildContext context, AccountData account) async {
     bool connected = false;
     Account().setId(account.id);
+    Account().setDomain(account.domain);
     await SessionRepository.instance.load();
     connected = await LoginService.instance.hasCASSession();
     if (!connected) {

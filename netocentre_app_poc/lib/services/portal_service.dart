@@ -11,6 +11,8 @@ import 'package:netocentre_app_poc/objects/singletons/session.dart';
 import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
 
+import '../objects/singletons/account.dart';
+
 class PortalService {
   final log = Logger('PortalService');
 
@@ -26,7 +28,7 @@ class PortalService {
     final client = IOClient(HttpClient());
 
     Uri request = Uri.https(
-      AppConfig().uPortalHost,
+      Account().domain,
       '/portail/api/v4-3/dlm/portletRegistry.json',
       {
         'category': 'All categories',
@@ -45,7 +47,7 @@ class PortalService {
           'Cookie':
               '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
                   '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
-          'Host': AppConfig().uPortalHost
+          'Host': Account().domain
         },
       );
 
@@ -195,7 +197,7 @@ class PortalService {
     final client = IOClient(HttpClient());
 
     Uri request = Uri.https(
-      AppConfig().uPortalHost,
+      Account().domain,
       '/portail/api/layout',
       {
         'action': service.isFavorite ? 'removeFavorite' : 'addFavorite',
@@ -214,7 +216,7 @@ class PortalService {
           'Cookie':
               '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
                   '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
-          'Host': AppConfig().uPortalHost
+          'Host': Account().domain
         },
       );
 
@@ -233,7 +235,7 @@ class PortalService {
 
     final client = IOClient(HttpClient());
     Uri request = Uri.https(
-      AppConfig().uPortalHost,
+      Account().domain,
       '/portail/api/v5-1/userinfo',
       {
         'claims': 'private,picture,name,ESCOSIRENCourant,ESCOSIREN',
@@ -252,7 +254,7 @@ class PortalService {
         'Cookie':
             '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
                 '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
-        'Host': AppConfig().uPortalHost
+        'Host': Account().domain
       },
     );
 
@@ -283,7 +285,7 @@ class PortalService {
 
     final client = IOClient(HttpClient());
     Uri request = Uri.https(
-      AppConfig().uPortalHost,
+      Account().domain,
       '${AppConfig().paramEtabContextPath}/rest/v2/structures/structs/',
       {
         'ids': siren,

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
+import 'package:netocentre_app_poc/objects/singletons/account.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
 import 'package:netocentre_app_poc/ui/pages/web_view_page.dart';
@@ -94,7 +95,7 @@ class _HomeFragment extends State<HomeFragment> {
     return InAppWebView(
       keepAlive: widget.keepAlive,
       initialUrlRequest: URLRequest(
-        url: WebUri('${AppConfig().staticsBaseURL}/logged.html'),
+        url: WebUri('${Account().getBaseUrl()}${AppConfig().staticsPath}/logged.html'),
       ),
       initialSettings: _webViewSettings,
       onLoadStop: _onLoadStop,

@@ -94,10 +94,14 @@ class AppConfig {
   String get uPortalHost =>
       uPortalBaseURL.replaceFirst(RegExp(r'^https?://'), '');
 
+  void setUportalBaseURL(String value) {
+    _uPortalBaseURL = value;
+  }
+
   String get paramEtabContextPath =>
       getAttribute('_paramEtabContextPath', _paramEtabContextPath);
 
-  String get staticsBaseURL => getAttribute('_staticsBaseURL', _staticsBaseURL);
+  String get staticsPath => getAttribute('_staticsPath', _staticsPath);
 
   bool get cache => _cache;
 
@@ -113,7 +117,7 @@ class AppConfig {
         '_portalIDCookieName: $_portalIDCookieName, '
         '_casCookieName: $_casCookieName, '
         '_uPortalBaseURL: $_uPortalBaseURL, '
-        '_staticsBaseURL: $_staticsBaseURL, '
+        '_staticsBaseURL: $_staticsPath, '
         '_cache: $_cache'
         '}';
   }

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
+import 'package:netocentre_app_poc/objects/singletons/account.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
 import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
@@ -33,7 +34,7 @@ class LoginService {
       return false;
     }
 
-    final String domain = UserInfo().domain;
+    final String domain = Account().domain;
     log.finer('Domain for the user is $domain');
 
     final client = IOClient(HttpClient());
@@ -179,7 +180,7 @@ class LoginService {
     log.finest('Body: $casBody');
 
     log.fine('Logging out the user from Portal');
-    final String domain = UserInfo().domain;
+    final String domain = Account().domain;
     log.finer('Domain for the user is $domain');
     Uri portalURI = Uri.https(domain, '/portail/Logout');
 
@@ -220,7 +221,7 @@ class LoginService {
       AppConfig().casHost,
       '/cas/login',
       {
-        'service': '${UserInfo().getBaseUrl()}/portail/Login',
+        'service': '${Account().getBaseUrl()}/portail/Login',
       },
     );
     var request = await client.getUrl(uri);
@@ -245,8 +246,24 @@ class LoginService {
       if (location != null) {
         uri = uri.resolve(location);
 
+        // If the URI starts with CAS in the first redirect, that means there was a domain change
+        // So we remember the domain for the rest of the requests. Once we will obtain userinfos
+        // it will not be necessary anymore
+        if(requestCounter == 0 && uri.toString().startsWith(AppConfig().casBaseURL)){
+          log.fine('Multidomain redirection detected on URL : ${uri.toString()}');
+          String service = (uri.toString().split("service=")[1]).split("/portail/Login")[0];
+          AppConfig().setUportalBaseURL(service);
+          log.fine('Base URL for next requests is set to $service');
+        }
+
         //Configure the new request
         request = await client.getUrl(uri.resolve(location));
+        if(uri.toString().contains("https://auth.recia.fr/cas/login")){
+          request.headers.add(
+            'Cookie',
+            '${AppConfig().casCookieName}=${Session().CASSessionCookie}',
+          );
+        }
 
         /// PARSE portalSessionCookie & idPortal
 
