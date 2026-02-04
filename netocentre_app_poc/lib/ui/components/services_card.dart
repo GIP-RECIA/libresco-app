@@ -9,6 +9,8 @@ import 'package:netocentre_app_poc/ui/pages/web_view_page.dart';
 import 'package:netocentre_app_poc/ui/pages/unconnected_home_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../objects/singletons/user_info.dart';
+
 class ServicesCard extends StatelessWidget {
   final log = Logger('ServicesCard');
   final Service service;
@@ -68,14 +70,17 @@ class ServicesCard extends StatelessWidget {
             launchWeb = true;
           }
 
+          final String baseUrl = UserInfo().getBaseUrl();
+          log.finer('Base url for user is $baseUrl');
+
           if(launchWeb){
             if (await LoginService.instance.hasCASSession() &&
                 await LoginService.instance.isAuthorizedByUPortal()) {
               if (context.mounted) {
                 String uri =
-                    '${AppConfig().uPortalBaseURL}/portail/p/${service.serviceUri}';
+                    '$baseUrl/portail/p/${service.serviceUri}';
                 if (!service.isAuthByUPortal) {
-                  uri = '${AppConfig().uPortalBaseURL}'
+                  uri = '$baseUrl'
                       '/portail/api/ExternalURLStats'
                       '?fname=${service.fname}'
                       '&service=${service.serviceUri}';
@@ -196,7 +201,7 @@ class LogoRow extends StatelessWidget {
         Align(
           alignment: Alignment.center,
           child: SvgPicture.network(
-            '${AppConfig().uPortalBaseURL}${service.iconUri}',
+            '${UserInfo().getBaseUrl()}${service.iconUri}',
             height: 50,
             width: 50,
           ),

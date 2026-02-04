@@ -5,6 +5,7 @@ import 'package:netocentre_app_poc/objects/pojo/account_data.dart';
 import 'package:netocentre_app_poc/objects/singletons/account.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
+import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
 import 'package:netocentre_app_poc/repositories/session_repository.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
 import 'package:netocentre_app_poc/ui/components/account_card.dart';
@@ -55,7 +56,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
             currentEtabName: (p['currentEtabName'] ?? '') as String,
             domain: (p['domain'] ?? '') as String,
             avatarUrl:
-                AppConfig().uPortalBaseURL + ((p['picture'] ?? '') as String),
+                UserInfo().getBaseUrl() + ((p['picture'] ?? '') as String),
           ),
         )
         .toList();

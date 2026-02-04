@@ -74,7 +74,7 @@ class _AppContainer extends State<AppContainer> {
         close: widget.appBarClose ?? false,
         onClose: () => widget.onClose?.call(),
         title: widget.appBarTitle ?? UserInfo().currentEtabName,
-        avatarUrl: AppConfig().uPortalBaseURL + UserInfo().picture,
+        avatarUrl: UserInfo().getBaseUrl() + UserInfo().picture,
         onUserMenu: (value) => _onUserMenu(context, value),
       ),
       body: SafeArea(child: widget.body),

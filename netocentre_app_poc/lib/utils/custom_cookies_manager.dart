@@ -1,6 +1,7 @@
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
+import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
 
 class CustomCookiesManager {
   static void defineCASCookies(CookieManager manager) {
@@ -18,7 +19,7 @@ class CustomCookiesManager {
 
   static void defineUPortalCookies(CookieManager manager) {
     manager.setCookie(
-      url: WebUri('${AppConfig().uPortalBaseURL}/'),
+      url: WebUri('${UserInfo().getBaseUrl()}/'),
       name: AppConfig().portalCookieName,
       value: Session().PortalSessionCookie,
       isHttpOnly: true,
@@ -29,7 +30,7 @@ class CustomCookiesManager {
     );
     if (Session().IDPortalCookie != "") {
       manager.setCookie(
-        url: WebUri('${AppConfig().uPortalBaseURL}/'),
+        url: WebUri('${UserInfo().getBaseUrl()}/'),
         name: AppConfig().portalIDCookieName,
         value: Session().IDPortalCookie,
         isHttpOnly: true,

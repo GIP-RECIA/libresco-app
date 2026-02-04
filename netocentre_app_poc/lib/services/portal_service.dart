@@ -307,6 +307,7 @@ class PortalService {
     if (rawEtabInfo == null) return false;
     rawUserInfo['currentEtabName'] = rawEtabInfo["displayName"];
     rawUserInfo['domain'] = rawEtabInfo["otherAttributes"]["ESCODomaines"][0];
+    rawUserInfo['baseUrl'] = 'https://${rawEtabInfo["otherAttributes"]["ESCODomaines"][0]}';
     UserInfo().fromMap(rawUserInfo);
     UserInfo().setUid(rawUserInfo['sub'] ?? '');
     UserInfo().update();

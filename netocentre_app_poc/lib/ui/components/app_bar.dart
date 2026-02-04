@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:netocentre_app_poc/objects/enums/user_menu_item.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
+import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool close;
@@ -34,7 +35,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           : Container(
               padding: EdgeInsets.all(8),
               child: SvgPicture.network(
-                '${AppConfig().uPortalBaseURL}/images/partners/netocentre-simple.svg',
+                '${UserInfo().getBaseUrl()}/images/partners/netocentre-simple.svg',
               ),
             ),
       title: Text(title),

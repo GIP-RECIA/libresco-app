@@ -6,6 +6,7 @@ import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
+import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
 
 class LoginService {
   final log = Logger('LoginService');
@@ -32,9 +33,12 @@ class LoginService {
       return false;
     }
 
+    final String domain = UserInfo().domain;
+    log.finer('Domain for the user is $domain');
+
     final client = IOClient(HttpClient());
     Uri request = Uri.https(
-      AppConfig().uPortalHost,
+      domain,
       '/portail/api/session.json',
     );
 
@@ -48,7 +52,7 @@ class LoginService {
         'Cookie':
             '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
                 '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
-        'Host': AppConfig().uPortalHost
+        'Host': domain
       },
     );
 
@@ -175,7 +179,9 @@ class LoginService {
     log.finest('Body: $casBody');
 
     log.fine('Logging out the user from Portal');
-    Uri portalURI = Uri.https(AppConfig().uPortalHost, '/portail/Logout');
+    final String domain = UserInfo().domain;
+    log.finer('Domain for the user is $domain');
+    Uri portalURI = Uri.https(domain, '/portail/Logout');
 
     log.finer('Making a request to portal : $portalURI');
     log.finer(
@@ -189,7 +195,7 @@ class LoginService {
       '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
           '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
     );
-    portalRequest.headers.add('Host', AppConfig().uPortalHost);
+    portalRequest.headers.add('Host', domain);
 
     var portalResponse = await portalRequest.close();
     log.finer(
@@ -214,7 +220,7 @@ class LoginService {
       AppConfig().casHost,
       '/cas/login',
       {
-        'service': '${AppConfig().uPortalBaseURL}/portail/Login',
+        'service': '${UserInfo().getBaseUrl()}/portail/Login',
       },
     );
     var request = await client.getUrl(uri);

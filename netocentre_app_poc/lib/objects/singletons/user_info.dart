@@ -1,4 +1,5 @@
 import 'package:logging/logging.dart';
+import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/repositories/user_info_repository.dart';
 
 class UserInfo {
@@ -42,10 +43,22 @@ class UserInfo {
     _currentEtabName = value;
   }
 
-  String get domain => _domain;
+  String get domain {
+    if (_domain == '') {
+      return AppConfig().uPortalHost;
+    }
+    return _domain;
+  }
 
   void setDomain(String value) {
     _domain = value;
+  }
+
+  String getBaseUrl(){
+    if (_domain == '') {
+      return AppConfig().uPortalBaseURL;
+    }
+    return 'https://$_domain';
   }
 
   Map<String, Object?> toMap() {
