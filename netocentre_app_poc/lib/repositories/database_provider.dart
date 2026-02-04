@@ -33,7 +33,8 @@ class DatabaseProvider {
             uid VARCHAR(255),
             name VARCHAR(255),
             picture VARCHAR(255),
-            currentEtabName VARCHAR(255)
+            currentEtabName VARCHAR(255),
+            domain VARCHAR(255)
           );
         ''');
       },

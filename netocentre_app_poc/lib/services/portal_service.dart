@@ -303,9 +303,10 @@ class PortalService {
     log.info('Loading user info');
     var rawUserInfo = await getUserInfo();
     if (rawUserInfo == null) return false;
-    var rowEtabInfo = await getInfoEtab(rawUserInfo['ESCOSIRENCourant'][0]);
-    if (rowEtabInfo == null) return false;
-    rawUserInfo['currentEtabName'] = rowEtabInfo["displayName"];
+    var rawEtabInfo = await getInfoEtab(rawUserInfo['ESCOSIRENCourant'][0]);
+    if (rawEtabInfo == null) return false;
+    rawUserInfo['currentEtabName'] = rawEtabInfo["displayName"];
+    rawUserInfo['domain'] = rawEtabInfo["otherAttributes"]["ESCODomaines"][0];
     UserInfo().fromMap(rawUserInfo);
     UserInfo().setUid(rawUserInfo['sub'] ?? '');
     UserInfo().update();
