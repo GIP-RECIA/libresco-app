@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
+import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
+import 'package:netocentre_app_poc/repositories/session_repository.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
 import 'package:netocentre_app_poc/services/portal_service.dart';
 import 'package:netocentre_app_poc/ui/pages/unconnected_home_page.dart';
+
+import '../../objects/singletons/account.dart';
 
 class LoadingPage extends StatefulWidget {
   final Widget callbackWidget;
@@ -96,6 +100,12 @@ class LoadingPageUtils {
     // portal APIs
     if (await PortalService.instance.loadUserInfo()) {
       log.info('Data was loaded successfully, now exiting loading page...');
+      final String uid = UserInfo().uid;
+      final bool exists = await SessionRepository.instance.doesAccountAlreadyExists(uid);
+      if(exists){
+        log.warning("An account with uid $uid already exists ! Cleaning the initial account...");
+        await SessionRepository.instance.deleteExistingProfile(uid, Account().id!);
+      }
       navigatorPush();
     } else {
       log.shout('Error during loading');
