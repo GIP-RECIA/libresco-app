@@ -154,7 +154,7 @@ class LoginService {
     return false;
   }
 
-  Future<void> logout() async {
+  Future<void> logout(String domain) async {
     final client = HttpClient();
     client.userAgent = AppConfig().userAgent;
 
@@ -180,7 +180,6 @@ class LoginService {
     log.finest('Body: $casBody');
 
     log.fine('Logging out the user from Portal');
-    final String domain = Account().domain;
     log.finer('Domain for the user is $domain');
     Uri portalURI = Uri.https(domain, '/portail/Logout');
 

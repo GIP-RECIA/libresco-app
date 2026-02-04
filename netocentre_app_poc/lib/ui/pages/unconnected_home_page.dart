@@ -100,26 +100,26 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
     }
   }
 
-  Future<void> _logoutAccount(BuildContext context, AccountData account) async {
-    await SessionRepository.instance.load(id: account.id);
-    await LoginService.instance.logout();
+  Future<void> _logoutAccount(BuildContext context, AccountData accountData) async {
+    await SessionRepository.instance.load(id: accountData.id);
+    await LoginService.instance.logout(accountData.domain);
     Session().clear();
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Déconnexion du compte ${account.name}')),
+      SnackBar(content: Text('Déconnexion du compte ${accountData.name}')),
     );
   }
 
-  Future<void> _deleteAccount(BuildContext context, AccountData account) async {
-    var id = account.id;
+  Future<void> _deleteAccount(BuildContext context, AccountData accountData) async {
+    var id = accountData.id;
     await SessionRepository.instance.load(id: id);
-    await LoginService.instance.logout();
+    await LoginService.instance.logout(accountData.domain);
     await SessionRepository.instance.deleteAll(id: id);
 
     await initAccounts();
 
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Suppression du compte ${account.name}')),
+      SnackBar(content: Text('Suppression du compte ${accountData.name}')),
     );
   }
 
