@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/objects/singletons/account.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
@@ -28,6 +30,28 @@ class SessionRepository {
     log.fine('Save in database : ${Session().toString()}');
   }
 
+  Future<void> updateLastLoginTime() async {
+    Map<String, Object?> data = {"lastLogin" : DateTime.now().millisecondsSinceEpoch ~/ 1000};
+    final db = await DatabaseProvider.instance.db;
+    await db.update(
+      tableName,
+      data,
+      where: 'id = ${Account().id}',
+    );
+    log.fine('Update in database : $data');
+  }
+
+  Future<void> resetLastLoginTime(int id) async {
+    Map<String, Object?> data = {"lastLogin" : 0};
+    final db = await DatabaseProvider.instance.db;
+    await db.update(
+      tableName,
+      data,
+      where: 'id = $id',
+    );
+    log.fine('Update in database : $data');
+  }
+
   Future<void> update() async {
     final db = await DatabaseProvider.instance.db;
     await db.update(
@@ -36,6 +60,7 @@ class SessionRepository {
       where: 'id = ${Account().id}',
     );
     log.fine('Update in database : ${Session().toString()}');
+    updateLastLoginTime();
   }
 
   Future<void> flush() async {

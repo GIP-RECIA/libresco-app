@@ -9,6 +9,7 @@ import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/services_list.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
 import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
+import 'package:netocentre_app_poc/repositories/session_repository.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
 
 import '../objects/singletons/account.dart';
@@ -349,6 +350,7 @@ class PortalService {
     UserInfo().fromMap(rawUserInfo);
     UserInfo().setUid(rawUserInfo['sub'] ?? '');
     UserInfo().update();
+    SessionRepository.instance.updateLastLoginTime();
     return true;
   }
 

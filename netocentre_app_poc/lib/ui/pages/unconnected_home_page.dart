@@ -44,8 +44,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   }
 
   Future<void> initAccounts() async {
-    List<Map<String, Object?>> profiles =
-        await SessionRepository.instance.getProfilesList();
+    List<Map<String, Object?>> profiles = await SessionRepository.instance.getProfilesList();
 
     final loadedAccounts = profiles
         .map(
@@ -54,8 +53,8 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
             name: (p['name'] ?? '') as String,
             currentEtabName: (p['currentEtabName'] ?? '') as String,
             domain: (p['domain'] ?? '') as String,
-            avatarUrl:
-                Account().getBaseUrl() + ((p['picture'] ?? '') as String),
+            avatarUrl: Account().getBaseUrl() + ((p['picture'] ?? '') as String),
+            lastLogin: p['lastLogin']==null ? 0 : p['lastLogin'] as int,
           ),
         )
         .toList();
@@ -105,7 +104,10 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   ) async {
     await SessionRepository.instance.load(id: accountData.id);
     await LoginService.instance.logout(accountData.domain);
+    await SessionRepository.instance.resetLastLoginTime(accountData.id);
     Session().clear();
+
+    // TODO : refaire le rendu pour actualiser la card directement
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Déconnexion du compte ${accountData.name}')),
@@ -130,6 +132,13 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
 
   void _addAccount() {
     _openCasBrowser();
+  }
+
+  bool isLoggedIn(int lastLoginTime){
+    final lastLogin = DateTime.fromMillisecondsSinceEpoch(lastLoginTime * 1000);
+    final now = DateTime.now();
+    final difference = now.difference(lastLogin);
+    return difference.inDays < AppConfig().softTimeout;
   }
 
   @override
@@ -157,6 +166,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
                       return AccountCard(
                         title: account.name,
                         subtitle: account.currentEtabName,
+                        loggedIn: isLoggedIn(account.lastLogin),
                         avatarUrl: account.avatarUrl,
                         onTap: () => _openAccount(context, account),
                         onDelete: () => _deleteAccount(context, account),

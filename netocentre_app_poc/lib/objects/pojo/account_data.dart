@@ -4,6 +4,7 @@ class AccountData {
   final String currentEtabName;
   final String domain;
   final String avatarUrl;
+  final int lastLogin;
 
   AccountData({
     required this.id,
@@ -11,5 +12,6 @@ class AccountData {
     required this.currentEtabName,
     required this.domain,
     required this.avatarUrl,
+    required this.lastLogin,
   });
 }
