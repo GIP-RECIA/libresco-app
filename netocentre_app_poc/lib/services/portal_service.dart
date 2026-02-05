@@ -265,7 +265,7 @@ class PortalService {
     return false;
   }
 
-  Future<Map<String, dynamic>?> getUserInfo() async {
+  Future<(String, Map<String, dynamic>)?> getUserInfo(String claims) async {
     log.info('Getting user infos');
 
     final client = IOClient(HttpClient());
@@ -273,8 +273,8 @@ class PortalService {
       Account().domain,
       '/portail/api/v5-1/userinfo',
       {
-        'claims': 'private,picture,name,ESCOSIRENCourant,ESCOSIREN',
-        'groups': ''
+        'claims': claims,
+        'groups': '',
       },
     );
 
@@ -307,30 +307,28 @@ class PortalService {
       final String decodedBase64 = utf8.decode(base64.decode(base64url));
       log.finer('Decoded base64 $decodedBase64');
 
-      return json.decode(decodedBase64);
+      return (res.body, json.decode(decodedBase64) as Map<String, dynamic>);
     } else {
       log.warning('Got an abnormal ${res.statusCode} response status code !');
       return null;
     }
   }
 
-  Future<Map<String, dynamic>?> getInfoEtab(String siren) async {
+  Future<Map<String, dynamic>?> getInfoEtab(List<String> sirens) async {
     log.info('Getting etab name from change-etablissement');
-    log.info(siren.runtimeType);
 
     final client = IOClient(HttpClient());
     Uri request = Uri.https(
       Account().domain,
       '${AppConfig().paramEtabContextPath}/rest/v2/structures/structs/',
       {
-        'ids': siren,
+        'ids': sirens.join(','),
       },
     );
     log.finer('Making a request to etab API : $request');
     final http.Response res = await client.get(request);
     if (res.statusCode == 200) {
-      var rawEtabData = json.decode(res.body);
-      return rawEtabData[siren];
+      return json.decode(res.body);
     } else {
       return null;
     }
@@ -338,16 +336,20 @@ class PortalService {
 
   Future<bool> loadUserInfo() async {
     log.info('Loading user info');
-    var rawUserInfo = await getUserInfo();
+    var rawUserInfo =
+        await getUserInfo('private,picture,name,ESCOSIRENCourant,ESCOSIREN');
     if (rawUserInfo == null) return false;
-    var rawEtabInfo = await getInfoEtab(rawUserInfo['ESCOSIRENCourant'][0]);
+    Map<String, dynamic> userInfo = rawUserInfo.$2;
+    List<String> siren = List<String>.from(userInfo['ESCOSIRENCourant'] ?? []);
+    Map<String, dynamic>? rawEtabInfo = await getInfoEtab(siren);
     if (rawEtabInfo == null) return false;
-    rawUserInfo['currentEtabName'] = rawEtabInfo["displayName"];
-    rawUserInfo['domain'] = rawEtabInfo["otherAttributes"]["ESCODomaines"][0];
-    rawUserInfo['baseUrl'] =
-        'https://${rawEtabInfo["otherAttributes"]["ESCODomaines"][0]}';
-    UserInfo().fromMap(rawUserInfo);
-    UserInfo().setUid(rawUserInfo['sub'] ?? '');
+    Map<String, dynamic> etabInfo = rawEtabInfo[siren[0]];
+    userInfo['currentEtabName'] = etabInfo["displayName"];
+    userInfo['domain'] = etabInfo["otherAttributes"]["ESCODomaines"][0];
+    userInfo['baseUrl'] =
+        'https://${etabInfo["otherAttributes"]["ESCODomaines"][0]}';
+    UserInfo().fromMap(userInfo);
+    UserInfo().setUid(userInfo['sub'] ?? '');
     UserInfo().update();
     return true;
   }
