@@ -51,6 +51,8 @@ class AppConfig {
   bool _cache = true;
   final bool loadExternalConfig = false;
   final String configUri = "";
+  int _softTimeout = 7;
+  int _hardTimeout = 60;
 
   factory AppConfig() {
     return _instance;
@@ -159,6 +161,9 @@ class AppConfig {
     return domainToLogo[domain]!;
   }
 
+  int get softTimeout => getAttribute('_softTimeout', _softTimeout);
+  int get hardTimeout => getAttribute('_hardTimeout', _hardTimeout);
+
   @override
   String toString() {
     return 'AppConfig{'
@@ -172,7 +177,9 @@ class AppConfig {
         '_casCookieName: $_casCookieName, '
         '_uPortalBaseURL: $_uPortalBaseURL, '
         '_staticsBaseURL: $_staticsPath, '
-        '_cache: $_cache'
+        '_cache: $_cache, '
+        '_softTimeout: $_softTimeout'
+        '_hardTimeout: $_hardTimeout'
         '}';
   }
 }

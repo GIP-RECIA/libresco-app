@@ -35,7 +35,8 @@ class DatabaseProvider {
             picture VARCHAR(255),
             currentEtabName VARCHAR(255),
             domain VARCHAR(255),
-            lastLogin INTEGER
+            lastLogin INTEGER,
+            firstLogin INTEGER
           );
         ''');
       },
