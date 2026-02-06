@@ -12,6 +12,8 @@ import 'package:netocentre_app_poc/ui/components/nav_bar.dart';
 import 'package:netocentre_app_poc/ui/pages/unconnected_home_page.dart';
 
 import '../../services/login_service.dart';
+import '../pages/home_page.dart';
+import '../pages/loading_page.dart';
 
 class AppContainer extends StatefulWidget {
   final bool? appBarClose;
@@ -89,16 +91,18 @@ class _AppContainer extends State<AppContainer> {
       if (!result) {
         log.warning("Could not change etab because an error occured !");
       } else {
-        // TODO : Logout partiel de CAS et suppression de la session portail
         LoginService.instance.logout(Account().domain, true);
         Session().setPortalSessionCookie('');
         Session().persist();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const UnconnectedHomePage(),
-          ),
-        );
+        // We need to wait a little bit to make sur partial logout is finished
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const LoadingPage(callbackWidget: HomePage()),
+            ),
+          );
+        });
       }
     } else {
       log.fine(
