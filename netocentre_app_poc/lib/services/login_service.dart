@@ -165,7 +165,7 @@ class LoginService {
           AppConfig().casHost,
           '/cas/logout',
           {
-            'partialLogout': true,
+            'partialLogout': 'true',
           },
         );
       }

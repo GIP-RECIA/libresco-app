@@ -1,5 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
+import 'package:netocentre_app_poc/objects/singletons/account.dart';
+import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 
 class ChangeEtabService {
   final log = Logger('ChangeEtabService');
@@ -13,7 +15,7 @@ class ChangeEtabService {
 
   Future<bool> changeEtab(String token, String siren) async {
     final url =
-        "https://lycees.netocentre.fr/paramuseretab/changeetab/api/$siren";
+        "https://${Account().domain}${AppConfig().paramEtabContextPath}/changeetab/api/$siren";
     log.fine("Making a request to $url");
     final response = await http.put(
       Uri.parse(url),
@@ -26,13 +28,5 @@ class ChangeEtabService {
       return false;
     }
     return true;
-  }
-
-  Future<void> partialLogout() async {
-    // TODO
-  }
-
-  Future<void> clearPortalSession() async {
-    // TODO
   }
 }
