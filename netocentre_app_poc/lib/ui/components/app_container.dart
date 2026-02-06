@@ -90,10 +90,9 @@ class _AppContainer extends State<AppContainer> {
         log.warning("Could not change etab because an error occured !");
       } else {
         // TODO : Logout partiel de CAS et suppression de la session portail
-        await ChangeEtabService.instance.partialLogout();
-        await ChangeEtabService.instance.clearPortalSession();
-        LoginService.instance.logout(Account().domain);
-        Session().clear(persist: true);
+        LoginService.instance.logout(Account().domain, true);
+        Session().setPortalSessionCookie('');
+        Session().persist();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

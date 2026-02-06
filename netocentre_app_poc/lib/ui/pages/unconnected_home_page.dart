@@ -104,7 +104,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
     AccountData accountData,
   ) async {
     await SessionRepository.instance.load(id: accountData.id);
-    await LoginService.instance.logout(accountData.domain);
+    await LoginService.instance.logout(accountData.domain, false);
     Session().clear();
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -118,7 +118,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   ) async {
     var id = accountData.id;
     await SessionRepository.instance.load(id: id);
-    await LoginService.instance.logout(accountData.domain);
+    await LoginService.instance.logout(accountData.domain, false);
     await SessionRepository.instance.deleteAll(id: id);
 
     await initAccounts();
