@@ -36,7 +36,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           : Container(
               padding: EdgeInsets.all(8),
               child: SvgPicture.network(
-                '${Account().getBaseUrl()}/images/partners/netocentre-simple.svg',
+                '${Account().getBaseUrl()}/images/partners/${AppConfig().getLogoFromDomain(Account().domain)}',
               ),
             ),
       title: Text(title),

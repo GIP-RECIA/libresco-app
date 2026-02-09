@@ -29,6 +29,10 @@ class AppConfig {
     364 : "Services Citoyens & Territoriaux", 363 : "Apprentissage & Suivi",
     362 : "Administration & Support", 361 : "Communication & Collaboration",
     360 : "Documents & Ressources numériques"};
+  Map<String,String> domainToLogo = {"lycees.netocentre.fr" : "netocentre-simple.svg",
+    "www.chercan.fr" : "chercan-simple.svg", "www.colleges-eureliens.fr" : "collegeseureliens-simple.svg",
+    "e-college.indre.fr" : "monecollege36-simple.svg", "www.touraine-eschool.fr" : "touraine-simple.svg",
+    "ent.colleges41.fr" : "colleges41-simple.svg", "mon-e-college.loiret.fr" : "monecollege45-simple.svg"};
   bool _cache = true;
 
   factory AppConfig() {
@@ -126,6 +130,14 @@ class AppConfig {
       return "";
     }
     return categoryIdToName[id]!;
+  }
+
+  String getLogoFromDomain(String domain){
+    log.warning("GEGAEGAEGAEGAEGAEGAEG $domain $domainToLogo");
+    if(!domainToLogo.containsKey(domain)){
+      return "netocentre-simple.svg";
+    }
+    return domainToLogo[domain]!;
   }
 
   @override
