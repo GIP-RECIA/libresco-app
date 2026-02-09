@@ -262,7 +262,7 @@ class LoginService {
 
         //Configure the new request
         request = await client.getUrl(uri.resolve(location));
-        if(uri.toString().contains("https://auth.recia.fr/cas/login")){
+        if(uri.toString().contains(AppConfig().casBaseURL)){
           request.headers.add(
             'Cookie',
             '${AppConfig().casCookieName}=${Session().CASSessionCookie}',
