@@ -133,7 +133,6 @@ class AppConfig {
   }
 
   String getLogoFromDomain(String domain){
-    log.warning("GEGAEGAEGAEGAEGAEGAEG $domain $domainToLogo");
     if(!domainToLogo.containsKey(domain)){
       return "netocentre-simple.svg";
     }
