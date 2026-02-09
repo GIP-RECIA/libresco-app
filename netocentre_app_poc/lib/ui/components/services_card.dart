@@ -15,7 +15,6 @@ import '../../objects/singletons/user_info.dart';
 class ServicesCard extends StatelessWidget {
   final log = Logger('ServicesCard');
   final Service service;
-  final bool isNew = true;
   final VoidCallback? onPressed;
 
   ServicesCard(
@@ -119,24 +118,25 @@ class ServicesCard extends StatelessWidget {
                 children: [
                   Container(
                     height: 18,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(18),
                         topRight: Radius.circular(18),
                       ),
-                      color: Color(0xFFAD0780),
+                      color: AppConfig().getColorFromCategoryId(service.category),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   LogoRow(
                     service,
                     onPressed: onPressed,
                   ),
-                  const SizedBox(height: 10),
-                  // Text(
-                  //   'Type Service',
-                  //   style: TextStyle(color: Colors.grey.shade500),
-                  //),
+                  const SizedBox(height: 5),
+                  Text(
+                    AppConfig().getNameFromCategoryId(service.category),
+                    style: TextStyle(color: Colors.grey.shade500, fontSize: 10),
+                  ),
+                  const SizedBox(height: 5),
                   Text(
                     service.text,
                     textAlign: TextAlign.center,
@@ -205,6 +205,10 @@ class LogoRow extends StatelessWidget {
             '${Account().getBaseUrl()}${service.iconUri}',
             height: 50,
             width: 50,
+            colorFilter: ColorFilter.mode(
+              AppConfig().getColorFromCategoryId(service.category),
+              BlendMode.srcIn,
+            ),
           ),
         ),
         if (service.isFavorite)

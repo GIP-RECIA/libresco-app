@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -17,9 +18,17 @@ class AppConfig {
   String _portalIDCookieName = 'clusterIDPortail';
   String _casCookieName = 'TGC';
   String? _uPortalBaseURL;
-  String? _staticsBaseURL;
+  String? _staticsPath;
   String _paramEtabContextPath = "/paramuseretab";
-  Map<String,String> _externalServices = {'PRONOTE' : 'pronote://', 'Nextcloud' : 'nextcloud://'};
+  Map<String,String> _externalServices = {'PRONOTE' : 'pronote://'};
+  Map<int,Color> categoryIdToColor = {365 : Color.fromRGBO(171, 71, 188, 1),
+    364 : Color.fromRGBO(38, 198, 218, 1), 363 : Color.fromRGBO(255, 172, 47, 1),
+    362 : Color.fromRGBO(236, 64, 122, 1), 361 : Color.fromRGBO(87, 71, 188, 1),
+    360 : Color.fromRGBO(102, 187, 106, 1)};
+  Map<int,String> categoryIdToName = {365 : "Services RG & Gestion",
+    364 : "Services Citoyens & Territoriaux", 363 : "Apprentissage & Suivi",
+    362 : "Administration & Support", 361 : "Communication & Collaboration",
+    360 : "Documents & Ressources numériques"};
   bool _cache = true;
 
   factory AppConfig() {
@@ -50,7 +59,7 @@ class AppConfig {
       _serviceURL = data['serviceURL'];
       _idpIdQueryParam = data['idpIdQueryParam'];
       _uPortalBaseURL = data['uPortalBaseURL'];
-      _staticsBaseURL = data['staticsBaseURL'];
+      _staticsPath = data['_staticsPath'];
       _cache = data['cache'];
 
       log.info('Config was successfully loaded : ${toString()}');
@@ -104,6 +113,20 @@ class AppConfig {
   String get staticsPath => getAttribute('_staticsPath', _staticsPath);
 
   bool get cache => _cache;
+
+  Color getColorFromCategoryId(int id){
+    if(!categoryIdToName.containsKey(id)){
+      return Colors.grey;
+    }
+    return categoryIdToColor[id]!;
+  }
+
+  String getNameFromCategoryId(int id){
+    if(!categoryIdToName.containsKey(id)){
+      return "";
+    }
+    return categoryIdToName[id]!;
+  }
 
   @override
   String toString() {

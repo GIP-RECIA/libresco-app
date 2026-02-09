@@ -52,6 +52,31 @@ class PortalService {
       );
 
       if (res.statusCode == 200) {
+        Map<String,int> fnameToCategory = {};
+
+        // Request service-info api to get categories (optional)
+        try {
+          Uri requestServiceInfo = Uri.https(Account().domain,
+            '/service-info-api/api/allServices',);
+          log.finer('Getting service-info-api request : $requestServiceInfo');
+
+          final http.Response responseServiceInfo = await client.get(
+            requestServiceInfo,
+            headers: <String, String>{'Host': Account().domain},
+          );
+
+          final dynamic serviceInfo = json.decode(responseServiceInfo.body);
+          for (var info in serviceInfo){
+            fnameToCategory[info["fname"]] = info["categoriePrincipale"];
+          }
+          log.finer("Loaded fnameToCategory : $fnameToCategory");
+
+        } catch(e) {
+          log.warning("An error occured getting service categories $e");
+        }
+
+        log.warning(fnameToCategory);
+
         /// Parse json and get portlets fname
         final dynamic jsonSubcategories =
             json.decode(res.body)['registry']['categories'][0]['subcategories'];
@@ -78,6 +103,11 @@ class PortalService {
                 );
               }
 
+              int category = 0;
+              if(fnameToCategory.containsKey(portlet['fname'])){
+                category = fnameToCategory[portlet['fname']]!;
+              }
+
               // if auth directly on CAS
               if (portlet['parameters']
                   .containsKey('alternativeMaximizedLink')) {
@@ -93,6 +123,7 @@ class PortalService {
                       iconUri: portletIconUri,
                       isFavorite: portlet['favorite'],
                       fname: portlet['fname'],
+                      category: category,
                     ),
                   );
                   if (portlet['favorite']) {
@@ -104,6 +135,7 @@ class PortalService {
                         iconUri: portletIconUri,
                         isFavorite: portlet['favorite'],
                         fname: portlet['fname'],
+                        category: category,
                       ),
                     );
                   }
@@ -119,6 +151,7 @@ class PortalService {
                     iconUri: portletIconUri,
                     isFavorite: portlet['favorite'],
                     fname: portlet['fname'],
+                    category: category,
                   ),
                 );
                 if (portlet['favorite']) {
@@ -130,6 +163,7 @@ class PortalService {
                       iconUri: portletIconUri,
                       isFavorite: portlet['favorite'],
                       fname: portlet['fname'],
+                      category: category,
                     ),
                   );
                 }

@@ -6,6 +6,7 @@ class Service {
   bool isFavorite;
   final bool isNew = false;
   String? fname;
+  int category;
   late final bool isAuthByUPortal;
 
   Service.UPortalBased({
@@ -15,6 +16,7 @@ class Service {
     required this.iconUri,
     required this.isFavorite,
     required this.fname,
+    required this.category,
   }) {
     isAuthByUPortal = true;
   }
@@ -26,6 +28,7 @@ class Service {
     required this.iconUri,
     required this.isFavorite,
     required this.fname,
+    required this.category,
   }) {
     isAuthByUPortal = false;
   }
