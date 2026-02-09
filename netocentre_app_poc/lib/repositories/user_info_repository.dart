@@ -22,6 +22,7 @@ class UserInfoRepository {
       UserInfo().toMap(),
       where: 'id = ${Account().id}',
     );
+    Account().setDomain(UserInfo().domain);
     log.fine('Update in database : ${UserInfo().toString()}');
   }
 }

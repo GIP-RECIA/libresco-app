@@ -43,6 +43,8 @@ class UserInfo {
     _currentEtabName = value;
   }
 
+  String get domain => _domain;
+
   Map<String, Object?> toMap() {
     var map = <String, Object?>{
       'uid': _uid,
