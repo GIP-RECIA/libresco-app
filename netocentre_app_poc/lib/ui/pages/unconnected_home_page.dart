@@ -5,7 +5,6 @@ import 'package:netocentre_app_poc/objects/pojo/account_data.dart';
 import 'package:netocentre_app_poc/objects/singletons/account.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
-import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
 import 'package:netocentre_app_poc/repositories/session_repository.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
 import 'package:netocentre_app_poc/ui/components/account_card.dart';
@@ -100,7 +99,10 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
     }
   }
 
-  Future<void> _logoutAccount(BuildContext context, AccountData accountData) async {
+  Future<void> _logoutAccount(
+    BuildContext context,
+    AccountData accountData,
+  ) async {
     await SessionRepository.instance.load(id: accountData.id);
     await LoginService.instance.logout(accountData.domain);
     Session().clear();
@@ -110,7 +112,10 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
     );
   }
 
-  Future<void> _deleteAccount(BuildContext context, AccountData accountData) async {
+  Future<void> _deleteAccount(
+    BuildContext context,
+    AccountData accountData,
+  ) async {
     var id = accountData.id;
     await SessionRepository.instance.load(id: id);
     await LoginService.instance.logout(accountData.domain);
@@ -138,7 +143,12 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
             child: Column(
               children: [
                 const SizedBox(height: 40),
-                Image.asset('assets/logo.png', width: 150, height: 150, fit: BoxFit.cover,),
+                Image.asset(
+                  'assets/logo.png',
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.cover,
+                ),
                 Expanded(
                   child: ListView.builder(
                     itemCount: accounts.length,

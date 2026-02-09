@@ -6,11 +6,9 @@ import 'package:netocentre_app_poc/objects/singletons/account.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
-import 'package:netocentre_app_poc/ui/pages/web_view_page.dart';
 import 'package:netocentre_app_poc/ui/pages/unconnected_home_page.dart';
+import 'package:netocentre_app_poc/ui/pages/web_view_page.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../objects/singletons/user_info.dart';
 
 class ServicesCard extends StatelessWidget {
   final log = Logger('ServicesCard');
@@ -42,7 +40,6 @@ class ServicesCard extends StatelessWidget {
       ),
       child: GestureDetector(
         onTapUp: (_) async {
-
           bool launchWeb = false;
           if (AppConfig().externalServices.containsKey(service.fname)) {
             log.fine("External service detected : ${service.fname}");
@@ -59,7 +56,7 @@ class ServicesCard extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text(
-                        'Impossible d\'ouvrir l\'application externe : est-elle installée sur votre téléphone ?'
+                      'Impossible d\'ouvrir l\'application externe : est-elle installée sur votre téléphone ?',
                     ),
                     duration: Duration(seconds: 5),
                   ),
@@ -73,19 +70,20 @@ class ServicesCard extends StatelessWidget {
           final String baseUrl = Account().getBaseUrl();
           log.finer('Base url for user is $baseUrl');
 
-          if(launchWeb){
+          if (launchWeb) {
             if (await LoginService.instance.hasCASSession() &&
                 await LoginService.instance.isAuthorizedByUPortal()) {
               if (context.mounted) {
-                String uri =
-                    '$baseUrl/portail/p/${service.serviceUri}';
+                String uri = '$baseUrl/portail/p/${service.serviceUri}';
                 if (!service.isAuthByUPortal) {
                   uri = '$baseUrl'
                       '/portail/api/ExternalURLStats'
                       '?fname=${service.fname}'
                       '&service=${service.serviceUri}';
                 }
-                log.finer('define url from uri \'${service.serviceUri}\' : $uri');
+                log.finer(
+                  'define url from uri \'${service.serviceUri}\' : $uri',
+                );
 
                 Navigator.push(
                   context,
@@ -123,7 +121,8 @@ class ServicesCard extends StatelessWidget {
                         topLeft: Radius.circular(18),
                         topRight: Radius.circular(18),
                       ),
-                      color: AppConfig().getColorFromCategoryId(service.category),
+                      color:
+                          AppConfig().getColorFromCategoryId(service.category),
                     ),
                   ),
                   const SizedBox(height: 20),

@@ -19,7 +19,7 @@ Future<Widget> buildApp() async {
       await SessionRepository.instance.getProfilesList();
   if (profiles.length == 1) {
     Account().setId(profiles[0]['id'] as int);
-    if(profiles[0]['domain'] != null){
+    if (profiles[0]['domain'] != null) {
       Account().setDomain(profiles[0]['domain'] as String);
     } else {
       log.warning("There was an error when loading the domain !");

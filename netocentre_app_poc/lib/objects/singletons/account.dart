@@ -29,7 +29,7 @@ class Account {
     _domain = value;
   }
 
-  String getBaseUrl(){
+  String getBaseUrl() {
     if (_domain == '' || _domain == null) {
       return AppConfig().uPortalBaseURL;
     }

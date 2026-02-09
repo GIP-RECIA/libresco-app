@@ -84,17 +84,21 @@ class SessionRepository {
 
   Future<void> deleteExistingProfile(String uid, int id) async {
     final db = await DatabaseProvider.instance.db;
-    await db.execute('DELETE FROM $tableName where id != $id and uid="$uid"',);
+    await db.execute(
+      'DELETE FROM $tableName where id != $id and uid="$uid"',
+    );
     log.fine('Duplicated profile successfully deleted');
   }
 
-  Future<bool> doesAccountAlreadyExists(String uid) async{
+  Future<bool> doesAccountAlreadyExists(String uid) async {
     final db = await DatabaseProvider.instance.db;
-    List<Map<String, Object?>> response = await db.query(tableName, where: 'uid = "$uid"',);
+    List<Map<String, Object?>> response = await db.query(
+      tableName,
+      where: 'uid = "$uid"',
+    );
     if (response.length >= 2) {
       return true;
     }
     return false;
   }
-
 }

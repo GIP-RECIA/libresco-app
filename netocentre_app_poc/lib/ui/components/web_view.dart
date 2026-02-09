@@ -46,10 +46,12 @@ class _WebView extends State<WebView> {
           '\').forEach(node => node.remove());',
     );
     await controller.evaluateJavascript(
-      source: 'document.body.setAttribute(\'style\', \'--recia-header-height: 0px !important;\');',
+      source: 'document.body.setAttribute(\'style\', '
+          '\'--recia-header-height: 0px !important;\');',
     );
     await controller.evaluateJavascript(
-      source: 'document.querySelector(\'body.portal\').setAttribute(\'style\', \'margin-top: 0px !important;\');',
+      source: 'document.querySelector(\'body.portal\')'
+          '.setAttribute(\'style\', \'margin-top: 0px !important;\');',
     );
 
     widget.pullToRefreshController?.endRefreshing();

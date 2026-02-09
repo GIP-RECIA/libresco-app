@@ -7,7 +7,6 @@ import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/objects/singletons/account.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
-import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
 
 class LoginService {
   final log = Logger('LoginService');
@@ -155,7 +154,7 @@ class LoginService {
   }
 
   Future<void> logout(String domain) async {
-    try{
+    try {
       final client = HttpClient();
       client.userAgent = AppConfig().userAgent;
 
@@ -206,7 +205,6 @@ class LoginService {
     } catch (e) {
       log.warning("An error occured while disconnecting an account : $e");
     }
-
   }
 
   /// Used to earn the portalSessionCookie
@@ -253,16 +251,20 @@ class LoginService {
         // If the URI starts with CAS in the first redirect, that means there was a domain change
         // So we remember the domain for the rest of the requests. Once we will obtain userinfos
         // it will not be necessary anymore
-        if(requestCounter == 0 && uri.toString().startsWith(AppConfig().casBaseURL)){
-          log.fine('Multidomain redirection detected on URL : ${uri.toString()}');
-          String service = (uri.toString().split("service=")[1]).split("/portail/Login")[0];
+        if (requestCounter == 0 &&
+            uri.toString().startsWith(AppConfig().casBaseURL)) {
+          log.fine(
+            'Multidomain redirection detected on URL : ${uri.toString()}',
+          );
+          String service =
+              (uri.toString().split("service=")[1]).split("/portail/Login")[0];
           AppConfig().setUportalBaseURL(service);
           log.fine('Base URL for next requests is set to $service');
         }
 
         //Configure the new request
         request = await client.getUrl(uri.resolve(location));
-        if(uri.toString().contains(AppConfig().casBaseURL)){
+        if (uri.toString().contains(AppConfig().casBaseURL)) {
           request.headers.add(
             'Cookie',
             '${AppConfig().casCookieName}=${Session().CASSessionCookie}',

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:netocentre_app_poc/objects/enums/user_menu_item.dart';
 import 'package:netocentre_app_poc/objects/singletons/account.dart';
-import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/services_list.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
 import 'package:netocentre_app_poc/objects/singletons/user_info.dart';

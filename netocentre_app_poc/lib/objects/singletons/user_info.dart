@@ -1,5 +1,4 @@
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/repositories/user_info_repository.dart';
 
 class UserInfo {

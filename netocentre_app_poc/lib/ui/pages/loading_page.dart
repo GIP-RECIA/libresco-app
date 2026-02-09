@@ -101,10 +101,16 @@ class LoadingPageUtils {
     if (await PortalService.instance.loadUserInfo()) {
       log.info('Data was loaded successfully, now exiting loading page...');
       final String uid = UserInfo().uid;
-      final bool exists = await SessionRepository.instance.doesAccountAlreadyExists(uid);
-      if(exists){
-        log.warning("An account with uid $uid already exists ! Cleaning the initial account...");
-        await SessionRepository.instance.deleteExistingProfile(uid, Account().id!);
+      final bool exists =
+          await SessionRepository.instance.doesAccountAlreadyExists(uid);
+      if (exists) {
+        log.warning(
+          "An account with uid $uid already exists ! Cleaning the initial account...",
+        );
+        await SessionRepository.instance.deleteExistingProfile(
+          uid,
+          Account().id!,
+        );
       }
       navigatorPush();
     } else {

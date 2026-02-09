@@ -11,7 +11,7 @@ class ServicesFragment extends StatefulWidget {
 
   const ServicesFragment({
     super.key,
-    required this.homeModel
+    required this.homeModel,
   });
 
   @override

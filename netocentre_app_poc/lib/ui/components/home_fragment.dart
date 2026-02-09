@@ -58,7 +58,7 @@ class _HomeFragment extends State<HomeFragment> {
 
   Future<void> _onFavoritesUpdated() async {
     await controller?.evaluateJavascript(
-        source: 'document.dispatchEvent(new CustomEvent(\'update-favorites\'));'
+      source: 'document.dispatchEvent(new CustomEvent(\'update-favorites\'));',
     );
   }
 
@@ -112,7 +112,9 @@ class _HomeFragment extends State<HomeFragment> {
     return InAppWebView(
       keepAlive: widget.keepAlive,
       initialUrlRequest: URLRequest(
-        url: WebUri('${Account().getBaseUrl()}${AppConfig().staticsPath}/logged.html'),
+        url: WebUri(
+          '${Account().getBaseUrl()}${AppConfig().staticsPath}/logged.html',
+        ),
       ),
       initialSettings: _webViewSettings,
       onLoadStop: _onLoadStop,

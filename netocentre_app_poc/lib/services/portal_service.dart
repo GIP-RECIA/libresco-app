@@ -52,12 +52,14 @@ class PortalService {
       );
 
       if (res.statusCode == 200) {
-        Map<String,int> fnameToCategory = {};
+        Map<String, int> fnameToCategory = {};
 
         // Request service-info api to get categories (optional)
         try {
-          Uri requestServiceInfo = Uri.https(Account().domain,
-            '/service-info-api/api/allServices',);
+          Uri requestServiceInfo = Uri.https(
+            Account().domain,
+            '/service-info-api/api/allServices',
+          );
           log.finer('Getting service-info-api request : $requestServiceInfo');
 
           final http.Response responseServiceInfo = await client.get(
@@ -66,12 +68,11 @@ class PortalService {
           );
 
           final dynamic serviceInfo = json.decode(responseServiceInfo.body);
-          for (var info in serviceInfo){
+          for (var info in serviceInfo) {
             fnameToCategory[info["fname"]] = info["categoriePrincipale"];
           }
           log.finer("Loaded fnameToCategory : $fnameToCategory");
-
-        } catch(e) {
+        } catch (e) {
           log.warning("An error occured getting service categories $e");
         }
 
@@ -104,7 +105,7 @@ class PortalService {
               }
 
               int category = 0;
-              if(fnameToCategory.containsKey(portlet['fname'])){
+              if (fnameToCategory.containsKey(portlet['fname'])) {
                 category = fnameToCategory[portlet['fname']]!;
               }
 
@@ -343,7 +344,8 @@ class PortalService {
     if (rawEtabInfo == null) return false;
     rawUserInfo['currentEtabName'] = rawEtabInfo["displayName"];
     rawUserInfo['domain'] = rawEtabInfo["otherAttributes"]["ESCODomaines"][0];
-    rawUserInfo['baseUrl'] = 'https://${rawEtabInfo["otherAttributes"]["ESCODomaines"][0]}';
+    rawUserInfo['baseUrl'] =
+        'https://${rawEtabInfo["otherAttributes"]["ESCODomaines"][0]}';
     UserInfo().fromMap(rawUserInfo);
     UserInfo().setUid(rawUserInfo['sub'] ?? '');
     UserInfo().update();
