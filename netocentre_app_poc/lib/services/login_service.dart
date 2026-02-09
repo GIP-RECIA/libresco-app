@@ -155,53 +155,58 @@ class LoginService {
   }
 
   Future<void> logout(String domain) async {
-    final client = HttpClient();
-    client.userAgent = AppConfig().userAgent;
+    try{
+      final client = HttpClient();
+      client.userAgent = AppConfig().userAgent;
 
-    log.fine('Logging out the user from CAS');
-    Uri casURI = Uri.https(AppConfig().casHost, '/cas/logout');
-    log.finer('Making a request to CAS : $casURI');
-    log.finer('${AppConfig().casCookieName}=${Session().CASSessionCookie}');
+      log.fine('Logging out the user from CAS');
+      Uri casURI = Uri.https(AppConfig().casHost, '/cas/logout');
+      log.finer('Making a request to CAS : $casURI');
+      log.finer('${AppConfig().casCookieName}=${Session().CASSessionCookie}');
 
-    var casRequest = await client.getUrl(casURI);
-    casRequest.followRedirects = false;
-    casRequest.headers.add(
-      'Cookie',
-      '${AppConfig().casCookieName}=${Session().CASSessionCookie}',
-    );
+      var casRequest = await client.getUrl(casURI);
+      casRequest.followRedirects = false;
+      casRequest.headers.add(
+        'Cookie',
+        '${AppConfig().casCookieName}=${Session().CASSessionCookie}',
+      );
 
-    var casResponse = await casRequest.close();
-    String casBody = await casResponse.transform(utf8.decoder).join();
+      var casResponse = await casRequest.close();
+      String casBody = await casResponse.transform(utf8.decoder).join();
 
-    log.finer(
-      'Response status code from cas server : ${casResponse.statusCode}',
-    );
-    log.finer('Response headers: ${casResponse.headers}');
-    log.finest('Body: $casBody');
+      log.finer(
+        'Response status code from cas server : ${casResponse.statusCode}',
+      );
+      log.finer('Response headers: ${casResponse.headers}');
+      log.finest('Body: $casBody');
 
-    log.fine('Logging out the user from Portal');
-    log.finer('Domain for the user is $domain');
-    Uri portalURI = Uri.https(domain, '/portail/Logout');
+      log.fine('Logging out the user from Portal');
+      log.finer('Domain for the user is $domain');
+      Uri portalURI = Uri.https(domain, '/portail/Logout');
 
-    log.finer('Making a request to portal : $portalURI');
-    log.finer(
-      '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}',
-    );
+      log.finer('Making a request to portal : $portalURI');
+      log.finer(
+        '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}',
+      );
 
-    var portalRequest = await client.getUrl(portalURI);
-    portalRequest.followRedirects = false;
-    portalRequest.headers.add(
-      'Cookie',
-      '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
-          '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
-    );
-    portalRequest.headers.add('Host', domain);
+      var portalRequest = await client.getUrl(portalURI);
+      portalRequest.followRedirects = false;
+      portalRequest.headers.add(
+        'Cookie',
+        '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
+            '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
+      );
+      portalRequest.headers.add('Host', domain);
 
-    var portalResponse = await portalRequest.close();
-    log.finer(
-      'Response status code from portal : ${portalResponse.statusCode}',
-    );
-    log.finer('Response headers: ${portalResponse.headers}');
+      var portalResponse = await portalRequest.close();
+      log.finer(
+        'Response status code from portal : ${portalResponse.statusCode}',
+      );
+      log.finer('Response headers: ${portalResponse.headers}');
+    } catch (e) {
+      log.warning("An error occured while disconnecting an account : $e");
+    }
+
   }
 
   /// Used to earn the portalSessionCookie
