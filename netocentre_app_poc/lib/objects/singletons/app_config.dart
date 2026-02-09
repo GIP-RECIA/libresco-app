@@ -162,6 +162,7 @@ class AppConfig {
   }
 
   int get softTimeout => getAttribute('_softTimeout', _softTimeout);
+
   int get hardTimeout => getAttribute('_hardTimeout', _hardTimeout);
 
   @override

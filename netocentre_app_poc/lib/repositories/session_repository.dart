@@ -29,7 +29,9 @@ class SessionRepository {
   }
 
   Future<void> setFirstLoginTime() async {
-    Map<String, Object?> data = {"firstLogin" : DateTime.now().millisecondsSinceEpoch ~/ 1000};
+    Map<String, Object?> data = {
+      "firstLogin": DateTime.now().millisecondsSinceEpoch ~/ 1000
+    };
     final db = await DatabaseProvider.instance.db;
     await db.update(
       tableName,
@@ -40,7 +42,9 @@ class SessionRepository {
   }
 
   Future<void> updateLastLoginTime() async {
-    Map<String, Object?> data = {"lastLogin" : DateTime.now().millisecondsSinceEpoch ~/ 1000};
+    Map<String, Object?> data = {
+      "lastLogin": DateTime.now().millisecondsSinceEpoch ~/ 1000
+    };
     final db = await DatabaseProvider.instance.db;
     await db.update(
       tableName,
@@ -51,7 +55,7 @@ class SessionRepository {
   }
 
   Future<void> resetLastLoginTime(int id) async {
-    Map<String, Object?> data = {"lastLogin" : 0};
+    Map<String, Object?> data = {"lastLogin": 0};
     final db = await DatabaseProvider.instance.db;
     await db.update(
       tableName,

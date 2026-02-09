@@ -1,5 +1,4 @@
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/objects/singletons/account.dart';
 import 'package:netocentre_app_poc/repositories/session_repository.dart';
 
 class Session {

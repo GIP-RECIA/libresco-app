@@ -44,7 +44,8 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   }
 
   Future<void> initAccounts() async {
-    List<Map<String, Object?>> profiles = await SessionRepository.instance.getProfilesList();
+    List<Map<String, Object?>> profiles =
+        await SessionRepository.instance.getProfilesList();
 
     final loadedAccounts = profiles
         .map(
@@ -53,9 +54,10 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
             name: (p['name'] ?? '') as String,
             currentEtabName: (p['currentEtabName'] ?? '') as String,
             domain: (p['domain'] ?? '') as String,
-            avatarUrl: Account().getBaseUrl() + ((p['picture'] ?? '') as String),
-            lastLogin: p['lastLogin']==null ? 0 : p['lastLogin'] as int,
-            firstLogin: p['firstLogin']==null ? 0 : p['firstLogin'] as int,
+            avatarUrl:
+                Account().getBaseUrl() + ((p['picture'] ?? '') as String),
+            lastLogin: p['lastLogin'] == null ? 0 : p['lastLogin'] as int,
+            firstLogin: p['firstLogin'] == null ? 0 : p['firstLogin'] as int,
           ),
         )
         .toList();
@@ -135,13 +137,15 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
     _openCasBrowser();
   }
 
-  bool isLoggedIn(int lastLoginTime, int firstLoginTime){
+  bool isLoggedIn(int lastLoginTime, int firstLoginTime) {
     final now = DateTime.now();
     final lastLogin = DateTime.fromMillisecondsSinceEpoch(lastLoginTime * 1000);
-    final firstLogin = DateTime.fromMillisecondsSinceEpoch(firstLoginTime * 1000);
+    final firstLogin =
+        DateTime.fromMillisecondsSinceEpoch(firstLoginTime * 1000);
     final differenceLast = now.difference(lastLogin);
     final differenceFirst = now.difference(firstLogin);
-    return (differenceLast.inDays < AppConfig().softTimeout) && (differenceFirst.inDays < AppConfig().hardTimeout);
+    return (differenceLast.inDays < AppConfig().softTimeout) &&
+        (differenceFirst.inDays < AppConfig().hardTimeout);
   }
 
   @override
@@ -169,7 +173,10 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
                       return AccountCard(
                         title: account.name,
                         subtitle: account.currentEtabName,
-                        loggedIn: isLoggedIn(account.lastLogin, account.firstLogin),
+                        loggedIn: isLoggedIn(
+                          account.lastLogin,
+                          account.firstLogin,
+                        ),
                         avatarUrl: account.avatarUrl,
                         onTap: () => _openAccount(context, account),
                         onDelete: () => _deleteAccount(context, account),
