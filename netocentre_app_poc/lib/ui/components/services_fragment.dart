@@ -4,9 +4,15 @@ import 'package:netocentre_app_poc/objects/service.dart';
 import 'package:netocentre_app_poc/objects/singletons/services_list.dart';
 import 'package:netocentre_app_poc/services/portal_service.dart';
 import 'package:netocentre_app_poc/ui/components/services_card.dart';
+import 'package:netocentre_app_poc/utils/home_model.dart';
 
 class ServicesFragment extends StatefulWidget {
-  const ServicesFragment({super.key});
+  final HomeModel homeModel;
+
+  const ServicesFragment({
+    super.key,
+    required this.homeModel
+  });
 
   @override
   State<ServicesFragment> createState() => _ServicesFragment();
@@ -25,6 +31,7 @@ class _ServicesFragment extends State<ServicesFragment> {
       setState(() {
         renderedServices[index] = currService;
       });
+      widget.homeModel.notify();
     }
   }
 

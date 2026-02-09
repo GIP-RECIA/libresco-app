@@ -7,15 +7,18 @@ import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
 import 'package:netocentre_app_poc/ui/pages/web_view_page.dart';
 import 'package:netocentre_app_poc/utils/custom_cookies_manager.dart';
+import 'package:netocentre_app_poc/utils/home_model.dart';
 import 'package:netocentre_app_poc/utils/web_view_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeFragment extends StatefulWidget {
   final InAppWebViewKeepAlive keepAlive;
+  final HomeModel homeModel;
 
   const HomeFragment({
     super.key,
     required this.keepAlive,
+    required this.homeModel,
   });
 
   @override
@@ -24,6 +27,7 @@ class HomeFragment extends StatefulWidget {
 
 class _HomeFragment extends State<HomeFragment> {
   final log = Logger('_HomeFragment');
+  InAppWebViewController? controller;
 
   final InAppWebViewSettings _webViewSettings = InAppWebViewSettings(
     isInspectable: kDebugMode,
@@ -36,6 +40,13 @@ class _HomeFragment extends State<HomeFragment> {
   void initState() {
     super.initState();
     _initCookies();
+    widget.homeModel.addListener(_onFavoritesUpdated);
+  }
+
+  @override
+  void dispose() {
+    widget.homeModel.removeListener(_onFavoritesUpdated);
+    super.dispose();
   }
 
   void _initCookies() {
@@ -43,6 +54,12 @@ class _HomeFragment extends State<HomeFragment> {
     manager.removeSessionCookies();
     CustomCookiesManager.defineCASCookies(manager);
     CustomCookiesManager.defineUPortalCookies(manager);
+  }
+
+  Future<void> _onFavoritesUpdated() async {
+    await controller?.evaluateJavascript(
+        source: 'document.dispatchEvent(new CustomEvent(\'update-favorites\'));'
+    );
   }
 
   Future<void> _onLoadStop(
@@ -99,6 +116,7 @@ class _HomeFragment extends State<HomeFragment> {
       ),
       initialSettings: _webViewSettings,
       onLoadStop: _onLoadStop,
+      onWebViewCreated: (controller) => this.controller = controller,
       shouldOverrideUrlLoading: _overrideUrlLoading,
     );
   }

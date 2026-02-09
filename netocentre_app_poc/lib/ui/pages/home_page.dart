@@ -4,6 +4,7 @@ import 'package:logging/logging.dart';
 import 'package:netocentre_app_poc/ui/components/app_container.dart';
 import 'package:netocentre_app_poc/ui/components/home_fragment.dart';
 import 'package:netocentre_app_poc/ui/components/services_fragment.dart';
+import 'package:netocentre_app_poc/utils/home_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -18,6 +19,7 @@ class _HomePage extends State<HomePage> {
   final log = Logger('_HomePage');
   final homeKeepAlive = InAppWebViewKeepAlive();
   int _currentFragment = 0;
+  final HomeModel homeModel = HomeModel();
 
   @override
   void initState() {
@@ -33,10 +35,18 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return AppContainer(
-      body: <Widget>[
-        HomeFragment(keepAlive: homeKeepAlive),
-        const ServicesFragment(),
-      ][_currentFragment],
+      body: IndexedStack(
+        index: _currentFragment,
+        children: [
+          HomeFragment(
+            keepAlive: homeKeepAlive,
+            homeModel: homeModel,
+          ),
+          ServicesFragment(
+            homeModel: homeModel,
+          ),
+        ],
+      ),
       onDestinationSelected: _setCurrentFragment,
     );
   }
