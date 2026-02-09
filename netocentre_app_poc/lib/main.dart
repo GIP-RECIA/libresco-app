@@ -19,6 +19,7 @@ Future<Widget> buildApp() async {
       await SessionRepository.instance.getProfilesList();
   if (profiles.length == 1) {
     Account().setId(profiles[0]['id'] as int);
+    Account().setDomain(profiles[0]['domain'] as String);
     await SessionRepository.instance.load();
     connected = await LoginService.instance.hasCASSession();
     if (!connected) {
