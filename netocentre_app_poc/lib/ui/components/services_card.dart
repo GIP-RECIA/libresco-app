@@ -134,6 +134,7 @@ class ServicesCard extends StatelessWidget {
                   const SizedBox(height: 5),
                   Text(
                     AppConfig().getNameFromCategoryId(service.category),
+                    textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey.shade500, fontSize: 10),
                   ),
                   const SizedBox(height: 5),
