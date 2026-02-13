@@ -77,11 +77,13 @@ class _HomeFragment extends State<HomeFragment> {
     NavigationAction action,
   ) async {
     final uri = action.request.url;
-    if (uri != null) {
-      log.fine('==> $uri | ${uri.host}');
-    }
+    final navigationType = action.navigationType;
 
-    if (uri == null || !action.isForMainFrame) {
+    if (uri == null ||
+        !action.isForMainFrame ||
+        navigationType == NavigationType.OTHER ||
+        navigationType == NavigationType.RELOAD ||
+        navigationType == NavigationType.BACK_FORWARD) {
       return NavigationActionPolicy.ALLOW;
     }
 
