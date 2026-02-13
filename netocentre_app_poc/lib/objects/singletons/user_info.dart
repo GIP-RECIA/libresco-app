@@ -46,6 +46,10 @@ class UserInfo {
 
   String get domain => _domain;
 
+  void setDomain(String value) {
+    _domain = domain;
+  }
+
   List<String> get sirens => _sirens;
 
   void setSirens(List<String> value) {
@@ -58,20 +62,8 @@ class UserInfo {
     _currentSiren = value;
   }
 
-  Map<String, Object?> toMap() {
-    var map = <String, Object?>{
-      'uid': _uid,
-      'name': _name,
-      'picture': _picture,
-      'currentEtabName': _currentEtabName,
-      'domain': _domain,
-      'sirens': sirens,
-      'currentSiren': _currentSiren,
-    };
-    return map;
-  }
-
-  Map<String, Object?> toMapForDatabase() {
+  /// Map only the attributes stored in database
+  Map<String, Object?> mapForDatabase() {
     var map = <String, Object?>{
       'uid': _uid,
       'name': _name,
@@ -80,16 +72,6 @@ class UserInfo {
       'domain': _domain,
     };
     return map;
-  }
-
-  void fromMap(Map<String, Object?> map) {
-    _uid = (map['uid'] ?? '') as String;
-    _name = (map['name'] ?? '') as String;
-    _picture = (map['picture'] ?? '') as String;
-    _currentEtabName = (map['currentEtabName'] ?? '') as String;
-    _domain = (map['domain'] ?? '') as String;
-    _sirens = (map['sirens'] ?? '') as List<String>;
-    _currentSiren = (map['currentSiren'] ?? '') as String;
   }
 
   void update() {

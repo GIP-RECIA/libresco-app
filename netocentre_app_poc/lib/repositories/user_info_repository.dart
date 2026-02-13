@@ -19,7 +19,7 @@ class UserInfoRepository {
     final db = await DatabaseProvider.instance.db;
     await db.update(
       tableName,
-      UserInfo().toMapForDatabase(),
+      UserInfo().mapForDatabase(),
       where: 'id = ${Account().id}',
     );
     Account().setDomain(UserInfo().domain);

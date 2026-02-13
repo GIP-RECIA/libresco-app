@@ -265,6 +265,7 @@ class PortalService {
     return false;
   }
 
+  /// Gets the userinfos in form of a tuple : (soffit, map of parsed user infos)
   Future<(String, Map<String, dynamic>)?> getUserInfo(String claims) async {
     log.info('Getting user infos');
 
@@ -336,23 +337,27 @@ class PortalService {
 
   Future<bool> loadUserInfo() async {
     log.info('Loading user info');
+    // Get user infos thanks to already obtained portal cookie
     var rawUserInfo =
         await getUserInfo('private,picture,name,ESCOSIRENCourant,ESCOSIREN');
     if (rawUserInfo == null) return false;
+    // We only need the map here, not the soffit
     Map<String, dynamic> userInfo = rawUserInfo.$2;
+    // Get the current siren and make a request to paramuseretab for the domain and etab name
     List<String> siren = List<String>.from(userInfo['ESCOSIRENCourant'] ?? []);
     Map<String, dynamic>? rawEtabInfo = await getInfoEtab(siren);
     if (rawEtabInfo == null) return false;
-    Map<String, dynamic> etabInfo = rawEtabInfo[siren[0]];
-    userInfo['currentEtabName'] = etabInfo["displayName"];
-    userInfo['domain'] = etabInfo["otherAttributes"]["ESCODomaines"][0];
-    userInfo['baseUrl'] =
-        'https://${etabInfo["otherAttributes"]["ESCODomaines"][0]}';
-    List<String> sirens = userInfo['ESCOSIREN'].cast<String>();
-    userInfo['sirens'] = sirens;
-    userInfo['currentSiren'] = siren[0];
-    UserInfo().fromMap(userInfo);
-    UserInfo().setUid(userInfo['sub'] ?? '');
+    String currentSiren = siren[0];
+    Map<String, dynamic> etabInfo = rawEtabInfo[currentSiren];
+    // We can create the user infos with all the data gathered
+    UserInfo().setCurrentEtabName(etabInfo["displayName"]);
+    UserInfo().setCurrentSiren(currentSiren);
+    UserInfo().setPicture(userInfo['picture'] ?? '');
+    UserInfo().setName(userInfo['name']);
+    UserInfo().setUid(userInfo['sub']);
+    UserInfo().setDomain(etabInfo["otherAttributes"]["ESCODomaines"][0]);
+    UserInfo().setSirens(userInfo['ESCOSIREN'].cast<String>());
+    // Update userinfo in database
     UserInfo().update();
     return true;
   }
