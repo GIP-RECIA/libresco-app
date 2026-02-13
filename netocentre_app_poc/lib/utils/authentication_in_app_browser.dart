@@ -24,7 +24,7 @@ class AuthenticationInAppBrowser extends InAppBrowser {
 
   @override
   Future onBrowserCreated() async {
-    cookieManager.removeSessionCookies();
+    cookieManager.deleteAllCookies();
     log.fine('Browser Created!');
   }
 
@@ -95,6 +95,6 @@ class AuthenticationInAppBrowser extends InAppBrowser {
   void onExit() {
     log.fine('Browser closed!');
     // remove session cookies to avoid lost cookies
-    cookieManager.removeSessionCookies();
+    cookieManager.deleteAllCookies();
   }
 }

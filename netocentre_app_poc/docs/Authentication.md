@@ -75,7 +75,7 @@ manager.setCookie(
 );
 ```
 
-**Note** : on peut faire un `manager.removeSessionCookies()` pour remettre à zéro les cookies avant de les ajouter : cela permet de nettoyer le `CookieManager` pour être sur que d'anciens cookies potentiellement invalides sont bien supprimés.
+**Note** : on peut faire un `manager.deleteAllCookies()` pour remettre à zéro les cookies avant de les ajouter : cela permet de nettoyer le `CookieManager` pour être sur que d'anciens cookies potentiellement invalides sont bien supprimés.
 
 ## Serveur CAS
 

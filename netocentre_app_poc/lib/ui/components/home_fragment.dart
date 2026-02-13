@@ -51,7 +51,7 @@ class _HomeFragment extends State<HomeFragment> {
 
   void _initCookies() {
     CookieManager manager = CookieManager.instance();
-    manager.removeSessionCookies();
+    manager.deleteAllCookies();
     CustomCookiesManager.defineCASCookies(manager);
     CustomCookiesManager.defineUPortalCookies(manager);
   }

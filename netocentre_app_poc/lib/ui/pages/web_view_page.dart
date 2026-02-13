@@ -37,7 +37,7 @@ class _WebViewPage extends State<WebViewPage> {
 
   void _initCookies() {
     manager = CookieManager.instance();
-    manager.removeSessionCookies();
+    manager.deleteAllCookies();
     CustomCookiesManager.defineCASCookies(manager);
     CustomCookiesManager.defineUPortalCookies(manager);
   }
@@ -68,7 +68,7 @@ class _WebViewPage extends State<WebViewPage> {
     return AppContainer(
       appBarClose: true,
       onClose: () {
-        manager.removeSessionCookies();
+        manager.deleteAllCookies();
         Navigator.pop(context);
       },
       appBarTitle: widget.appBarTitle,
