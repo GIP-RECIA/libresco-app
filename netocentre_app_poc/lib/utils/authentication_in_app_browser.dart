@@ -30,10 +30,10 @@ class AuthenticationInAppBrowser extends InAppBrowser {
 
   // This method is called when the browser loads a new url (~= new request)
   @override
-  Future onLoadStart(url) async {
+  Future onLoadStop(url) async {
     // We get the cookies and try to detect if there is the CASSessionCookie
     // when we see the login answer from CAS
-    log.fine('Started $url');
+    log.fine('Stopped $url');
     if (url != null) {
       if (url.toString().contains('${AppConfig().serviceURL}?ticket=')) {
         // Get CASSessionCookie
