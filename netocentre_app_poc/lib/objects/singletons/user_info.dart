@@ -11,6 +11,8 @@ class UserInfo {
   String _picture = '';
   String _currentEtabName = '';
   String _domain = '';
+  List<String> _sirens = [];
+  String _currentSiren = '';
 
   factory UserInfo() {
     return _instance;
@@ -44,7 +46,32 @@ class UserInfo {
 
   String get domain => _domain;
 
+  List<String> get sirens => _sirens;
+
+  void setSirens(List<String> value) {
+    _sirens = value;
+  }
+
+  String get currentSiren => _currentSiren;
+
+  void setCurrentSiren(String value) {
+    _currentSiren = value;
+  }
+
   Map<String, Object?> toMap() {
+    var map = <String, Object?>{
+      'uid': _uid,
+      'name': _name,
+      'picture': _picture,
+      'currentEtabName': _currentEtabName,
+      'domain': _domain,
+      'sirens': sirens,
+      'currentSiren': _currentSiren,
+    };
+    return map;
+  }
+
+  Map<String, Object?> toMapForDatabase() {
     var map = <String, Object?>{
       'uid': _uid,
       'name': _name,
@@ -61,6 +88,8 @@ class UserInfo {
     _picture = (map['picture'] ?? '') as String;
     _currentEtabName = (map['currentEtabName'] ?? '') as String;
     _domain = (map['domain'] ?? '') as String;
+    _sirens = (map['sirens'] ?? '') as List<String>;
+    _currentSiren = (map['currentSiren'] ?? '') as String;
   }
 
   void update() {
@@ -73,6 +102,8 @@ class UserInfo {
     _picture = '';
     _currentEtabName = '';
     _domain = '';
+    _sirens = [];
+    _currentSiren = '';
   }
 
   @override
@@ -83,6 +114,8 @@ class UserInfo {
         '_picture: $_picture'
         '_currentEtabName: $_currentEtabName'
         '_domain: $_domain'
+        '_sirens: $_sirens'
+        '_currentSiren: $_currentSiren'
         '}';
   }
 }

@@ -61,25 +61,22 @@ class _AppContainer extends State<AppContainer> {
 
   void _openChangeEtab(BuildContext context) async {
     log.fine("User requested change of establishment");
-    // Récupération des userinfos et des ESCOSIREN
+    // Récupération d'une soffit à jour
     var rawUserInfo = await PortalService.instance.getUserInfo(
       'private,picture,name,ESCOSIRENCourant,ESCOSIREN',
     );
     final String soffit = rawUserInfo!.$1;
-    final Map<String, dynamic> claims = rawUserInfo.$2;
-    final List<String> sirens = List<String>.from(claims["ESCOSIREN"] ?? []);
-    final String currentSiren = (claims["ESCOSIRENCourant"] as List).first;
 
     // Récupération des infos des structures
     final Map<String, dynamic>? structures =
-        await PortalService.instance.getInfoEtab(sirens);
+        await PortalService.instance.getInfoEtab(UserInfo().sirens);
     log.warning(structures);
     if (structures!.length > 1) {
       // Affichage des établissements sur lesquels on peut changer en excluant l'établissement courant
       final selectedSiren = await showEtabSelector(
         context,
         structures!,
-        currentSiren,
+        UserInfo().currentSiren,
       );
       log.fine("User selected etab $selectedSiren");
 

@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:netocentre_app_poc/objects/enums/user_menu_item.dart';
 import 'package:netocentre_app_poc/objects/singletons/account.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
+import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool close;
@@ -84,18 +85,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ],
               ),
             ),
-            const PopupMenuItem(
-              value: UserMenuItem.changeEtab,
-              enabled: true,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text('Changer d\'établissement'),
-                  ),
-                  Icon(Icons.swap_horiz),
-                ],
+            if(UserInfo().sirens.length>1)
+              const PopupMenuItem(
+                value: UserMenuItem.changeEtab,
+                enabled: true,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text('Changer d\'établissement'),
+                    ),
+                    Icon(Icons.swap_horiz),
+                  ],
+                ),
               ),
-            ),
             const PopupMenuItem(
               value: UserMenuItem.changeAccount,
               child: Row(

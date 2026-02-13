@@ -348,6 +348,9 @@ class PortalService {
     userInfo['domain'] = etabInfo["otherAttributes"]["ESCODomaines"][0];
     userInfo['baseUrl'] =
         'https://${etabInfo["otherAttributes"]["ESCODomaines"][0]}';
+    List<String> sirens = userInfo['ESCOSIREN'].cast<String>();
+    userInfo['sirens'] = sirens;
+    userInfo['currentSiren'] = siren[0];
     UserInfo().fromMap(userInfo);
     UserInfo().setUid(userInfo['sub'] ?? '');
     UserInfo().update();
