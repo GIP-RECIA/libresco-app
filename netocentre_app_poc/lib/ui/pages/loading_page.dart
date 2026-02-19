@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
+import 'package:netocentre_app_poc/objects/enums/user_info_loading_state.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
 import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
@@ -11,6 +12,7 @@ import 'package:netocentre_app_poc/services/portal_service.dart';
 import 'package:netocentre_app_poc/ui/pages/unconnected_home_page.dart';
 
 import '../../objects/singletons/account.dart';
+import 'home_page.dart';
 
 class LoadingPage extends StatefulWidget {
   final Widget callbackWidget;
@@ -100,7 +102,8 @@ class LoadingPageUtils {
 
     // Once we are sure to be connected, we can request the infos from the
     // portal APIs
-    if (await PortalService.instance.loadUserInfo()) {
+    UserInfoLoadingState loadingState = await PortalService.instance.loadUserInfo();
+    if (loadingState == UserInfoLoadingState.success) {
       log.info('Data was loaded successfully, now exiting loading page...');
       final String uid = UserInfo().uid;
       final bool exists =
@@ -117,6 +120,16 @@ class LoadingPageUtils {
       await DnmaService.instance.mark(AppConfig().dnmaDimension, "Portail",
           "https://${Account().domain}/portail/f/accueil/normal/render.uP");
       navigatorPush();
+    } else if(loadingState == UserInfoLoadingState.refresh){
+      // We need to wait a little bit to make sur partial logout is finished
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const LoadingPage(callbackWidget: HomePage()),
+          ),
+        );
+      });
     } else {
       log.shout('Error during loading');
       Navigator.pushReplacement(

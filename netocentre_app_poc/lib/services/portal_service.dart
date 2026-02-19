@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
+import 'package:netocentre_app_poc/objects/enums/user_info_loading_state.dart';
 import 'package:netocentre_app_poc/objects/service.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/services_list.dart';
@@ -335,18 +336,18 @@ class PortalService {
     }
   }
 
-  Future<bool> loadUserInfo() async {
+  Future<UserInfoLoadingState> loadUserInfo() async {
     log.info('Loading user info');
     // Get user infos thanks to already obtained portal cookie
     var rawUserInfo =
         await getUserInfo('private,picture,name,ESCOSIRENCourant,ESCOSIREN');
-    if (rawUserInfo == null) return false;
+    if (rawUserInfo == null) return UserInfoLoadingState.error;
     // We only need the map here, not the soffit
     Map<String, dynamic> userInfo = rawUserInfo.$2;
     // Get the current siren and make a request to paramuseretab for the domain and etab name
     List<String> siren = List<String>.from(userInfo['ESCOSIRENCourant'] ?? []);
     Map<String, dynamic>? rawEtabInfo = await getInfoEtab(siren);
-    if (rawEtabInfo == null) return false;
+    if (rawEtabInfo == null) return UserInfoLoadingState.error;
     String currentSiren = siren[0];
     Map<String, dynamic> etabInfo = rawEtabInfo[currentSiren];
     // We can create the user infos with all the data gathered
@@ -355,11 +356,25 @@ class PortalService {
     UserInfo().setPicture(userInfo['picture'] ?? '');
     UserInfo().setName(userInfo['name']);
     UserInfo().setUid(userInfo['sub']);
-    UserInfo().setDomain(etabInfo["otherAttributes"]["ESCODomaines"][0]);
     UserInfo().setSirens(userInfo['ESCOSIREN'].cast<String>());
+    String domain = etabInfo["otherAttributes"]["ESCODomaines"][0];
+    UserInfo().setDomain(domain);
+    log.finest("Current domain is : $domain");
+    log.finest("Registered domain in database is : ${Account().domain}");
+    // If the domain in database is not the same as the domain from userinfos
+    // It means it was changed => make a partial logout to refresh CAS attributes
+    // TODO : only works if a new portal session was created -> clear portal session at startup ?
+    if(domain != Account().domain){
+      log.info("Domain has changed but not in app ! Making a partial logout to refresh CAS attributes");
+      LoginService.instance.logout(Account().domain, true);
+      Session().setPortalSessionCookie('');
+      Session().persist();
+      UserInfo().update();
+      return UserInfoLoadingState.refresh;
+    }
     // Update userinfo in database
     UserInfo().update();
-    return true;
+    return UserInfoLoadingState.success;
   }
 
   /// uri parser for services who are based on cas auth
