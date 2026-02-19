@@ -47,7 +47,7 @@ class UserInfo {
   String get domain => _domain;
 
   void setDomain(String value) {
-    _domain = domain;
+    _domain = value;
   }
 
   List<String> get sirens => _sirens;
