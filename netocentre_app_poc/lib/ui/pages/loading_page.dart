@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
+import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
 import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
 import 'package:netocentre_app_poc/repositories/session_repository.dart';
+import 'package:netocentre_app_poc/services/dnma_service.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
 import 'package:netocentre_app_poc/services/portal_service.dart';
 import 'package:netocentre_app_poc/ui/pages/unconnected_home_page.dart';
@@ -112,6 +114,8 @@ class LoadingPageUtils {
           Account().id!,
         );
       }
+      await DnmaService.instance.mark(AppConfig().dnmaDimension, "Portail",
+          "https://${Account().domain}/portail/f/accueil/normal/render.uP");
       navigatorPush();
     } else {
       log.shout('Error during loading');

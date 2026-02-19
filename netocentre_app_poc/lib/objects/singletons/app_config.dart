@@ -17,12 +17,16 @@ class AppConfig {
   String _portalCookieName = 'JSESSIONID';
   String _portalIDCookieName = 'clusterIDPortail';
   String _casCookieName = 'TGC';
+  String _cookieDNMAIDName = "dnmaClusterID";
+  String _cookieDNMASessionName = "SESSIONDNMA";
+  String _dnmaDimension = "WEB-PWA";
   String? _uPortalBaseURL = "https://lycees.netocentre.fr";
   String? _staticsPath = '/commun/app-mobile';
   String _paramEtabContextPath = "/paramuseretab";
   Map<String, String> _externalServices = {
     'PRONOTE': 'pronote://',
   };
+  List<String> _markedFnames = ["News", "CAPYTALE", "ESCO-GLC", "MenuCantine", "PRONOTE"];
   Map<int, Color> categoryIdToColor = {
     365: Color.fromRGBO(171, 71, 188, 1),
     364: Color.fromRGBO(38, 198, 218, 1),
@@ -122,6 +126,14 @@ class AppConfig {
 
   String get casCookieName => getAttribute('_casCookieName', _casCookieName);
 
+  String get cookieDNMAIDName => getAttribute('_cookieDNMAIDName', _cookieDNMAIDName);
+
+  String get cookieDNMASessionName => getAttribute('_cookieDNMASessionName', _cookieDNMASessionName);
+
+  String get dnmaDimension => getAttribute('_dnmaDimension', _dnmaDimension);
+
+  List<String> get markedFnames => getAttribute('_markedFnames', _markedFnames);
+
   String get uPortalBaseURL => getAttribute('_uPortalBaseURL', _uPortalBaseURL);
 
   String get uPortalHost =>
@@ -170,6 +182,10 @@ class AppConfig {
         '_portalCookieName: $_portalCookieName, '
         '_portalIDCookieName: $_portalIDCookieName, '
         '_casCookieName: $_casCookieName, '
+        '_cookieDNMAIDName: $_cookieDNMAIDName, '
+        '_cookieDNMASessionName: $_cookieDNMASessionName, '
+        '_dnmaDimension: $_dnmaDimension, '
+        '_markedFnames: $_markedFnames, '
         '_uPortalBaseURL: $_uPortalBaseURL, '
         '_staticsBaseURL: $_staticsPath, '
         '_cache: $_cache'

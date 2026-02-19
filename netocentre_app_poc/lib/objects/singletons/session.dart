@@ -9,6 +9,8 @@ class Session {
   String _CASSessionCookie = '';
   String _PortalSessionCookie = '';
   String _IDPortalCookie = '';
+  String _DNMASessionCookie = '';
+  String _IDDNMACookie = '';
 
   factory Session() {
     return _instance;
@@ -34,7 +36,19 @@ class Session {
     _IDPortalCookie = value;
   }
 
-  Map<String, Object?> toMap() {
+  String get DNMASessionCookie => _DNMASessionCookie;
+
+  void setDNMASessionCookie(String value) {
+    _DNMASessionCookie = value;
+  }
+
+  String get IDDNMACookie => _IDDNMACookie;
+
+  void setIDDNMACookie(String value) {
+    _IDDNMACookie = value;
+  }
+
+  Map<String, Object?> mapForDatabase() {
     var map = <String, Object?>{
       'CASSessionCookie': _CASSessionCookie,
       'PortalSessionCookie': _PortalSessionCookie,
@@ -43,7 +57,7 @@ class Session {
     return map;
   }
 
-  void fromMap(Map<String, Object?> map) {
+  void loadFromDatabase(Map<String, Object?> map) {
     _CASSessionCookie = (map['CASSessionCookie'] ?? '') as String;
     _PortalSessionCookie = (map['PortalSessionCookie'] ?? '') as String;
     _IDPortalCookie = (map['IDPortalCookie'] ?? '') as String;
@@ -57,6 +71,8 @@ class Session {
     _CASSessionCookie = '';
     _PortalSessionCookie = '';
     _IDPortalCookie = '';
+    _DNMASessionCookie = '';
+    _IDDNMACookie = '';
     if (persist) {
       this.persist();
     }
@@ -68,6 +84,8 @@ class Session {
         '_CASSessionCookie: $_CASSessionCookie, '
         '_PortalSessionCookie: $_PortalSessionCookie, '
         '_IDPortalCookie: $_IDPortalCookie, '
+        '_DNMASessionCookie: $_DNMASessionCookie, '
+        '_IDDNMACookie: $_IDDNMACookie, '
         '}';
   }
 }

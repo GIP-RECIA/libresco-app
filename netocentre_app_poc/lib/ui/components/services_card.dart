@@ -5,6 +5,7 @@ import 'package:netocentre_app_poc/objects/service.dart';
 import 'package:netocentre_app_poc/objects/singletons/account.dart';
 import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
 import 'package:netocentre_app_poc/objects/singletons/session.dart';
+import 'package:netocentre_app_poc/services/dnma_service.dart';
 import 'package:netocentre_app_poc/services/login_service.dart';
 import 'package:netocentre_app_poc/ui/pages/unconnected_home_page.dart';
 import 'package:netocentre_app_poc/ui/pages/web_view_page.dart';
@@ -21,6 +22,15 @@ class ServicesCard extends StatelessWidget {
     required this.onPressed,
   }) {
     log.finer('construct ${service.text} card | isFav : ${service.isFavorite}');
+  }
+
+  void markDNMA(String dimension, String fname, String url){
+    if(AppConfig().markedFnames.contains(fname)){
+      log.fine("Marking access to service $fname by DNMA");
+      DnmaService.instance.mark(dimension, fname, url);
+    } else {
+      log.fine("Access to service $fname will not be marked by DNMA");
+    }
   }
 
   @override
@@ -49,6 +59,7 @@ class ServicesCard extends StatelessWidget {
                 Uri.parse(url),
                 mode: LaunchMode.externalApplication,
               );
+              markDNMA(AppConfig().dnmaDimension, service.fname!, url);
             } catch (e) {
               log.warning('Unable to open app $url with error $e');
               launchWeb = true;
@@ -94,6 +105,7 @@ class ServicesCard extends StatelessWidget {
                     ),
                   ),
                 );
+                markDNMA(AppConfig().dnmaDimension, service.fname!, uri);
               }
             } else {
               Session().clear(persist: true);

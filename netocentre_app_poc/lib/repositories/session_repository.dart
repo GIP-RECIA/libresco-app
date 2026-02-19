@@ -21,7 +21,7 @@ class SessionRepository {
     final db = await DatabaseProvider.instance.db;
     int id = await db.insert(
       tableName,
-      Session().toMap(),
+      Session().mapForDatabase(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
     Account().setId(id);
@@ -32,7 +32,7 @@ class SessionRepository {
     final db = await DatabaseProvider.instance.db;
     await db.update(
       tableName,
-      Session().toMap(),
+      Session().mapForDatabase(),
       where: 'id = ${Account().id}',
     );
     log.fine('Update in database : ${Session().toString()}');
@@ -54,7 +54,7 @@ class SessionRepository {
       where: 'id = $id',
     );
     if (response.isNotEmpty) {
-      Session().fromMap(response.first);
+      Session().loadFromDatabase(response.first);
       log.fine(
         'Get from database : ${Session().toString()}',
       );
