@@ -143,11 +143,13 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
             child: Column(
               children: [
                 const SizedBox(height: 40),
-                Image.asset(
-                  'assets/logo.png',
-                  width: 150,
-                  height: 150,
-                  fit: BoxFit.cover,
+                AspectRatio(
+                    aspectRatio: 1099 / 370,
+                  child: Image.asset(
+                    'assets/logo.png',
+                    width: double.infinity,
+                    fit: BoxFit.contain,
+                  ),
                 ),
                 Expanded(
                   child: ListView.builder(

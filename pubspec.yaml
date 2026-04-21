@@ -51,6 +51,7 @@ dependencies:
   package_info_plus: ^9.0.0
   flutter_native_splash: ^2.4.7
   flutter_launcher_icons: ^0.14.4
+  rename_app: ^1.6.5
 
 dev_dependencies:
   flutter_test:
