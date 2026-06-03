@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:math';
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_sqlcipher/sqflite.dart';
 
 class DatabaseProvider {
   DatabaseProvider._();
@@ -18,7 +22,15 @@ class DatabaseProvider {
   }
 
   Future<Database> _initDB() async {
-    final path = join(await getDatabasesPath(), 'app.db');
+
+    final storage = FlutterSecureStorage();
+    String? key = await storage.read(key: 'libresco_db_key');
+    if (key == null) {
+      key = generateRandomKey();
+      await storage.write(key: 'libresco_db_key', value: key);
+    }
+
+    final path = join(await getDatabasesPath(), 'libresco.db');
 
     return await openDatabase(
       path,
@@ -39,6 +51,14 @@ class DatabaseProvider {
         ''');
       },
       onDowngrade: onDatabaseDowngradeDelete,
+      password: key,
     );
   }
+
+  String generateRandomKey({int length = 32}) {
+    final secureRandom = Random.secure();
+    final values = List<int>.generate(length, (_) => secureRandom.nextInt(256));
+    return base64UrlEncode(values);
+  }
+
 }
