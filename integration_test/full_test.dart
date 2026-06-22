@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:netocentre_app_poc/main.dart' as app;
-import 'package:netocentre_app_poc/ui/components/services_fragment.dart';
-import 'package:netocentre_app_poc/ui/pages/home_page.dart';
-import 'package:netocentre_app_poc/ui/pages/unconnected_home_page.dart';
+import 'package:libresco/main.dart' as app;
+import 'package:libresco/ui/components/services_fragment.dart';
+import 'package:libresco/ui/pages/home_page.dart';
+import 'package:libresco/ui/pages/unconnected_home_page.dart';
 import 'package:patrol/patrol.dart';
 
 void main() {

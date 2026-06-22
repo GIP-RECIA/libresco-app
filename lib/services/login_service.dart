@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/objects/singletons/account.dart';
-import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
-import 'package:netocentre_app_poc/objects/singletons/session.dart';
+import 'package:libresco/objects/singletons/account.dart';
+import 'package:libresco/objects/singletons/app_config.dart';
+import 'package:libresco/objects/singletons/session.dart';
 
 class LoginService {
   final log = Logger('LoginService');

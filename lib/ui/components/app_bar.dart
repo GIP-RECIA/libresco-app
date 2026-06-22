@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:netocentre_app_poc/objects/enums/user_menu_item.dart';
-import 'package:netocentre_app_poc/objects/singletons/account.dart';
-import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
-import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
+import 'package:libresco/objects/enums/user_menu_item.dart';
+import 'package:libresco/objects/singletons/account.dart';
+import 'package:libresco/objects/singletons/app_config.dart';
+import 'package:libresco/objects/singletons/user_info.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool close;

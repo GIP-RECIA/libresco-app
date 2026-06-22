@@ -1,4 +1,4 @@
-package fr.recia.ent.netocentre_app_poc.netocentre_app_poc;
+package fr.recia.ent.libresco.libresco;
 
 import io.flutter.embedding.android.FlutterActivity;
 

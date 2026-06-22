@@ -1,7 +1,7 @@
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/objects/singletons/account.dart';
-import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
-import 'package:netocentre_app_poc/repositories/database_provider.dart';
+import 'package:libresco/objects/singletons/account.dart';
+import 'package:libresco/objects/singletons/user_info.dart';
+import 'package:libresco/repositories/database_provider.dart';
 
 class UserInfoRepository {
   final log = Logger('UserInfoRepository');

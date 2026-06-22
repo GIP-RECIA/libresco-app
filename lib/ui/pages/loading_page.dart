@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/objects/enums/user_info_loading_state.dart';
-import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
-import 'package:netocentre_app_poc/objects/singletons/session.dart';
-import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
-import 'package:netocentre_app_poc/repositories/session_repository.dart';
-import 'package:netocentre_app_poc/services/dnma_service.dart';
-import 'package:netocentre_app_poc/services/login_service.dart';
-import 'package:netocentre_app_poc/services/portal_service.dart';
-import 'package:netocentre_app_poc/ui/pages/unconnected_home_page.dart';
+import 'package:libresco/objects/enums/user_info_loading_state.dart';
+import 'package:libresco/objects/singletons/app_config.dart';
+import 'package:libresco/objects/singletons/session.dart';
+import 'package:libresco/objects/singletons/user_info.dart';
+import 'package:libresco/repositories/session_repository.dart';
+import 'package:libresco/services/dnma_service.dart';
+import 'package:libresco/services/login_service.dart';
+import 'package:libresco/services/portal_service.dart';
+import 'package:libresco/ui/pages/unconnected_home_page.dart';
 
 import '../../objects/singletons/account.dart';
 import 'home_page.dart';

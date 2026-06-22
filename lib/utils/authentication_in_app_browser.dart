@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
-import 'package:netocentre_app_poc/objects/singletons/session.dart';
-import 'package:netocentre_app_poc/ui/pages/home_page.dart';
-import 'package:netocentre_app_poc/ui/pages/loading_page.dart';
+import 'package:libresco/objects/singletons/app_config.dart';
+import 'package:libresco/objects/singletons/session.dart';
+import 'package:libresco/ui/pages/home_page.dart';
+import 'package:libresco/ui/pages/loading_page.dart';
 
 class AuthenticationInAppBrowser extends InAppBrowser {
   final log = Logger('AuthenticationInAppBrowser');

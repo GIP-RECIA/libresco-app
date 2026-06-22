@@ -17,7 +17,7 @@ More docs here :
 To install the project :
 
 - clone it
-- get the dependencies of all the projects with the following command at the main POC `netocentre_app_poc` root directory.
+- get the dependencies of all the projects with the following command at the main POC `libresco` root directory.
 
 ```console
 flutter pub get

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/ui/components/app_container.dart';
-import 'package:netocentre_app_poc/ui/components/home_fragment.dart';
-import 'package:netocentre_app_poc/ui/components/services_fragment.dart';
-import 'package:netocentre_app_poc/utils/home_model.dart';
+import 'package:libresco/ui/components/app_container.dart';
+import 'package:libresco/ui/components/home_fragment.dart';
+import 'package:libresco/ui/components/services_fragment.dart';
+import 'package:libresco/utils/home_model.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({

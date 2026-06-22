@@ -1,16 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:netocentre_app_poc/objects/pojo/account_data.dart';
-import 'package:netocentre_app_poc/objects/singletons/account.dart';
-import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
-import 'package:netocentre_app_poc/objects/singletons/session.dart';
-import 'package:netocentre_app_poc/repositories/session_repository.dart';
-import 'package:netocentre_app_poc/services/login_service.dart';
-import 'package:netocentre_app_poc/ui/components/account_card.dart';
-import 'package:netocentre_app_poc/ui/pages/home_page.dart';
-import 'package:netocentre_app_poc/ui/pages/loading_page.dart';
-import 'package:netocentre_app_poc/utils/authentication_in_app_browser.dart';
+import 'package:libresco/objects/pojo/account_data.dart';
+import 'package:libresco/objects/singletons/account.dart';
+import 'package:libresco/objects/singletons/app_config.dart';
+import 'package:libresco/objects/singletons/session.dart';
+import 'package:libresco/repositories/session_repository.dart';
+import 'package:libresco/services/login_service.dart';
+import 'package:libresco/ui/components/account_card.dart';
+import 'package:libresco/ui/pages/home_page.dart';
+import 'package:libresco/ui/pages/loading_page.dart';
+import 'package:libresco/utils/authentication_in_app_browser.dart';
 
 class UnconnectedHomePage extends StatefulWidget {
   const UnconnectedHomePage({

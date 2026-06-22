@@ -1,4 +1,4 @@
-name: netocentre_app_poc
+name: libresco
 description: "Complete POC that combines the frontend & backend of other POCs."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -72,9 +72,9 @@ dev_dependencies:
 
   test_api: 0.7.11
 patrol:
-  app_name: netocentre_app_poc
+  app_name: libresco
   android:
-    package_name: fr.recia.ent.netocentre_app_poc.netocentre_app_poc
+    package_name: fr.recia.ent.libresco.libresco
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

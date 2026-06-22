@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/objects/enums/user_menu_item.dart';
-import 'package:netocentre_app_poc/objects/singletons/account.dart';
-import 'package:netocentre_app_poc/objects/singletons/services_list.dart';
-import 'package:netocentre_app_poc/objects/singletons/session.dart';
-import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
-import 'package:netocentre_app_poc/services/changeetab_service.dart';
-import 'package:netocentre_app_poc/services/portal_service.dart';
-import 'package:netocentre_app_poc/ui/components/app_bar.dart';
-import 'package:netocentre_app_poc/ui/components/nav_bar.dart';
-import 'package:netocentre_app_poc/ui/pages/unconnected_home_page.dart';
+import 'package:libresco/objects/enums/user_menu_item.dart';
+import 'package:libresco/objects/singletons/account.dart';
+import 'package:libresco/objects/singletons/services_list.dart';
+import 'package:libresco/objects/singletons/session.dart';
+import 'package:libresco/objects/singletons/user_info.dart';
+import 'package:libresco/services/changeetab_service.dart';
+import 'package:libresco/services/portal_service.dart';
+import 'package:libresco/ui/components/app_bar.dart';
+import 'package:libresco/ui/components/nav_bar.dart';
+import 'package:libresco/ui/pages/unconnected_home_page.dart';
 
 import '../../services/login_service.dart';
 import '../pages/home_page.dart';

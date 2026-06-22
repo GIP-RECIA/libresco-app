@@ -1,5 +1,5 @@
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/repositories/user_info_repository.dart';
+import 'package:libresco/repositories/user_info_repository.dart';
 
 class UserInfo {
   final log = Logger('UserInfo');

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/objects/service.dart';
-import 'package:netocentre_app_poc/objects/singletons/account.dart';
-import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
-import 'package:netocentre_app_poc/objects/singletons/session.dart';
-import 'package:netocentre_app_poc/services/dnma_service.dart';
-import 'package:netocentre_app_poc/services/login_service.dart';
-import 'package:netocentre_app_poc/ui/pages/unconnected_home_page.dart';
-import 'package:netocentre_app_poc/ui/pages/web_view_page.dart';
+import 'package:libresco/objects/service.dart';
+import 'package:libresco/objects/singletons/account.dart';
+import 'package:libresco/objects/singletons/app_config.dart';
+import 'package:libresco/objects/singletons/session.dart';
+import 'package:libresco/services/dnma_service.dart';
+import 'package:libresco/services/login_service.dart';
+import 'package:libresco/ui/pages/unconnected_home_page.dart';
+import 'package:libresco/ui/pages/web_view_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ServicesCard extends StatelessWidget {

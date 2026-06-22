@@ -1,5 +1,5 @@
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/repositories/session_repository.dart';
+import 'package:libresco/repositories/session_repository.dart';
 
 class Session {
   final log = Logger('Session');

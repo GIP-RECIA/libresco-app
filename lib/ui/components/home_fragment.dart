@@ -2,13 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logging/logging.dart';
-import 'package:netocentre_app_poc/objects/singletons/account.dart';
-import 'package:netocentre_app_poc/objects/singletons/app_config.dart';
-import 'package:netocentre_app_poc/objects/singletons/user_info.dart';
-import 'package:netocentre_app_poc/ui/pages/web_view_page.dart';
-import 'package:netocentre_app_poc/utils/custom_cookies_manager.dart';
-import 'package:netocentre_app_poc/utils/home_model.dart';
-import 'package:netocentre_app_poc/utils/web_view_utils.dart';
+import 'package:libresco/objects/singletons/account.dart';
+import 'package:libresco/objects/singletons/app_config.dart';
+import 'package:libresco/objects/singletons/user_info.dart';
+import 'package:libresco/ui/pages/web_view_page.dart';
+import 'package:libresco/utils/custom_cookies_manager.dart';
+import 'package:libresco/utils/home_model.dart';
+import 'package:libresco/utils/web_view_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeFragment extends StatefulWidget {
