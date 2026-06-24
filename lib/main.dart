@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:libresco/objects/singletons/account.dart';
@@ -10,7 +12,26 @@ import 'package:libresco/ui/pages/loading_page.dart';
 import 'package:libresco/ui/pages/unconnected_home_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import 'firebase_options.dart';
+
 final log = Logger('main');
+
+void initNotifications(){
+  // Called when a notification is received with the app open
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    RemoteNotification? notif = message.notification;
+    if (notif != null) {
+      print("Notification received : ${message.data} ${notif.body} ${notif.title}");
+    }
+  });
+  // Called when the app is opened with a click on a notification
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    RemoteNotification? notif = message.notification;
+    if (notif != null) {
+      print("App was opened via notification ${message.data} ${notif.body} ${notif.title}");
+    }
+  });
+}
 
 Future<Widget> buildApp() async {
   log.fine('Starting app...');
@@ -46,6 +67,10 @@ Future<void> main({
   LoginService? loginService,
 }) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  initNotifications();
   Logger.root.level = Level.ALL;
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   Logger.root.onRecord.listen((record) {

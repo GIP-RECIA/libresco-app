@@ -136,6 +136,8 @@ class AppConfig {
 
   String get uPortalBaseURL => getAttribute('_uPortalBaseURL', _uPortalBaseURL);
 
+  String get notificationServerUrl => getAttribute('_notificationServerUrl', _notificationServerUrl);
+
   String get uPortalHost =>
       uPortalBaseURL.replaceFirst(RegExp(r'^https?://'), '');
 

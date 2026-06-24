@@ -1,5 +1,10 @@
+import 'dart:io';
+import 'dart:convert';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:libresco/objects/enums/user_info_loading_state.dart';
 import 'package:libresco/objects/singletons/app_config.dart';
@@ -72,6 +77,61 @@ class LoadingPageUtils {
     this.callbackWidget,
   );
 
+  Future<String> obtainServiceTicket() async{
+    log.fine('Obtaining service ticket from CAS');
+    final client = HttpClient();
+    client.userAgent = AppConfig().userAgent;
+    var uri = Uri.https(
+      AppConfig().casHost,
+      '/cas/login',
+      {"service": AppConfig().serviceURL},
+    );
+    var request = await client.getUrl(uri);
+    request.followRedirects = false;
+    request.headers.add(
+      'Cookie',
+      '${AppConfig().casCookieName}=${Session().CASSessionCookie}',
+    );
+    log.finest('Making this request to CAS server : ${request.uri.toString()}');
+    log.finest('Request headers are : ${request.headers}');
+    var response = await request.close();
+    log.finest('Response status code from cas server : ${response.statusCode}');
+    log.finest('Response headers: ${response.headers}');
+    String st = response.headers.value("location")!.split("ticket=").last;
+    log.finer('Service ticket extracted from headers is : $st');
+    return st;
+  }
+
+  Future<void> sendTokenToServer(String token) async {
+    String serviceTicket = await obtainServiceTicket();
+    final String url = AppConfig().notificationServerUrl;
+    final String uid = UserInfo().uid;
+    log.info("Sending FCM Token $token to $url for $uid");
+    await http.post(
+      Uri.parse(url),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: jsonEncode({
+        "ticket": serviceTicket,
+        "token": token,
+      }),
+    );
+  }
+
+  Future<void> initFCM() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    await messaging.requestPermission();
+    String? token = await messaging.getToken();
+    if (token != null) {
+      await sendTokenToServer(token);
+    }
+    // Send new token if it changes
+    FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
+      sendTokenToServer(newToken);
+    });
+  }
+
   Future<void> loadDataFromAPI() async {
     log.info('Loading data from portal API...');
     // Try to login to portal once : if we get a user we're connected
@@ -119,6 +179,8 @@ class LoadingPageUtils {
       }
       await DnmaService.instance.mark(AppConfig().dnmaDimension, "Portail",
           "https://${Account().domain}/portail/f/accueil/normal/render.uP");
+      // Once we are logged in we send our token to the notification server
+      initFCM();
       navigatorPush();
     } else if(loadingState == UserInfoLoadingState.refresh){
       // We need to wait a little bit to make sur partial logout is finished
