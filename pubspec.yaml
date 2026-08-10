@@ -52,7 +52,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.4
   rename_app: ^1.6.6
   sqflite_sqlcipher: ^3.4.1
-  flutter_secure_storage: ^10.3.1
+  flutter_secure_storage: ^11.0.0
 
 # Obligé de prendre une version plus vieille de sqflite_common pour que sqflite_sqlcipher fonctionne
 dependency_overrides:
