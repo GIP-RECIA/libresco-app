@@ -1,8 +1,8 @@
-import 'package:logging/logging.dart';
 import 'package:libresco/repositories/user_info_repository.dart';
 
+import '../../utils/sanitizer.dart';
+
 class UserInfo {
-  final log = Logger('UserInfo');
 
   static final UserInfo _instance = UserInfo._internal();
 
@@ -91,13 +91,13 @@ class UserInfo {
   @override
   String toString() {
     return 'UserInfo{'
-        '_uid: $_uid, '
-        '_name: $_name, '
-        '_picture: $_picture'
-        '_currentEtabName: $_currentEtabName'
-        '_domain: $_domain'
-        '_sirens: $_sirens'
-        '_currentSiren: $_currentSiren'
+        '_uid: ${sanitize(_uid)}, '
+        '_name: ${sanitize(_name)}, '
+        '_picture: ${sanitize(_picture)}, '
+        '_currentEtabName: ${sanitize(_currentEtabName)}, '
+        '_domain: ${sanitize(_domain)}, '
+        '_sirens: ${sanitizeList(_sirens)}, '
+        '_currentSiren: ${sanitize(_currentSiren)}'
         '}';
   }
 }

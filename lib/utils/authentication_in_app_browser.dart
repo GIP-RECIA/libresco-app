@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:libresco/utils/sanitizer.dart';
 import 'package:logging/logging.dart';
 import 'package:libresco/objects/singletons/app_config.dart';
 import 'package:libresco/objects/singletons/session.dart';
@@ -44,9 +45,7 @@ class AuthenticationInAppBrowser extends InAppBrowser {
         for (var current in cookies) {
           log.finest('Checking cookie $current.name');
           if (current.name == AppConfig().casCookieName) {
-            log.fine(
-              '${AppConfig().casCookieName} Cookie found with value : $current',
-            );
+            log.fine('${AppConfig().casCookieName} Cookie found with value : ${sanitize(current.value, visibleCharacters: 3)}',);
             Session().setCASSessionCookie(current.value);
             Session().persist();
           }

@@ -8,22 +8,19 @@ class ChangeEtabService {
 
   ChangeEtabService._privateConstructor();
 
-  static final ChangeEtabService _instance =
-      ChangeEtabService._privateConstructor();
+  static final ChangeEtabService _instance = ChangeEtabService._privateConstructor();
 
   static ChangeEtabService get instance => _instance;
 
   Future<bool> changeEtab(String token, String siren) async {
-    final url =
-        "https://${Account().domain}${AppConfig().paramEtabContextPath}/changeetab/api/$siren";
-    log.fine("Making a request to $url");
+    final url = "https://${Account().domain}${AppConfig().paramEtabContextPath}/changeetab/api/$siren";
+    log.fine("Changing etab with url $url");
     final response = await http.put(
       Uri.parse(url),
       headers: {
         "Authorization": "Bearer $token",
       },
     );
-
     if (response.statusCode != 200) {
       return false;
     }

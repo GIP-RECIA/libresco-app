@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:libresco/utils/sanitizer.dart';
 import 'package:logging/logging.dart';
 import 'package:libresco/objects/singletons/account.dart';
 import 'package:libresco/objects/singletons/app_config.dart';
@@ -76,8 +77,9 @@ Future<void> main({
   Logger.root.level = Level.ALL;
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   Logger.root.onRecord.listen((record) {
-    CrashReporter().log(record.message);
-    print('[${packageInfo.appName}][${record.loggerName}] - ${record.message}');
+    final message = sanitizeLogs(record.message);
+    CrashReporter().log(message);
+    print('[${packageInfo.appName}][${record.loggerName}] - $message');
   });
   await AppConfig().loadConfig();
   final app = await buildApp();

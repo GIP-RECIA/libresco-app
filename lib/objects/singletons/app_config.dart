@@ -65,7 +65,6 @@ class AppConfig {
   // All the config is loaded from one place :
   // the app does not need to be updated is there is a configuration update
   Future<void> loadConfig() async {
-    log.fine('Generating user agent');
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     String appName = packageInfo.appName;
     String version = packageInfo.version;
@@ -74,12 +73,11 @@ class AppConfig {
     log.fine('User agent ${_userAgent!} will be used for requests');
 
     if (loadExternalConfig) {
-      log.fine('Requesting config');
+      log.finer('Requesting config at $configUri');
       final response = await http.get(
         Uri.parse(configUri),
       );
       if (response.statusCode == 200) {
-        log.fine('Got an 200 answer for config. Decoding json...');
         final data = jsonDecode(response.body);
         _casBaseURL = data['casBaseURL'];
         _serviceURL = data['serviceURL'];
@@ -87,7 +85,6 @@ class AppConfig {
         _uPortalBaseURL = data['uPortalBaseURL'];
         _staticsPath = data['_staticsPath'];
         _cache = data['cache'];
-
         log.info('Config was successfully loaded : ${toString()}');
       } else {
         throw Exception(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:libresco/utils/sanitizer.dart';
 import 'package:logging/logging.dart';
 import 'package:libresco/objects/singletons/account.dart';
 import 'package:libresco/objects/singletons/app_config.dart';
@@ -77,13 +78,12 @@ class DnmaService {
         Session().IDDNMACookie, Account().domain, "/dnma");
     final toSend = [cookieDnmaSession, cookieDnmaId];
     request.cookies.addAll(toSend);
-    log.fine("Cookies sent :");
+    log.finer("Cookies sent are :");
     for (final c in toSend) {
-      log.fine("   ${c.name}=${c.value}");
+      log.finer("   ${c.name}=${sanitize(c.value, visibleCharacters: 3)}");
     }
     // Add body
-    final body = {"date":(DateTime.now().millisecondsSinceEpoch/1000).toInt().toString(),
-      "dimension11":dimension,"fname":fname,"url":url};
+    final body = {"date":(DateTime.now().millisecondsSinceEpoch/1000).toInt().toString(), "dimension11":dimension,"fname":fname,"url":url};
     log.fine("Body to send is $body");
     final jsonBody = jsonEncode(body);
     final bytes = utf8.encode(jsonBody);
@@ -158,7 +158,7 @@ class DnmaService {
           final toSend = cookies.loadForRequest(current);
           log.fine("Cookies sent :");
           for (final c in toSend) {
-            log.fine("   ${c.name}=${c.value}");
+            log.fine("   ${c.name}=${sanitize(c.value, visibleCharacters: 3)}");
           }
           request.cookies.addAll(toSend);
 
@@ -170,7 +170,7 @@ class DnmaService {
           cookies.saveFromResponse(current, response.cookies);
           log.fine("New cookies added :");
           for (final c in response.cookies) {
-            log.fine("   ${c.name}=${c.value}");
+            log.fine("   ${c.name}=${sanitize(c.value, visibleCharacters: 3)}");
           }
 
           // Handle redirect in response
@@ -182,11 +182,8 @@ class DnmaService {
             }
             current = current.resolve(loc);
             log.fine("Redirect to $current");
-            log.fine("---------------------------------");
             // If we are not redirected that means authentification is done
           } else {
-            final String body = await response.transform(utf8.decoder).join();
-            log.fine("Body of response is : $body");
             done = true;
             // Set session cookies
             Session().setDNMASessionCookie(cookies.getValue(AppConfig().cookieDNMASessionName));
@@ -205,6 +202,5 @@ class DnmaService {
       return true;
     }
   }
-
 
 }

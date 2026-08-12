@@ -55,11 +55,9 @@ class SessionRepository {
     );
     if (response.isNotEmpty) {
       Session().loadFromDatabase(response.first);
-      log.fine(
-        'Get from database : ${Session().toString()}',
-      );
+      log.fine('Get from database : ${Session().toString()}');
     } else {
-      log.fine('No results for id $id');
+      log.info('Get from database - no results for $id');
     }
   }
 
@@ -72,12 +70,12 @@ class SessionRepository {
     Account().clear();
     Session().clear();
     UserInfo().clear();
-    log.fine('Row id \'$id\' successfully deleted');
+    log.fine('Row $id successfully deleted');
   }
 
   Future<List<Map<String, Object?>>> getProfilesList() async {
+    log.finer('Getting profiles from database');
     final db = await DatabaseProvider.instance.db;
-    log.fine('Get profiles from database');
     final results = await db.query(tableName, distinct: true);
     return results.toList();
   }

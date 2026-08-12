@@ -68,9 +68,7 @@ class _AppContainer extends State<AppContainer> {
     final String soffit = rawUserInfo!.$1;
 
     // Récupération des infos des structures
-    final Map<String, dynamic>? structures =
-        await PortalService.instance.getInfoEtab(UserInfo().sirens);
-    log.warning(structures);
+    final Map<String, dynamic>? structures = await PortalService.instance.getInfoEtab(UserInfo().sirens);
     if (structures!.length > 1) {
       // Affichage des établissements sur lesquels on peut changer en excluant l'établissement courant
       final selectedSiren = await showEtabSelector(
@@ -78,6 +76,7 @@ class _AppContainer extends State<AppContainer> {
         structures!,
         UserInfo().currentSiren,
       );
+
       log.fine("User selected etab $selectedSiren");
 
       if (selectedSiren == null) return;
@@ -102,23 +101,15 @@ class _AppContainer extends State<AppContainer> {
         });
       }
     } else {
-      log.fine(
-        "Pas de changement d'établissement car pas de multi établissement",
-      );
+      log.fine("Could not change etab because user has only one etab");
     }
   }
 
-  Future<String?> showEtabSelector(
-    BuildContext context,
-    Map<String, dynamic> etabsMap,
-    String currentSiren,
-  ) async {
+  Future<String?> showEtabSelector(BuildContext context, Map<String, dynamic> etabsMap, String currentSiren,) async {
     final filteredEtabs = etabsMap.entries
         .where((entry) => entry.key != currentSiren)
         .map((entry) => entry.value)
         .toList();
-
-    log.fine("List of etabs for user to change $filteredEtabs");
 
     return showDialog<String>(
       context: context,

@@ -20,9 +20,7 @@ class ServicesCard extends StatelessWidget {
     this.service, {
     super.key,
     required this.onPressed,
-  }) {
-    log.finer('construct ${service.text} card | isFav : ${service.isFavorite}');
-  }
+  });
 
   void markDNMA(String dimension, String fname, String url){
     if(AppConfig().markedFnames.contains(fname)){
@@ -192,7 +190,6 @@ class LogoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log.finer('icon uri : ${service.iconUri}');
     return Stack(
       alignment: Alignment.center,
       children: [

@@ -13,6 +13,7 @@ import 'package:libresco/objects/singletons/user_info.dart';
 import 'package:libresco/services/login_service.dart';
 
 import '../objects/singletons/account.dart';
+import '../utils/sanitizer.dart';
 
 class PortalService {
   final log = Logger('PortalService');
@@ -24,7 +25,7 @@ class PortalService {
   static PortalService get instance => _instance;
 
   Future<void> getAllPortlets() async {
-    log.fine('Getting portlets...');
+    log.finer('Getting portlets...');
 
     final client = IOClient(HttpClient());
 
@@ -37,9 +38,8 @@ class PortalService {
     );
 
     log.finer('Getting portlet request : $request');
-    log.finer(
-      '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}',
-    );
+    log.finer('${AppConfig().portalCookieName}=${sanitize(Session().PortalSessionCookie, visibleCharacters: 3)}');
+
 
     if (await LoginService.instance.isAuthorizedByUPortal()) {
       final http.Response res = await client.get(
@@ -80,8 +80,7 @@ class PortalService {
         log.warning(fnameToCategory);
 
         /// Parse json and get portlets fname
-        final dynamic jsonSubcategories =
-            json.decode(res.body)['registry']['categories'][0]['subcategories'];
+        final dynamic jsonSubcategories = json.decode(res.body)['registry']['categories'][0]['subcategories'];
 
         Set<String> portletsSet = {};
         List<Service> servicesList = [];
@@ -90,19 +89,10 @@ class PortalService {
         for (var subcategory in jsonSubcategories) {
           for (var portlet in subcategory['portlets']) {
             if (!portletsSet.contains(portlet['fname'])) {
-              log.finer(
-                'portlet ${portlet['title']} favorite : ${portlet['favorite']}',
-              );
-
               String portletIconUri = '';
-
               // get icon  uri
               if (portlet['parameters'].containsKey('mobileIconUrl')) {
-                portletIconUri =
-                    portlet['parameters']['mobileIconUrl']['value'];
-                log.finer(
-                  'portlet ${portlet['title']} icon url : $portletIconUri',
-                );
+                portletIconUri = portlet['parameters']['mobileIconUrl']['value'];
               }
 
               int category = 0;
@@ -180,9 +170,7 @@ class PortalService {
 
         Services().setServicesList(servicesList);
         Services().setFavoritesList(favoritesList);
-        log.fine(
-          'Final list of services :${Services().servicesList.toString()}',
-        );
+        log.fine('Final list of services : ${Services().servicesList.toString()}', );
       } else {
         log.warning('Got an abnormal ${res.statusCode} response status code !');
       }
@@ -229,6 +217,7 @@ class PortalService {
 
   Future<bool> requestSwitchPortletIsFavoriteState(Service service) async {
     log.info('Requesting API to switch portlet is favorite state');
+    log.finer('${AppConfig().portalCookieName}=${sanitize(Session().PortalSessionCookie, visibleCharacters: 3)}');
 
     final client = IOClient(HttpClient());
 
@@ -240,10 +229,6 @@ class PortalService {
         'channelId': service.id.toString()
       },
     );
-
-    log.finer('Getting portlet request : $request');
-    log.finer(
-        '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}');
 
     if (await LoginService.instance.isAuthorizedByUPortal()) {
       final http.Response res = await client.post(
@@ -269,6 +254,7 @@ class PortalService {
   /// Gets the userinfos in form of a tuple : (soffit, map of parsed user infos)
   Future<(String, Map<String, dynamic>)?> getUserInfo(String claims) async {
     log.info('Getting user infos');
+    log.finer('${AppConfig().portalCookieName}=${sanitize(Session().PortalSessionCookie, visibleCharacters: 3)}');
 
     final client = IOClient(HttpClient());
     Uri request = Uri.https(
@@ -278,11 +264,6 @@ class PortalService {
         'claims': claims,
         'groups': '',
       },
-    );
-
-    log.finer('getting portlet request : $request');
-    log.finer(
-      '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}',
     );
 
     final http.Response res = await client.get(
@@ -296,18 +277,13 @@ class PortalService {
     );
 
     if (res.statusCode == 200) {
-      /// Decode base64 and parse json
-      log.finest('Body of response is ${res.body}');
-
       String base64url = res.body.split('.')[1];
       base64url = base64url.replaceAll('-', '+').replaceAll('_', '/');
       if (base64url.length % 4 != 0) {
         base64url = base64url + ('=' * (4 - (base64url.length % 4)));
       }
-      log.finest('Extracted base64 $base64url');
-
       final String decodedBase64 = utf8.decode(base64.decode(base64url));
-      log.finer('Decoded base64 $decodedBase64');
+      log.finer('Decoded base64 for userinfos : ${sanitize(decodedBase64, visibleCharacters: 3)}');
 
       return (res.body, json.decode(decodedBase64) as Map<String, dynamic>);
     } else {
@@ -317,8 +293,6 @@ class PortalService {
   }
 
   Future<Map<String, dynamic>?> getInfoEtab(List<String> sirens) async {
-    log.info('Getting etab name from change-etablissement');
-
     final client = IOClient(HttpClient());
     Uri request = Uri.https(
       Account().domain,
@@ -339,8 +313,7 @@ class PortalService {
   Future<UserInfoLoadingState> loadUserInfo() async {
     log.info('Loading user info');
     // Get user infos thanks to already obtained portal cookie
-    var rawUserInfo =
-        await getUserInfo('private,picture,name,ESCOSIRENCourant,ESCOSIREN');
+    var rawUserInfo = await getUserInfo('private,picture,name,ESCOSIRENCourant,ESCOSIREN');
     if (rawUserInfo == null) return UserInfoLoadingState.error;
     // We only need the map here, not the soffit
     Map<String, dynamic> userInfo = rawUserInfo.$2;

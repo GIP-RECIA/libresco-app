@@ -2,11 +2,8 @@ import 'dart:ui';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:logging/logging.dart';
 
 class CrashReporter {
-
-  final logger = Logger('CrashReporter');
 
   static final CrashReporter _instance = CrashReporter._internal();
 

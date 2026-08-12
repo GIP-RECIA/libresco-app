@@ -2,6 +2,7 @@ import 'package:libresco/objects/service.dart';
 import 'package:slugify/slugify.dart';
 
 class Services {
+
   static final Services _instance = Services._internal();
   List<Service> _list = [];
   List<Service> _favoritesList = [];

@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:libresco/utils/sanitizer.dart';
 import 'package:logging/logging.dart';
 import 'package:libresco/objects/enums/user_info_loading_state.dart';
 import 'package:libresco/objects/singletons/app_config.dart';
@@ -93,12 +94,12 @@ class LoadingPageUtils {
       '${AppConfig().casCookieName}=${Session().CASSessionCookie}',
     );
     log.finest('Making this request to CAS server : ${request.uri.toString()}');
-    log.finest('Request headers are : ${request.headers}');
+    log.finest('Request headers are : ${sanitizeHeaders(request.headers, visibleCharacters: 3)}');
     var response = await request.close();
     log.finest('Response status code from cas server : ${response.statusCode}');
-    log.finest('Response headers: ${response.headers}');
+    log.finest('Response headers: ${sanitizeHeaders(response.headers, visibleCharacters: 3)}');
     String st = response.headers.value("location")!.split("ticket=").last;
-    log.finer('Service ticket extracted from headers is : $st');
+    log.finer('Service ticket extracted from headers is : ${sanitize(st, visibleCharacters: 3)}');
     return st;
   }
 
@@ -106,7 +107,7 @@ class LoadingPageUtils {
     String serviceTicket = await obtainServiceTicket();
     final String url = AppConfig().notificationServerUrl;
     final String uid = UserInfo().uid;
-    log.info("Sending FCM Token $token to $url for $uid");
+    log.info("Sending FCM Token ${sanitize(token, visibleCharacters: 3)} to $url for ${sanitize(uid, visibleCharacters: 3)}");
     await http.post(
       Uri.parse(url),
       headers: {
@@ -166,19 +167,17 @@ class LoadingPageUtils {
     if (loadingState == UserInfoLoadingState.success) {
       log.info('Data was loaded successfully, now exiting loading page...');
       final String uid = UserInfo().uid;
-      final bool exists =
-          await SessionRepository.instance.doesAccountAlreadyExists(uid);
+      final bool exists = await SessionRepository.instance.doesAccountAlreadyExists(uid);
       if (exists) {
         log.warning(
-          "An account with uid $uid already exists ! Cleaning the initial account...",
+          "An account with uid ${sanitize(uid, visibleCharacters: 3)} already exists ! Cleaning the initial account...",
         );
         await SessionRepository.instance.deleteExistingProfile(
           uid,
           Account().id!,
         );
       }
-      await DnmaService.instance.mark(AppConfig().dnmaDimension, "Portail",
-          "https://${Account().domain}/portail/f/accueil/normal/render.uP");
+      await DnmaService.instance.mark(AppConfig().dnmaDimension, "Portail", "https://${Account().domain}/portail/f/accueil/normal/render.uP");
       // Once we are logged in we send our token to the notification server
       initFCM();
       navigatorPush();

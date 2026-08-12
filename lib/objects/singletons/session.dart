@@ -1,8 +1,8 @@
-import 'package:logging/logging.dart';
 import 'package:libresco/repositories/session_repository.dart';
 
+import '../../utils/sanitizer.dart';
+
 class Session {
-  final log = Logger('Session');
 
   static final Session _instance = Session._internal();
 
@@ -81,11 +81,11 @@ class Session {
   @override
   String toString() {
     return 'Session{'
-        '_CASSessionCookie: $_CASSessionCookie, '
-        '_PortalSessionCookie: $_PortalSessionCookie, '
-        '_IDPortalCookie: $_IDPortalCookie, '
-        '_DNMASessionCookie: $_DNMASessionCookie, '
-        '_IDDNMACookie: $_IDDNMACookie, '
+        '_CASSessionCookie: ${sanitize(_CASSessionCookie, visibleCharacters: 3)}, '
+        '_PortalSessionCookie: ${sanitize(_PortalSessionCookie, visibleCharacters: 3)}, '
+        '_IDPortalCookie: ${sanitize(_IDPortalCookie, visibleCharacters: 3)}, '
+        '_DNMASessionCookie: ${sanitize(_DNMASessionCookie, visibleCharacters: 3)}, '
+        '_IDDNMACookie: ${sanitize(_IDDNMACookie, visibleCharacters: 3)}, '
         '}';
   }
 }

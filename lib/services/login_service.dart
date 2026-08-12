@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
+import 'package:libresco/utils/sanitizer.dart';
 import 'package:logging/logging.dart';
 import 'package:libresco/objects/singletons/account.dart';
 import 'package:libresco/objects/singletons/app_config.dart';
@@ -43,8 +44,7 @@ class LoginService {
     );
 
     log.finer('Making a request to portal : $request');
-    log.finer(
-        '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}');
+    log.finer('${AppConfig().portalCookieName}=${sanitize(Session().PortalSessionCookie, visibleCharacters: 3)}');
 
     final http.Response res = await client.get(
       request,
@@ -57,7 +57,7 @@ class LoginService {
     );
 
     log.finest('Status code : ${res.statusCode}');
-    log.finest('Body : ${res.body}');
+    log.finest('Body : ${sanitize(res.body, visibleCharacters: 3)}');
     // If we get a 200 we still need to check if the session is not a guest
     // session
     if (res.statusCode == 200) {
@@ -88,8 +88,6 @@ class LoginService {
         cookiesList.addAll(rawCookies.split(';'));
       }
 
-      log.finer('List of cookies in portal response ${cookiesList.toString()}');
-
       Iterable<String> portalSessionCookieParser = cookiesList.where(
         (str) => str.startsWith(AppConfig().portalCookieName),
       );
@@ -101,7 +99,7 @@ class LoginService {
             .substring(portalSessionCookieParser.first.indexOf('=') + 1);
         log.finer(
           '${AppConfig().portalCookieName} cookie exists : '
-          '$portalSessionCookie',
+          '${sanitize(portalSessionCookie, visibleCharacters: 3)}',
         );
       } else {
         log.finer('${AppConfig().portalCookieName} cookie not found');
@@ -109,7 +107,7 @@ class LoginService {
       if (idPortalCookieParser.isNotEmpty) {
         idPortalCookie = idPortalCookieParser.first
             .substring(idPortalCookieParser.first.indexOf('=') + 1);
-        log.finer('idPortal cookie exists : $idPortalCookie');
+        log.finer('idPortal cookie exists : ${sanitize(idPortalCookie, visibleCharacters: 3)}');
       } else {
         log.finer('idPortal cookie not found');
       }
@@ -120,13 +118,10 @@ class LoginService {
 
   /// Used to check if the user has a CAS Session
   Future<bool> hasCASSession() async {
-    log.fine('Checking if user is connected to CAS');
+    log.finer('Checking if user is connected to CAS');
     final client = HttpClient();
     client.userAgent = AppConfig().userAgent;
-    var uri = Uri.https(
-      AppConfig().casHost,
-      '/cas/login',
-    );
+    var uri = Uri.https(AppConfig().casHost, '/cas/login', );
     var request = await client.getUrl(uri);
     request.followRedirects = false;
     request.headers.add(
@@ -135,14 +130,13 @@ class LoginService {
     );
 
     log.finer('Making this request to CAS server : ${request.uri.toString()}');
-    log.finer('Request headers are : ${request.headers}');
+    log.finer('Request headers are : ${sanitizeHeaders(request.headers, visibleCharacters: 3)}');
 
     var response = await request.close();
     String body = await response.transform(utf8.decoder).join();
 
     log.finer('Response status code from cas server : ${response.statusCode}');
-    log.finer('Response headers: ${response.headers}');
-    log.finest('Body: $body');
+    log.finer('Response headers: ${sanitizeHeaders(response.headers, visibleCharacters: 3)}');
 
     if (body.contains('view-genericsuccess-security')) {
       log.fine('User is connected to CAS');
@@ -171,33 +165,24 @@ class LoginService {
       }
 
       log.finer('Making a request to CAS : $casURI');
-      log.finer('${AppConfig().casCookieName}=${Session().CASSessionCookie}');
-
       var casRequest = await client.getUrl(casURI);
       casRequest.followRedirects = false;
       casRequest.headers.add(
         'Cookie',
         '${AppConfig().casCookieName}=${Session().CASSessionCookie}',
       );
+      log.finer('Request headers are : ${sanitizeHeaders(casRequest.headers, visibleCharacters: 3)}');
 
       var casResponse = await casRequest.close();
-      String casBody = await casResponse.transform(utf8.decoder).join();
-
-      log.finer(
-        'Response status code from cas server : ${casResponse.statusCode}',
-      );
-      log.finer('Response headers: ${casResponse.headers}');
-      log.finest('Body: $casBody');
+      log.finer('Response status code from cas server : ${casResponse.statusCode}',);
+      log.finer('Response headers: ${sanitizeHeaders(casResponse.headers, visibleCharacters: 3)}');
 
       if (!partial) {
         log.fine('Logging out the user from Portal');
         log.finer('Domain for the user is $domain');
         Uri portalURI = Uri.https(domain, '/portail/Logout');
-
         log.finer('Making a request to portal : $portalURI');
-        log.finer(
-          '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}',
-        );
+        log.finer('${AppConfig().portalCookieName}=${sanitize(Session().PortalSessionCookie, visibleCharacters: 3)}');
 
         var portalRequest = await client.getUrl(portalURI);
         portalRequest.followRedirects = false;
@@ -212,7 +197,7 @@ class LoginService {
         log.finer(
           'Response status code from portal : ${portalResponse.statusCode}',
         );
-        log.finer('Response headers: ${portalResponse.headers}');
+        log.finer('Response headers: ${sanitizeHeaders(portalResponse.headers, visibleCharacters: 3)}');
       }
     } catch (e) {
       log.warning("An error occured while disconnecting an account : $e");
@@ -225,8 +210,6 @@ class LoginService {
     int requestCounter = 0;
     String portalSessionCookie = '';
     String idPortalCookie = '';
-
-    log.fine('=== Start of unstacked uPortal login ===');
 
     /// Request 0 - initial request
     final client = HttpClient();
@@ -245,9 +228,8 @@ class LoginService {
       '${AppConfig().casCookieName}=${Session().CASSessionCookie}',
     );
 
-    log.finer('\nRequest $requestCounter :');
-    log.finer(request.uri.toString());
-    log.finer('request headers : ${request.headers}');
+    log.finer('\nRequest $requestCounter : ${request.uri.toString()}');
+    log.finer('request headers : ${sanitizeHeaders(request.headers, visibleCharacters: 3)}');
 
     // Get the first response
     var response = await request.close();
@@ -265,9 +247,7 @@ class LoginService {
         // it will not be necessary anymore
         if (requestCounter == 0 &&
             uri.toString().startsWith(AppConfig().casBaseURL)) {
-          log.fine(
-            'Multidomain redirection detected on URL : ${uri.toString()}',
-          );
+          log.fine('Multidomain redirection detected on URL : ${uri.toString()}');
           String service =
               (uri.toString().split("service=")[1]).split("/portail/Login")[0];
           AppConfig().setUportalBaseURL(service);
@@ -284,14 +264,11 @@ class LoginService {
         }
 
         /// PARSE portalSessionCookie & idPortal
-
-        log.finer('\nResponse $requestCounter :');
-        log.finer(response.statusCode);
-        log.finer('response headers : ${response.headers['set-cookie']}');
+        log.finer('\nResponse $requestCounter : ${response.statusCode}');
+        log.finer('response headers : ${sanitizeHeaders(response.headers, visibleCharacters: 3)}');
         log.finer('response location : $location');
 
-        ({String session, String idportal}) parsingResult =
-            uPortalLoginParser(response);
+        ({String session, String idportal}) parsingResult = uPortalLoginParser(response);
         if (parsingResult.session != '') {
           portalSessionCookie = parsingResult.session;
         }
@@ -314,13 +291,8 @@ class LoginService {
           ));
         }
 
-        log.finer(
-          '\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
-          '=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-',
-        );
-        log.finer('\nRequest ${requestCounter + 1} :');
-        log.finer(request.uri.toString());
-        log.finer('request headers : ${request.headers}');
+        log.finer('\nRequest ${requestCounter + 1} : ${request.uri.toString()}');
+        log.finer('request headers : ${sanitizeHeaders(request.headers, visibleCharacters: 3)}');
 
         requestCounter++;
 
@@ -330,12 +302,10 @@ class LoginService {
 
     /// Last response
     /// Parse last portalSessionCookie & idPortalCookie
-    log.finer('\nResponse $requestCounter :');
-    log.finer(response.statusCode);
-    log.finer('response headers : ${response.headers['set-cookie']}');
+    log.finer('\nResponse $requestCounter : ${response.statusCode}');
+    log.finer('response headers : ${sanitizeHeaders(response.headers, visibleCharacters: 3)}');
 
-    ({String session, String idportal}) parsingResult =
-        uPortalLoginParser(response);
+    ({String session, String idportal}) parsingResult = uPortalLoginParser(response);
     if (parsingResult.session != '') {
       portalSessionCookie = parsingResult.session;
     }
@@ -343,10 +313,8 @@ class LoginService {
       idPortalCookie = parsingResult.idportal;
     }
 
-    log.fine('Final ${AppConfig().portalCookieName} : $portalSessionCookie');
-    log.fine('Final idPortal : $idPortalCookie');
-
-    log.fine('=== End of unstacked uPortal login ===');
+    log.fine('Final ${AppConfig().portalCookieName} : ${sanitize(portalSessionCookie, visibleCharacters: 3)}');
+    log.fine('Final idPortal : ${sanitize(idPortalCookie, visibleCharacters: 3)}');
 
     if (portalSessionCookie != '') {
       Session().setIDportalCookie(idPortalCookie);

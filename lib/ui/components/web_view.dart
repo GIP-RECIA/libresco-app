@@ -72,9 +72,6 @@ class _WebView extends State<WebView> {
     NavigationAction action,
   ) async {
     final uri = action.request.url;
-    if (uri != null) {
-      log.fine('==> $uri | ${uri.host}');
-    }
 
     if (uri == null || !action.isForMainFrame) {
       return NavigationActionPolicy.ALLOW;
