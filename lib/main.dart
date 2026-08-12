@@ -13,6 +13,7 @@ import 'package:libresco/ui/pages/unconnected_home_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'firebase_options.dart';
+import 'objects/singletons/crash_reporter.dart';
 
 final log = Logger('main');
 
@@ -70,10 +71,12 @@ Future<void> main({
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await CrashReporter().init();
   initNotifications();
   Logger.root.level = Level.ALL;
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   Logger.root.onRecord.listen((record) {
+    CrashReporter().log(record.message);
     print('[${packageInfo.appName}][${record.loggerName}] - ${record.message}');
   });
   await AppConfig().loadConfig();
