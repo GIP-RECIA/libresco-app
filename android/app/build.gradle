@@ -33,7 +33,7 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "fr.recia.ent.libresco.libresco"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
