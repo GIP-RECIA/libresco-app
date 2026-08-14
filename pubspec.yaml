@@ -72,8 +72,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
   patrol: ^4.8.0
+  test_api: 0.7.12
 
-  test_api: 0.7.11
 patrol:
   app_name: libresco
   android:
