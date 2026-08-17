@@ -55,6 +55,7 @@ dependencies:
   firebase_core: ^4.13.0
   firebase_messaging: ^16.5.0
   firebase_crashlytics: ^5.2.7
+  flutter_local_notifications: ^22.3.0
 
 # Obligé de prendre une version plus vieille de sqflite_common pour que sqflite_sqlcipher fonctionne
 dependency_overrides:

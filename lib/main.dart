@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:libresco/utils/sanitizer.dart';
 import 'package:logging/logging.dart';
 import 'package:libresco/objects/singletons/account.dart';
@@ -19,12 +20,23 @@ import 'objects/singletons/crash_reporter.dart';
 final log = Logger('main');
 
 void initNotifications(){
+  final FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
+  const AndroidNotificationChannel notificationChannel = AndroidNotificationChannel("libresco_channel", "Notifications", description: "Notifications de l'application libresco",);
+  const AndroidInitializationSettings androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+  const InitializationSettings settings = InitializationSettings(android: androidSettings,);
+  notifications.initialize(settings: settings);
+  notifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(notificationChannel);
+  NotificationDetails notificationDetails = NotificationDetails(android: AndroidNotificationDetails(notificationChannel.id, notificationChannel.name, channelDescription: notificationChannel.description, ), );
   // Called when a notification is received with the app open
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    RemoteNotification? notif = message.notification;
-    if (notif != null) {
-      print("Notification received : ${message.data} ${notif.body} ${notif.title}");
-    }
+    RemoteNotification notif = message.notification!;
+    log.info("Notification received : ${notif.title} ${notif.body}");
+    notifications.show(
+      id: message.hashCode,
+      title: notif.title,
+      body: notif.body,
+      notificationDetails: notificationDetails
+    );
   });
   // Called when the app is opened with a click on a notification
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
