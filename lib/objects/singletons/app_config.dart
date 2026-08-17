@@ -21,6 +21,7 @@ class AppConfig {
   String _cookieDNMASessionName = "SESSIONDNMA";
   String _dnmaDimension = "WEB-PWA";
   String? _uPortalBaseURL = "https://lycees.netocentre.fr";
+  String? _notificationServerUrl = "https://lycees.netocentre.fr/notif-push/token/register";
   String? _staticsPath = '/commun/app-mobile';
   String _paramEtabContextPath = "/paramuseretab";
   Map<String, String> _externalServices = {
