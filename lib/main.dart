@@ -22,7 +22,7 @@ final log = Logger('main');
 void initNotifications(){
   final FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
   const AndroidNotificationChannel notificationChannel = AndroidNotificationChannel("libresco_channel", "Notifications", description: "Notifications de l'application libresco",);
-  const AndroidInitializationSettings androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+  const AndroidInitializationSettings androidSettings = AndroidInitializationSettings('@drawable/notification');
   const InitializationSettings settings = InitializationSettings(android: androidSettings,);
   notifications.initialize(settings: settings);
   notifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(notificationChannel);
