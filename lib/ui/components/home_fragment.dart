@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -66,9 +68,10 @@ class _HomeFragment extends State<HomeFragment> {
     InAppWebViewController controller,
     WebUri? url,
   ) async {
+    final String displayname = jsonEncode(UserInfo().name);
     await controller.evaluateJavascript(
       source: 'document.getElementById(\'displayname\')'
-          '.innerText = \'${UserInfo().name}\';',
+          '.innerText = $displayname;',
     );
   }
 
