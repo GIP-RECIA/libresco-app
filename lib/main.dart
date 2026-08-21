@@ -2,8 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:libresco/utils/sanitizer.dart';
-import 'package:logging/logging.dart';
 import 'package:libresco/objects/singletons/account.dart';
 import 'package:libresco/objects/singletons/app_config.dart';
 import 'package:libresco/objects/singletons/session.dart';
@@ -12,6 +10,8 @@ import 'package:libresco/services/login_service.dart';
 import 'package:libresco/ui/pages/home_page.dart';
 import 'package:libresco/ui/pages/loading_page.dart';
 import 'package:libresco/ui/pages/unconnected_home_page.dart';
+import 'package:libresco/utils/sanitizer.dart';
+import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'firebase_options.dart';
@@ -19,14 +19,28 @@ import 'objects/singletons/crash_reporter.dart';
 
 final log = Logger('main');
 
-void initNotifications(){
+void initNotifications() {
   final FlutterLocalNotificationsPlugin notifications = FlutterLocalNotificationsPlugin();
-  const AndroidNotificationChannel notificationChannel = AndroidNotificationChannel("libresco_channel", "Notifications", description: "Notifications de l'application libresco",);
+  const AndroidNotificationChannel notificationChannel = AndroidNotificationChannel(
+    "libresco_channel",
+    "Notifications",
+    description: "Notifications de l'application libresco",
+  );
   const AndroidInitializationSettings androidSettings = AndroidInitializationSettings('@drawable/notification');
-  const InitializationSettings settings = InitializationSettings(android: androidSettings,);
+  const InitializationSettings settings = InitializationSettings(
+    android: androidSettings,
+  );
   notifications.initialize(settings: settings);
-  notifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(notificationChannel);
-  NotificationDetails notificationDetails = NotificationDetails(android: AndroidNotificationDetails(notificationChannel.id, notificationChannel.name, channelDescription: notificationChannel.description, ), );
+  notifications
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(notificationChannel);
+  NotificationDetails notificationDetails = NotificationDetails(
+    android: AndroidNotificationDetails(
+      notificationChannel.id,
+      notificationChannel.name,
+      channelDescription: notificationChannel.description,
+    ),
+  );
   // Called when a notification is received with the app open
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     final RemoteNotification? notif = message.notification;
@@ -39,7 +53,7 @@ void initNotifications(){
       id: message.hashCode,
       title: notif.title,
       body: notif.body,
-      notificationDetails: notificationDetails
+      notificationDetails: notificationDetails,
     );
   });
   // Called when the app is opened with a click on a notification
@@ -54,8 +68,7 @@ void initNotifications(){
 Future<Widget> buildApp() async {
   log.fine('Starting app...');
   bool connected = false;
-  List<Map<String, Object?>> profiles =
-      await SessionRepository.instance.getProfilesList();
+  List<Map<String, Object?>> profiles = await SessionRepository.instance.getProfilesList();
   if (profiles.length == 1) {
     Account().setId(profiles[0]['id'] as int);
     if (profiles[0]['domain'] != null) {
@@ -73,9 +86,7 @@ Future<Widget> buildApp() async {
 
   return MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: connected
-        ? const LoadingPage(callbackWidget: HomePage())
-        : const UnconnectedHomePage(),
+    home: connected ? const LoadingPage(callbackWidget: HomePage()) : const UnconnectedHomePage(),
   );
 }
 

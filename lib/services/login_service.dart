@@ -3,11 +3,11 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
-import 'package:libresco/utils/sanitizer.dart';
-import 'package:logging/logging.dart';
 import 'package:libresco/objects/singletons/account.dart';
 import 'package:libresco/objects/singletons/app_config.dart';
 import 'package:libresco/objects/singletons/session.dart';
+import 'package:libresco/utils/sanitizer.dart';
+import 'package:logging/logging.dart';
 
 class LoginService {
   final log = Logger('LoginService');
@@ -49,9 +49,8 @@ class LoginService {
     final http.Response res = await client.get(
       request,
       headers: <String, String>{
-        'Cookie':
-            '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
-                '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
+        'Cookie': '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
+            '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
         'Host': domain
       },
     );
@@ -76,8 +75,7 @@ class LoginService {
   }
 
   /// Parser - portalSessionCookie & IDPortalCookie
-  ({String session, String idportal}) uPortalLoginParser(
-      HttpClientResponse response) {
+  ({String session, String idportal}) uPortalLoginParser(HttpClientResponse response) {
     String portalSessionCookie = '';
     String idPortalCookie = '';
 
@@ -95,8 +93,9 @@ class LoginService {
         (str) => str.startsWith(AppConfig().portalIDCookieName),
       );
       if (portalSessionCookieParser.isNotEmpty) {
-        portalSessionCookie = portalSessionCookieParser.first
-            .substring(portalSessionCookieParser.first.indexOf('=') + 1);
+        portalSessionCookie = portalSessionCookieParser.first.substring(
+          portalSessionCookieParser.first.indexOf('=') + 1,
+        );
         log.finer(
           '${AppConfig().portalCookieName} cookie exists : '
           '${sanitize(portalSessionCookie, visibleCharacters: 3)}',
@@ -105,8 +104,7 @@ class LoginService {
         log.finer('${AppConfig().portalCookieName} cookie not found');
       }
       if (idPortalCookieParser.isNotEmpty) {
-        idPortalCookie = idPortalCookieParser.first
-            .substring(idPortalCookieParser.first.indexOf('=') + 1);
+        idPortalCookie = idPortalCookieParser.first.substring(idPortalCookieParser.first.indexOf('=') + 1);
         log.finer('idPortal cookie exists : ${sanitize(idPortalCookie, visibleCharacters: 3)}');
       } else {
         log.finer('idPortal cookie not found');
@@ -121,7 +119,10 @@ class LoginService {
     log.finer('Checking if user is connected to CAS');
     final client = HttpClient();
     client.userAgent = AppConfig().userAgent;
-    var uri = Uri.https(AppConfig().casHost, '/cas/login', );
+    var uri = Uri.https(
+      AppConfig().casHost,
+      '/cas/login',
+    );
     var request = await client.getUrl(uri);
     request.followRedirects = false;
     request.headers.add(
@@ -147,7 +148,10 @@ class LoginService {
     return false;
   }
 
-  Future<void> logout(String domain, bool partial) async {
+  Future<void> logout(
+    String domain,
+    bool partial,
+  ) async {
     try {
       final client = HttpClient();
       client.userAgent = AppConfig().userAgent;
@@ -174,7 +178,7 @@ class LoginService {
       log.finer('Request headers are : ${sanitizeHeaders(casRequest.headers, visibleCharacters: 3)}');
 
       var casResponse = await casRequest.close();
-      log.finer('Response status code from cas server : ${casResponse.statusCode}',);
+      log.finer('Response status code from cas server : ${casResponse.statusCode}');
       log.finer('Response headers: ${sanitizeHeaders(casResponse.headers, visibleCharacters: 3)}');
 
       if (!partial) {
@@ -194,9 +198,7 @@ class LoginService {
         portalRequest.headers.add('Host', domain);
 
         var portalResponse = await portalRequest.close();
-        log.finer(
-          'Response status code from portal : ${portalResponse.statusCode}',
-        );
+        log.finer('Response status code from portal : ${portalResponse.statusCode}');
         log.finer('Response headers: ${sanitizeHeaders(portalResponse.headers, visibleCharacters: 3)}');
       }
     } catch (e) {
@@ -245,11 +247,9 @@ class LoginService {
         // If the URI starts with CAS in the first redirect, that means there was a domain change
         // So we remember the domain for the rest of the requests. Once we will obtain userinfos
         // it will not be necessary anymore
-        if (requestCounter == 0 &&
-            uri.toString().startsWith(AppConfig().casBaseURL)) {
+        if (requestCounter == 0 && uri.toString().startsWith(AppConfig().casBaseURL)) {
           log.fine('Multidomain redirection detected on URL : ${uri.toString()}');
-          String service =
-              (uri.toString().split("service=")[1]).split("/portail/Login")[0];
+          String service = (uri.toString().split("service=")[1]).split("/portail/Login")[0];
           AppConfig().setUportalBaseURL(service);
           log.fine('Base URL for next requests is set to $service');
         }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:libresco/utils/sanitizer.dart';
-import 'package:logging/logging.dart';
 import 'package:libresco/objects/singletons/app_config.dart';
 import 'package:libresco/objects/singletons/session.dart';
 import 'package:libresco/ui/pages/home_page.dart';
 import 'package:libresco/ui/pages/loading_page.dart';
+import 'package:libresco/utils/sanitizer.dart';
+import 'package:logging/logging.dart';
 
 class AuthenticationInAppBrowser extends InAppBrowser {
   final log = Logger('AuthenticationInAppBrowser');
@@ -45,7 +45,9 @@ class AuthenticationInAppBrowser extends InAppBrowser {
         for (var current in cookies) {
           log.finest('Checking cookie $current.name');
           if (current.name == AppConfig().casCookieName) {
-            log.fine('${AppConfig().casCookieName} Cookie found with value : ${sanitize(current.value, visibleCharacters: 3)}',);
+            log.fine(
+              '${AppConfig().casCookieName} Cookie found with value : ${sanitize(current.value, visibleCharacters: 3)}',
+            );
             Session().setCASSessionCookie(current.value);
             Session().persist();
           }
@@ -86,7 +88,10 @@ class AuthenticationInAppBrowser extends InAppBrowser {
   }
 
   @override
-  void onReceivedError(WebResourceRequest request, WebResourceError error) {
+  void onReceivedError(
+    WebResourceRequest request,
+    WebResourceError error,
+  ) {
     log.fine('Can\'t load ${request.url}.. Error: ${error.description}');
   }
 

@@ -44,8 +44,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   }
 
   Future<void> initAccounts() async {
-    List<Map<String, Object?>> profiles =
-        await SessionRepository.instance.getProfilesList();
+    List<Map<String, Object?>> profiles = await SessionRepository.instance.getProfilesList();
 
     final loadedAccounts = profiles
         .map(
@@ -54,8 +53,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
             name: (p['name'] ?? '') as String,
             currentEtabName: (p['currentEtabName'] ?? '') as String,
             domain: (p['domain'] ?? '') as String,
-            avatarUrl:
-                Account().getBaseUrl() + ((p['picture'] ?? '') as String),
+            avatarUrl: Account().getBaseUrl() + ((p['picture'] ?? '') as String),
           ),
         )
         .toList();
@@ -144,7 +142,7 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
               children: [
                 const SizedBox(height: 40),
                 AspectRatio(
-                    aspectRatio: 1099 / 370,
+                  aspectRatio: 1099 / 370,
                   child: Image.asset(
                     'assets/logo.png',
                     width: double.infinity,

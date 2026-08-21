@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:logging/logging.dart';
 import 'package:libresco/ui/components/app_container.dart';
 import 'package:libresco/ui/components/web_view.dart';
 import 'package:libresco/utils/custom_cookies_manager.dart';
+import 'package:logging/logging.dart';
 
 class WebViewPage extends StatefulWidget {
   final String appBarTitle;

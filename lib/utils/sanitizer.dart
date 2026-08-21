@@ -1,6 +1,9 @@
 import 'dart:io';
 
-String sanitize(String? value, {int visibleCharacters = 0, }) {
+String sanitize(
+  String? value, {
+  int visibleCharacters = 0,
+}) {
   if (value == null || value.isEmpty) {
     return '';
   }
@@ -11,7 +14,10 @@ String sanitize(String? value, {int visibleCharacters = 0, }) {
       '${'*' * (value.length - visibleCharacters)}';
 }
 
-String sanitizeList(List<Object?> values, {int visibleCharacters = 0, }) {
+String sanitizeList(
+  List<Object?> values, {
+  int visibleCharacters = 0,
+}) {
   return '[${values.map((value) {
     return sanitize(
       value?.toString(),
@@ -20,12 +26,18 @@ String sanitizeList(List<Object?> values, {int visibleCharacters = 0, }) {
   }).join(', ')}]';
 }
 
-String sanitizeHeaders(HttpHeaders headers, {int visibleCharacters = 0, }) {
+String sanitizeHeaders(
+  HttpHeaders headers, {
+  int visibleCharacters = 0,
+}) {
   final result = <String, String>{};
   headers.forEach((name, values) {
     final sanitizedValues = <String>[];
     for (final value in values) {
-      final sanitizedValue = sanitize(value, visibleCharacters: visibleCharacters,);
+      final sanitizedValue = sanitize(
+        value,
+        visibleCharacters: visibleCharacters,
+      );
       sanitizedValues.add(sanitizedValue);
     }
     result[name] = sanitizedValues.toString();
@@ -36,6 +48,6 @@ String sanitizeHeaders(HttpHeaders headers, {int visibleCharacters = 0, }) {
 String sanitizeLogs(String value) {
   return value.replaceAllMapped(
     RegExp(r'ST-[^\s\]\)]+'),
-        (match) => 'ST-******',
+    (match) => 'ST-******',
   );
 }

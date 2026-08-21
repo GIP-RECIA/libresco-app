@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
-import 'package:logging/logging.dart';
 import 'package:libresco/objects/enums/user_info_loading_state.dart';
 import 'package:libresco/objects/service.dart';
 import 'package:libresco/objects/singletons/app_config.dart';
@@ -11,6 +10,7 @@ import 'package:libresco/objects/singletons/services_list.dart';
 import 'package:libresco/objects/singletons/session.dart';
 import 'package:libresco/objects/singletons/user_info.dart';
 import 'package:libresco/services/login_service.dart';
+import 'package:logging/logging.dart';
 
 import '../objects/singletons/account.dart';
 import '../utils/sanitizer.dart';
@@ -40,14 +40,12 @@ class PortalService {
     log.finer('Getting portlet request : $request');
     log.finer('${AppConfig().portalCookieName}=${sanitize(Session().PortalSessionCookie, visibleCharacters: 3)}');
 
-
     if (await LoginService.instance.isAuthorizedByUPortal()) {
       final http.Response res = await client.get(
         request,
         headers: <String, String>{
-          'Cookie':
-              '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
-                  '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
+          'Cookie': '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
+              '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
           'Host': Account().domain
         },
       );
@@ -101,8 +99,7 @@ class PortalService {
               }
 
               // if auth directly on CAS
-              if (portlet['parameters']
-                  .containsKey('alternativeMaximizedLink')) {
+              if (portlet['parameters'].containsKey('alternativeMaximizedLink')) {
                 String? serviceUri = serviceUriParser(
                   portlet['parameters']['alternativeMaximizedLink']['value'],
                 );
@@ -170,7 +167,7 @@ class PortalService {
 
         Services().setServicesList(servicesList);
         Services().setFavoritesList(favoritesList);
-        log.fine('Final list of services : ${Services().servicesList.toString()}', );
+        log.fine('Final list of services : ${Services().servicesList.toString()}');
       } else {
         log.warning('Got an abnormal ${res.statusCode} response status code !');
       }
@@ -226,7 +223,7 @@ class PortalService {
       '/portail/api/layout',
       {
         'action': service.isFavorite ? 'removeFavorite' : 'addFavorite',
-        'channelId': service.id.toString()
+        'channelId': service.id.toString(),
       },
     );
 
@@ -234,9 +231,8 @@ class PortalService {
       final http.Response res = await client.post(
         request,
         headers: <String, String>{
-          'Cookie':
-              '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
-                  '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
+          'Cookie': '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
+              '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
           'Host': Account().domain
         },
       );
@@ -269,9 +265,8 @@ class PortalService {
     final http.Response res = await client.get(
       request,
       headers: <String, String>{
-        'Cookie':
-            '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
-                '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
+        'Cookie': '${AppConfig().portalCookieName}=${Session().PortalSessionCookie}; '
+            '${AppConfig().portalIDCookieName}=${Session().IDPortalCookie}',
         'Host': Account().domain
       },
     );
@@ -341,7 +336,7 @@ class PortalService {
     // If the domain in database is not the same as the domain from userinfos
     // It means it was changed => make a partial logout to refresh CAS attributes
     // TODO : only works if a new portal session was created -> clear portal session at startup ?
-    if(domain != Account().domain){
+    if (domain != Account().domain) {
       log.info("Domain has changed but not in app ! Making a partial logout to refresh CAS attributes");
       LoginService.instance.logout(Account().domain, true);
       Session().setPortalSessionCookie('');

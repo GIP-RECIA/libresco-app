@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
 import 'package:libresco/objects/enums/user_menu_item.dart';
 import 'package:libresco/objects/singletons/account.dart';
 import 'package:libresco/objects/singletons/services_list.dart';
@@ -10,6 +9,7 @@ import 'package:libresco/services/portal_service.dart';
 import 'package:libresco/ui/components/app_bar.dart';
 import 'package:libresco/ui/components/nav_bar.dart';
 import 'package:libresco/ui/pages/unconnected_home_page.dart';
+import 'package:logging/logging.dart';
 
 import '../../services/login_service.dart';
 import '../pages/home_page.dart';
@@ -72,8 +72,7 @@ class _AppContainer extends State<AppContainer> {
     final String soffit = rawUserInfo.$1;
 
     // Récupération des infos des structures
-    final Map<String, dynamic>? structures =
-        await PortalService.instance.getInfoEtab(UserInfo().sirens);
+    final Map<String, dynamic>? structures = await PortalService.instance.getInfoEtab(UserInfo().sirens);
     if (structures == null) {
       log.warning('Could not get etab info, aborting etab change');
       return;
@@ -114,11 +113,13 @@ class _AppContainer extends State<AppContainer> {
     }
   }
 
-  Future<String?> showEtabSelector(BuildContext context, Map<String, dynamic> etabsMap, String currentSiren,) async {
-    final filteredEtabs = etabsMap.entries
-        .where((entry) => entry.key != currentSiren)
-        .map((entry) => entry.value)
-        .toList();
+  Future<String?> showEtabSelector(
+    BuildContext context,
+    Map<String, dynamic> etabsMap,
+    String currentSiren,
+  ) async {
+    final filteredEtabs =
+        etabsMap.entries.where((entry) => entry.key != currentSiren).map((entry) => entry.value).toList();
 
     return showDialog<String>(
       context: context,
@@ -177,8 +178,7 @@ class _AppContainer extends State<AppContainer> {
       body: SafeArea(child: widget.body),
       bottomNavigationBar: widget.bottomNavigation ?? true
           ? NavBar(
-              onDestinationSelected: (index) =>
-                  widget.onDestinationSelected?.call(index),
+              onDestinationSelected: (index) => widget.onDestinationSelected?.call(index),
             )
           : null,
     );

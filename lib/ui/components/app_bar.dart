@@ -85,7 +85,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ],
               ),
             ),
-            if(UserInfo().sirens.length>1)
+            if (UserInfo().sirens.length > 1)
               const PopupMenuItem(
                 value: UserMenuItem.changeEtab,
                 enabled: true,

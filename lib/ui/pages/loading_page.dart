@@ -1,12 +1,10 @@
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:libresco/utils/sanitizer.dart';
-import 'package:logging/logging.dart';
 import 'package:libresco/objects/enums/user_info_loading_state.dart';
 import 'package:libresco/objects/singletons/app_config.dart';
 import 'package:libresco/objects/singletons/session.dart';
@@ -16,6 +14,8 @@ import 'package:libresco/services/dnma_service.dart';
 import 'package:libresco/services/login_service.dart';
 import 'package:libresco/services/portal_service.dart';
 import 'package:libresco/ui/pages/unconnected_home_page.dart';
+import 'package:libresco/utils/sanitizer.dart';
+import 'package:logging/logging.dart';
 
 import '../../objects/singletons/account.dart';
 import 'home_page.dart';
@@ -78,7 +78,7 @@ class LoadingPageUtils {
     this.callbackWidget,
   );
 
-  Future<String> obtainServiceTicket() async{
+  Future<String> obtainServiceTicket() async {
     log.fine('Obtaining service ticket from CAS');
     final client = HttpClient();
     client.userAgent = AppConfig().userAgent;
@@ -118,11 +118,13 @@ class LoadingPageUtils {
     }
     final String url = AppConfig().notificationServerUrl;
     final String uid = UserInfo().uid;
-    log.info("Sending FCM Token ${sanitize(token, visibleCharacters: 3)} to $url for ${sanitize(uid, visibleCharacters: 3)}");
+    log.info(
+      "Sending FCM Token ${sanitize(token, visibleCharacters: 3)} to $url for ${sanitize(uid, visibleCharacters: 3)}",
+    );
     await http.post(
       Uri.parse(url),
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: jsonEncode({
         "ticket": serviceTicket,
@@ -188,11 +190,15 @@ class LoadingPageUtils {
           Account().id!,
         );
       }
-      await DnmaService.instance.mark(AppConfig().dnmaDimension, "Portail", "https://${Account().domain}/portail/f/accueil/normal/render.uP");
+      await DnmaService.instance.mark(
+        AppConfig().dnmaDimension,
+        "Portail",
+        "https://${Account().domain}/portail/f/accueil/normal/render.uP",
+      );
       // Once we are logged in we send our token to the notification server
       initFCM();
       navigatorPush();
-    } else if(loadingState == UserInfoLoadingState.refresh){
+    } else if (loadingState == UserInfoLoadingState.refresh) {
       // We need to wait a little bit to make sur partial logout is finished
       Future.delayed(const Duration(seconds: 1), () {
         Navigator.pushReplacement(

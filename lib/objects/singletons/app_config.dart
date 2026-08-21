@@ -27,7 +27,13 @@ class AppConfig {
   Map<String, String> _externalServices = {
     'PRONOTE': 'pronote://',
   };
-  List<String> _markedFnames = ["News", "CAPYTALE", "ESCO-GLC", "MenuCantine", "PRONOTE"];
+  List<String> _markedFnames = [
+    "News",
+    "CAPYTALE",
+    "ESCO-GLC",
+    "MenuCantine",
+    "PRONOTE",
+  ];
   Map<int, Color> categoryIdToColor = {
     365: Color.fromRGBO(171, 71, 188, 1),
     364: Color.fromRGBO(38, 198, 218, 1),
@@ -110,17 +116,13 @@ class AppConfig {
 
   String get serviceURL => getAttribute('_serviceURL', _serviceURL);
 
-  Map<String, String> get externalServices =>
-      getAttribute('_externalServices', _externalServices);
+  Map<String, String> get externalServices => getAttribute('_externalServices', _externalServices);
 
-  String get idpIdQueryParam =>
-      getAttribute('_idpIdQueryParam', _idpIdQueryParam);
+  String get idpIdQueryParam => getAttribute('_idpIdQueryParam', _idpIdQueryParam);
 
-  String get portalCookieName =>
-      getAttribute('_portalCookieName', _portalCookieName);
+  String get portalCookieName => getAttribute('_portalCookieName', _portalCookieName);
 
-  String get portalIDCookieName =>
-      getAttribute('_portalIDCookieName', _portalIDCookieName);
+  String get portalIDCookieName => getAttribute('_portalIDCookieName', _portalIDCookieName);
 
   String get casCookieName => getAttribute('_casCookieName', _casCookieName);
 
@@ -136,15 +138,13 @@ class AppConfig {
 
   String get notificationServerUrl => getAttribute('_notificationServerUrl', _notificationServerUrl);
 
-  String get uPortalHost =>
-      uPortalBaseURL.replaceFirst(RegExp(r'^https?://'), '');
+  String get uPortalHost => uPortalBaseURL.replaceFirst(RegExp(r'^https?://'), '');
 
   void setUportalBaseURL(String value) {
     _uPortalBaseURL = value;
   }
 
-  String get paramEtabContextPath =>
-      getAttribute('_paramEtabContextPath', _paramEtabContextPath);
+  String get paramEtabContextPath => getAttribute('_paramEtabContextPath', _paramEtabContextPath);
 
   String get staticsPath => getAttribute('_staticsPath', _staticsPath);
 

@@ -1,15 +1,14 @@
-import 'package:logging/logging.dart';
 import 'package:libresco/objects/singletons/account.dart';
 import 'package:libresco/objects/singletons/user_info.dart';
 import 'package:libresco/repositories/database_provider.dart';
+import 'package:logging/logging.dart';
 
 class UserInfoRepository {
   final log = Logger('UserInfoRepository');
 
   UserInfoRepository._privateConstructor();
 
-  static final UserInfoRepository _instance =
-      UserInfoRepository._privateConstructor();
+  static final UserInfoRepository _instance = UserInfoRepository._privateConstructor();
 
   static UserInfoRepository get instance => _instance;
 

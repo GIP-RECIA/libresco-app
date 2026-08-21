@@ -3,7 +3,6 @@ import 'package:libresco/repositories/user_info_repository.dart';
 import '../../utils/sanitizer.dart';
 
 class UserInfo {
-
   static final UserInfo _instance = UserInfo._internal();
 
   String _uid = '';

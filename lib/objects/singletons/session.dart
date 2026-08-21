@@ -3,7 +3,6 @@ import 'package:libresco/repositories/session_repository.dart';
 import '../../utils/sanitizer.dart';
 
 class Session {
-
   static final Session _instance = Session._internal();
 
   String _CASSessionCookie = '';

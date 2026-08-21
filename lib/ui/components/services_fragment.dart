@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:logging/logging.dart';
 import 'package:libresco/objects/service.dart';
 import 'package:libresco/objects/singletons/services_list.dart';
 import 'package:libresco/services/portal_service.dart';
 import 'package:libresco/ui/components/services_card.dart';
 import 'package:libresco/utils/home_model.dart';
+import 'package:logging/logging.dart';
 
 class ServicesFragment extends StatefulWidget {
   final HomeModel homeModel;
@@ -23,8 +23,7 @@ class _ServicesFragment extends State<ServicesFragment> {
   List<Service> renderedServices = Services().servicesList;
 
   void _switchPortletIsFavoriteState(int index) async {
-    bool isTaskValidated = await PortalService.instance
-        .switchPortletIsFavoriteState(renderedServices[index]);
+    bool isTaskValidated = await PortalService.instance.switchPortletIsFavoriteState(renderedServices[index]);
 
     if (isTaskValidated) {
       final Service currService = renderedServices[index];
@@ -73,8 +72,7 @@ class _ServicesFragment extends State<ServicesFragment> {
               itemCount: renderedServices.length,
               itemBuilder: (context, index) {
                 final Service service = renderedServices[index];
-                return ServicesCard(service,
-                    onPressed: () => _switchPortletIsFavoriteState(index));
+                return ServicesCard(service, onPressed: () => _switchPortletIsFavoriteState(index));
               },
             ),
           ),

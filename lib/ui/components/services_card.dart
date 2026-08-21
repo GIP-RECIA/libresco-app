@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:logging/logging.dart';
 import 'package:libresco/objects/service.dart';
 import 'package:libresco/objects/singletons/account.dart';
 import 'package:libresco/objects/singletons/app_config.dart';
@@ -9,6 +8,7 @@ import 'package:libresco/services/dnma_service.dart';
 import 'package:libresco/services/login_service.dart';
 import 'package:libresco/ui/pages/unconnected_home_page.dart';
 import 'package:libresco/ui/pages/web_view_page.dart';
+import 'package:logging/logging.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ServicesCard extends StatelessWidget {
@@ -22,8 +22,8 @@ class ServicesCard extends StatelessWidget {
     required this.onPressed,
   });
 
-  void markDNMA(String dimension, String fname, String url){
-    if(AppConfig().markedFnames.contains(fname)){
+  void markDNMA(String dimension, String fname, String url) {
+    if (AppConfig().markedFnames.contains(fname)) {
       log.fine("Marking access to service $fname by DNMA");
       DnmaService.instance.mark(dimension, fname, url);
     } else {
@@ -80,8 +80,7 @@ class ServicesCard extends StatelessWidget {
           log.finer('Base url for user is $baseUrl');
 
           if (launchWeb) {
-            if (await LoginService.instance.hasCASSession() &&
-                await LoginService.instance.isAuthorizedByUPortal()) {
+            if (await LoginService.instance.hasCASSession() && await LoginService.instance.isAuthorizedByUPortal()) {
               if (context.mounted) {
                 String uri = '$baseUrl/portail/p/${service.serviceUri}';
                 if (!service.isAuthByUPortal) {
@@ -131,8 +130,7 @@ class ServicesCard extends StatelessWidget {
                         topLeft: Radius.circular(18),
                         topRight: Radius.circular(18),
                       ),
-                      color:
-                          AppConfig().getColorFromCategoryId(service.category),
+                      color: AppConfig().getColorFromCategoryId(service.category),
                     ),
                   ),
                   const SizedBox(height: 20),

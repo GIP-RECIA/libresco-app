@@ -22,7 +22,6 @@ class DatabaseProvider {
   }
 
   Future<Database> _initDB() async {
-
     final storage = FlutterSecureStorage();
     String? key = await storage.read(key: 'libresco_db_key');
     if (key == null) {
@@ -60,5 +59,4 @@ class DatabaseProvider {
     final values = List<int>.generate(length, (_) => secureRandom.nextInt(256));
     return base64UrlEncode(values);
   }
-
 }

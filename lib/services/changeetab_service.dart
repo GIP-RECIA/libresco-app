@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
-import 'package:logging/logging.dart';
 import 'package:libresco/objects/singletons/account.dart';
 import 'package:libresco/objects/singletons/app_config.dart';
+import 'package:logging/logging.dart';
 
 class ChangeEtabService {
   final log = Logger('ChangeEtabService');
