@@ -29,7 +29,11 @@ void initNotifications(){
   NotificationDetails notificationDetails = NotificationDetails(android: AndroidNotificationDetails(notificationChannel.id, notificationChannel.name, channelDescription: notificationChannel.description, ), );
   // Called when a notification is received with the app open
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    RemoteNotification notif = message.notification!;
+    final RemoteNotification? notif = message.notification;
+    if (notif == null) {
+      log.fine('Received a message without notification payload');
+      return;
+    }
     log.info("Notification received : ${notif.title} ${notif.body}");
     notifications.show(
       id: message.hashCode,

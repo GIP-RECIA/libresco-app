@@ -98,13 +98,24 @@ class LoadingPageUtils {
     var response = await request.close();
     log.finest('Response status code from cas server : ${response.statusCode}');
     log.finest('Response headers: ${sanitizeHeaders(response.headers, visibleCharacters: 3)}');
-    String st = response.headers.value("location")!.split("ticket=").last;
+    final String? location = response.headers.value(HttpHeaders.locationHeader);
+    if (location == null || !location.contains('ticket=')) {
+      log.warning(
+        'No service ticket in CAS response (status ${response.statusCode})',
+      );
+      return '';
+    }
+    final String st = location.split('ticket=').last;
     log.finer('Service ticket extracted from headers is : ${sanitize(st, visibleCharacters: 3)}');
     return st;
   }
 
   Future<void> sendTokenToServer(String token) async {
     String serviceTicket = await obtainServiceTicket();
+    if (serviceTicket.isEmpty) {
+      log.warning('No service ticket obtained, token will not be sent');
+      return;
+    }
     final String url = AppConfig().notificationServerUrl;
     final String uid = UserInfo().uid;
     log.info("Sending FCM Token ${sanitize(token, visibleCharacters: 3)} to $url for ${sanitize(uid, visibleCharacters: 3)}");

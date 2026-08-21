@@ -319,6 +319,10 @@ class PortalService {
     Map<String, dynamic> userInfo = rawUserInfo.$2;
     // Get the current siren and make a request to paramuseretab for the domain and etab name
     List<String> siren = List<String>.from(userInfo['ESCOSIRENCourant'] ?? []);
+    if (siren.isEmpty) {
+      log.warning('No current siren in user info, cannot load etab data');
+      return UserInfoLoadingState.error;
+    }
     Map<String, dynamic>? rawEtabInfo = await getInfoEtab(siren);
     if (rawEtabInfo == null) return UserInfoLoadingState.error;
     String currentSiren = siren[0];

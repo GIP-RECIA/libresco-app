@@ -81,8 +81,8 @@ class LoginService {
     String portalSessionCookie = '';
     String idPortalCookie = '';
 
-    if (response.headers['set-cookie']!.isNotEmpty) {
-      List<String> rawCookiesList = response.headers['set-cookie']!;
+    List<String>? rawCookiesList = response.headers['set-cookie'];
+    if (rawCookiesList != null && rawCookiesList.isNotEmpty) {
       List<String> cookiesList = [];
       for (var rawCookies in rawCookiesList) {
         cookiesList.addAll(rawCookies.split(';'));
