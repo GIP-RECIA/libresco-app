@@ -20,7 +20,8 @@ class UserInfoRepository {
     await db.update(
       tableName,
       UserInfo().mapForDatabase(),
-      where: 'id = ${Account().id}',
+      where: 'id = ?',
+      whereArgs: [Account().id],
     );
     Account().setDomain(UserInfo().domain);
     log.fine('Update in database : ${UserInfo().toString()}');

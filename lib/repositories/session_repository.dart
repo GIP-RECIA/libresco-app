@@ -33,7 +33,8 @@ class SessionRepository {
     await db.update(
       tableName,
       Session().mapForDatabase(),
-      where: 'id = ${Account().id}',
+      where: 'id = ?',
+      whereArgs: [Account().id],
     );
     log.fine('Update in database : ${Session().toString()}');
   }
@@ -51,7 +52,8 @@ class SessionRepository {
     final db = await DatabaseProvider.instance.db;
     List<Map<String, Object?>> response = await db.query(
       tableName,
-      where: 'id = $id',
+      where: 'id = ?',
+      whereArgs: [id],
     );
     if (response.isNotEmpty) {
       Session().loadFromDatabase(response.first);
@@ -64,8 +66,10 @@ class SessionRepository {
   Future<void> deleteAll({int? id}) async {
     id ??= Account().id;
     final db = await DatabaseProvider.instance.db;
-    await db.execute(
-      'DELETE FROM $tableName where id = $id',
+    await db.delete(
+      tableName,
+      where: 'id = ?',
+      whereArgs: [id],
     );
     Account().clear();
     Session().clear();
@@ -82,8 +86,10 @@ class SessionRepository {
 
   Future<void> deleteExistingProfile(String uid, int id) async {
     final db = await DatabaseProvider.instance.db;
-    await db.execute(
-      'DELETE FROM $tableName where id != $id and uid="$uid"',
+    await db.delete(
+      tableName,
+      where: 'id != ? AND uid = ?',
+      whereArgs: [id, uid],
     );
     log.fine('Duplicated profile successfully deleted');
   }
@@ -92,7 +98,8 @@ class SessionRepository {
     final db = await DatabaseProvider.instance.db;
     List<Map<String, Object?>> response = await db.query(
       tableName,
-      where: 'uid = "$uid"',
+      where: 'uid = ?',
+      whereArgs: [uid],
     );
     if (response.length >= 2) {
       return true;
