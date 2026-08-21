@@ -112,15 +112,6 @@ class _WebView extends State<WebView> {
     }
   }
 
-  Future<ServerTrustAuthResponse> _onServerTrust(
-    InAppWebViewController controller,
-    URLAuthenticationChallenge challenge,
-  ) async {
-    return ServerTrustAuthResponse(
-      action: ServerTrustAuthResponseAction.PROCEED,
-    );
-  }
-
   void _onError(
     InAppWebViewController controller,
     WebResourceRequest request,
@@ -148,7 +139,6 @@ class _WebView extends State<WebView> {
       shouldOverrideUrlLoading: _overrideUrlLoading,
       onPermissionRequest: _onPermissionRequest,
       onConsoleMessage: _onConsoleMessage,
-      onReceivedServerTrustAuthRequest: _onServerTrust,
       onReceivedError: _onError,
       onDownloadStartRequest: _onDownloadStartRequest,
     );
