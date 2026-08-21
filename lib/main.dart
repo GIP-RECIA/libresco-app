@@ -60,7 +60,7 @@ void initNotifications() {
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
     RemoteNotification? notif = message.notification;
     if (notif != null) {
-      print("App was opened via notification ${message.data} ${notif.body} ${notif.title}");
+      log.fine("App was opened via notification ${message.data} ${notif.body} ${notif.title}");
     }
   });
 }

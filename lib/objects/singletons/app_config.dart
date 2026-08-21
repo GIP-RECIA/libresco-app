@@ -14,20 +14,20 @@ class AppConfig {
   String? _casBaseURL = 'https://auth.recia.fr';
   String? _serviceURL = 'https://auth.recia.fr/appMobile';
   String _idpIdQueryParam = 'idpId';
-  String _portalCookieName = 'JSESSIONID';
-  String _portalIDCookieName = 'clusterIDPortail';
-  String _casCookieName = 'TGC';
-  String _cookieDNMAIDName = "dnmaClusterID";
-  String _cookieDNMASessionName = "SESSIONDNMA";
-  String _dnmaDimension = "WEB-PWA";
+  final String _portalCookieName = 'JSESSIONID';
+  final String _portalIDCookieName = 'clusterIDPortail';
+  final String _casCookieName = 'TGC';
+  final String _cookieDNMAIDName = "dnmaClusterID";
+  final String _cookieDNMASessionName = "SESSIONDNMA";
+  final String _dnmaDimension = "WEB-PWA";
   String? _uPortalBaseURL = "https://lycees.netocentre.fr";
-  String? _notificationServerUrl = "https://lycees.netocentre.fr/notif-push/token/register";
+  final String? _notificationServerUrl = "https://lycees.netocentre.fr/notif-push/token/register";
   String? _staticsPath = '/commun/app-mobile';
-  String _paramEtabContextPath = "/paramuseretab";
-  Map<String, String> _externalServices = {
+  final String _paramEtabContextPath = "/paramuseretab";
+  final Map<String, String> _externalServices = {
     'PRONOTE': 'pronote://',
   };
-  List<String> _markedFnames = [
+  final List<String> _markedFnames = [
     "News",
     "CAPYTALE",
     "ESCO-GLC",
