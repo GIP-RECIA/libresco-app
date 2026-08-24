@@ -1,0 +1,15 @@
+error=false
+
+# Vérification de la licence
+if ./scripts/license.sh 1; then
+  echo "License OK"
+else
+  error=true
+  echo "Fix license"
+  ./scripts/license.sh 2
+fi
+
+# Vérification des erreurs
+if $error; then
+  exit 1
+fi
