@@ -52,7 +52,7 @@ dependencies:
   rename_app: ^1.6.6
   sqflite_sqlcipher: ^3.4.1
   flutter_secure_storage: ^11.0.0
-  firebase_core: ^4.13.0
+  firebase_core: ^4.14.0
   firebase_messaging: ^16.5.0
   firebase_crashlytics: ^5.3.0
   flutter_local_notifications: ^22.3.0
