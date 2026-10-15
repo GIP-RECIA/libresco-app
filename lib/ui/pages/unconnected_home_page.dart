@@ -26,6 +26,8 @@ import 'package:libresco/ui/pages/home_page.dart';
 import 'package:libresco/ui/pages/loading_page.dart';
 import 'package:libresco/utils/authentication_in_app_browser.dart';
 
+import '../components/crashlytics_consent_dialog.dart';
+
 class UnconnectedHomePage extends StatefulWidget {
   const UnconnectedHomePage({
     super.key,
@@ -53,6 +55,10 @@ class _UnconnectedHomePage extends State<UnconnectedHomePage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      showCrashlyticsConsentDialog(context);
+    });
     browser = AuthenticationInAppBrowser(context);
     initAccounts();
   }

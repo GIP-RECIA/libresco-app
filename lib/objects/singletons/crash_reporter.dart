@@ -16,8 +16,15 @@ import 'dart:ui';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:logging/logging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CrashReporter {
+
+  final logger = Logger('CrashReporter');
+
+  static const String _consentKey = 'crashlytics_consent';
+
   static final CrashReporter _instance = CrashReporter._internal();
 
   factory CrashReporter() {
@@ -28,21 +35,53 @@ class CrashReporter {
 
   FirebaseCrashlytics get _crashlytics => FirebaseCrashlytics.instance;
 
+  bool? _consent;
+  bool? get consent => _consent;
+
+  /// Load consent from preferences
+  Future<bool?> loadConsent() async {
+    final prefs = await SharedPreferences.getInstance();
+    _consent = prefs.getBool(_consentKey);
+    return _consent;
+  }
+
+  /// Set consent in preferences
+  Future<void> setConsent(bool accepted) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_consentKey, accepted);
+    _consent = accepted;
+  }
+
+  Future<void> refreshConsent() async{
+    // Pour être sûr, on désactive la collecte par défaut
+    await _crashlytics.setCrashlyticsCollectionEnabled(false);
+    // On charge le consenement enregistré
+    await loadConsent();
+    if (_consent == true) {
+      await _crashlytics.setCrashlyticsCollectionEnabled(true);
+    }
+    logger.info('Crashlytics enabled: ''${FirebaseCrashlytics.instance.isCrashlyticsCollectionEnabled}',);
+  }
+
   Future<void> init() async {
     FlutterError.onError = (details) {
-      _crashlytics.recordError(
-        details.exception,
-        details.stack,
-        fatal: true,
-      );
+      if (_consent == true) {
+        _crashlytics.recordError(
+          details.exception,
+          details.stack,
+          fatal: true,
+        );
+      }
     };
 
     PlatformDispatcher.instance.onError = (error, stack) {
-      _crashlytics.recordError(
-        error,
-        stack,
-        fatal: true,
-      );
+      if (_consent == true) {
+        _crashlytics.recordError(
+          error,
+          stack,
+          fatal: true,
+        );
+      }
       return true;
     };
   }
@@ -53,12 +92,14 @@ class CrashReporter {
     bool fatal = false,
     String? reason,
   }) async {
-    await _crashlytics.recordError(
-      error,
-      stack,
-      fatal: fatal,
-      reason: reason,
-    );
+    if (_consent == true) {
+      await _crashlytics.recordError(
+        error,
+        stack,
+        fatal: fatal,
+        reason: reason,
+      );
+    }
   }
 
   Future<void> log(String message) {
