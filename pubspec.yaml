@@ -37,7 +37,7 @@ dependencies:
   http: ^1.6.0
   webview_flutter: ^4.14.1
   flutter_inappwebview: ^6.1.5
-  url_launcher: ^6.3.2
+  url_launcher: ^6.3.3
   shared_preferences: ^2.5.5
   path: ^1.9.1
   external_app_launcher: ^4.0.4
