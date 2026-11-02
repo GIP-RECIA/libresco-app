@@ -41,16 +41,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:^21.2.3":
-  version: 21.2.3
-  resolution: "@commitlint/config-conventional@npm:21.2.3"
-  dependencies:
-    "@commitlint/types": "npm:^21.2.3"
-    conventional-changelog-conventionalcommits: "npm:^10.0.0"
-  checksum: 10/1aaade67cc0222439d49ecdee48bd83c1df6caf82a2385782f0a1ea319dad79c00b811806e3d4fcb7742c70dbc7dc1c6691244cd97920e243ca44255768a40e7
-  languageName: node
-  linkType: hard
-
 "@commitlint/config-conventional@npm:^21.2.4":
   version: 21.2.4
   resolution: "@commitlint/config-conventional@npm:21.2.4"
@@ -1021,7 +1011,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@commitlint/cli": "npm:^21.2.4"
-    "@commitlint/config-conventional": "npm:^21.2.3"
+    "@commitlint/config-conventional": "npm:^21.2.4"
     commit-and-tag-version: "npm:^13.3.0"
     husky: "npm:^9.1.7"
   languageName: unknown
